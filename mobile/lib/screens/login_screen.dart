@@ -10,7 +10,11 @@ class LoginScreen extends StatelessWidget {
           color: Colors.white,
           margin: const EdgeInsets.all(16.0),
           child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            const FlutterLogo(size: 80),
+            Image.asset(
+              'assets/Studify-logo.png',
+              width: 270,
+              height: 230,
+            ),
             const SizedBox(height: 20),
             const Text('Welcome Back', style: TextStyle(fontSize: 24)),
             const SizedBox(height: 20),
