@@ -8,20 +8,20 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight,
-              ),
-              child: IntrinsicHeight(
-                child: Column(
-                  children: <Widget>[
-                    const Spacer(),
-                    Card(
-                      color: Colors.white,
-                      margin: const EdgeInsets.all(16.0),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              // Ensures that the Column is centered horizontally
+              child: Column(
+                mainAxisAlignment:
+                    MainAxisAlignment.center, // Centers the children vertically
+                children: <Widget>[
+                  Card(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
@@ -47,9 +47,10 @@ class RegisterScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
                           MainButton(
-                              buttonColor: Colors.black45,
-                              buttonText: "Sign up",
-                              onPressed: () {}),
+                            buttonColor: Colors.black45,
+                            buttonText: "Sign up",
+                            onPressed: () {},
+                          ),
                           const SizedBox(height: 20),
                           GestureDetector(
                             onTap: () {
@@ -63,13 +64,12 @@ class RegisterScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Spacer(), // Use another Spacer to push the Card to the middle
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

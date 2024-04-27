@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/auth_layout.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Card(
-          color: Colors.white,
-          margin: const EdgeInsets.all(16.0),
-          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+    return AuthLayout(
+      child:   Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
             Image.asset(
               'assets/Studify-logo.png',
               width: 270,
@@ -48,10 +45,8 @@ class LoginScreen extends StatelessWidget {
                 'New user? Sign Up',
                 style: TextStyle(color: Colors.black),
               ),
-            )
+            );
           ]),
-        ),
-      ),
-    );
+        ), imagePath: 'assets/Studify-logo.png', title: "Welcome Back"),
   }
 }
