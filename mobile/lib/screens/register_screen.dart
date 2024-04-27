@@ -33,7 +33,7 @@ class RegisterScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             MainButton(
-              buttonColor: Colors.black45,
+              buttonColor: const Color(0xFF3786A8),
               buttonText: "Sign up",
               onPressed: () {
                 // Insert sign-up logic here
