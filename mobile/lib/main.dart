@@ -14,9 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-          useMaterial3: true,
-          cardTheme: const CardTheme(color: Colors.white)),
+        useMaterial3: true,
+      ),
       routes: {
         '/': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen()

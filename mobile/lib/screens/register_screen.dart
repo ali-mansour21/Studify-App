@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/customtextformfield.dart';
+import 'package:mobile/widgets/mainbutton.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -24,65 +26,30 @@ class RegisterScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           const FlutterLogo(size: 80),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 30),
                           const Text(
                             "Let’s Get Started",
                             style: TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.w500),
                           ),
                           const SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                labelText: 'Name',
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(10.0))),
-                                prefixIcon: Icon(
-                                  Icons.person,
-                                ),
-                              ),
-                              keyboardType: TextInputType.name,
-                            ),
+                          const CustomTextFormField(
+                              labelText: "Name", iconData: Icons.person),
+                          const CustomTextFormField(
+                            labelText: "Email",
+                            iconData: Icons.email,
+                            keyboardType: TextInputType.emailAddress,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                labelText: "Email",
-                                labelStyle:
-                                    const TextStyle(color: Colors.black),
-                                border: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(10.0))),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.black45, width: 2.0),
-                                  borderRadius: BorderRadius.circular(
-                                      8.0), // Keeps the border radius consistent when focused
-                                ),
-                                prefixIcon: const Icon(Icons.email),
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                            ),
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Password',
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0))),
-                              prefixIcon: Icon(Icons.lock),
-                            ),
+                          const CustomTextFormField(
+                            labelText: "Password",
+                            iconData: Icons.lock,
                             obscureText: true,
                           ),
                           const SizedBox(height: 20),
-                          ElevatedButton(
-                              onPressed: () {
-                                // Sign up button logic
-                              },
-                              child: const Text("Sign up")),
+                          MainButton(
+                              buttonColor: Colors.black45,
+                              buttonText: "Sign up",
+                              onPressed: () {}),
                           const SizedBox(height: 20),
                           GestureDetector(
                             onTap: () {
