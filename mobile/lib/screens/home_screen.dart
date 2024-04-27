@@ -37,9 +37,10 @@ class HomeScreen extends StatelessWidget {
               height: 100,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 3,
+                  itemCount: 8,
                   itemBuilder: (context, index) {
                     return Card(
+                      color: const Color(0xFF3786A8),
                       child: Container(
                         width: 105,
                         height: 140,
@@ -47,9 +48,20 @@ class HomeScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Icon(
-                              Icons.medical_services,
+                              Icons.medical_information,
                               size: 48,
-                            )
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                                height:
+                                    8), // Provides spacing between the icon and text
+                            Text(
+                              'Material',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ],
                         ),
                       ),
