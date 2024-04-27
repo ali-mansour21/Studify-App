@@ -29,7 +29,9 @@ class LoginScreen extends StatelessWidget {
               MainButton(
                   buttonColor: const Color(0xFF3786A8),
                   buttonText: "Log in",
-                  onPressed: () {}),
+                  onPressed: () {
+                    Navigator.of(context).pushReplacementNamed('/home');
+                  }),
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
