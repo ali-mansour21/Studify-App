@@ -27,26 +27,52 @@ class RegisterScreen extends StatelessWidget {
                           const SizedBox(height: 20),
                           const Text(
                             "Let’s Get Started",
-                            style: TextStyle(fontSize: 24),
+                            style: TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.w500),
                           ),
                           const SizedBox(height: 20),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Name',
-                              prefixIcon: Icon(Icons.person),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: 'Name',
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                prefixIcon: Icon(
+                                  Icons.person,
+                                ),
+                              ),
+                              keyboardType: TextInputType.name,
                             ),
-                            keyboardType: TextInputType.name,
                           ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: "Email",
-                              prefixIcon: Icon(Icons.email),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                labelText: "Email",
+                                labelStyle:
+                                    const TextStyle(color: Colors.black),
+                                border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.black45, width: 2.0),
+                                  borderRadius: BorderRadius.circular(
+                                      8.0), // Keeps the border radius consistent when focused
+                                ),
+                                prefixIcon: const Icon(Icons.email),
+                              ),
+                              keyboardType: TextInputType.emailAddress,
                             ),
-                            keyboardType: TextInputType.emailAddress,
                           ),
                           TextFormField(
                             decoration: const InputDecoration(
                               labelText: 'Password',
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0))),
                               prefixIcon: Icon(Icons.lock),
                             ),
                             obscureText: true,

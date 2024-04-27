@@ -7,10 +7,9 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Card(
+          color: Colors.white,
           margin: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min, 
-            children: <Widget>[
+          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
             const FlutterLogo(size: 80),
             const SizedBox(height: 20),
             const Text('Welcome Back', style: TextStyle(fontSize: 24)),
