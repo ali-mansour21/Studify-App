@@ -28,7 +28,9 @@ class AuthLayout extends StatelessWidget {
                 height: 230,
               ),
               const SizedBox(height: 20),
-              Text(title, style: const TextStyle(fontSize: 24)),
+              Text(title,
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.w600)),
               const SizedBox(height: 20),
               child, // Insert the custom child widget here
             ],
