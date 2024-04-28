@@ -36,7 +36,7 @@ class RegisterScreen extends StatelessWidget {
               buttonColor: const Color(0xFF3786A8),
               buttonText: "Sign up",
               onPressed: () {
-                // Insert sign-up logic here
+                Navigator.of(context).pushReplacementNamed('/category');
               },
             ),
             const SizedBox(height: 20),
