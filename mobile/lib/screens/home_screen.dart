@@ -38,11 +38,11 @@ class HomeScreen extends StatelessWidget {
                       ),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
-                          borderSide: const BorderSide(color: Color(0xFFD0D0D0))),
+                          borderSide:
+                              const BorderSide(color: Color(0xFFD0D0D0))),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
-                          borderSide:
-                              const BorderSide(color: Colors.black)),
+                          borderSide: const BorderSide(color: Colors.black)),
                       filled: true,
                       fillColor: Colors.white,
                     ),
@@ -88,6 +88,34 @@ class HomeScreen extends StatelessWidget {
                           ),
                         );
                       }),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text('Available Classes',
+                      style:
+                          TextStyle(fontSize: 21, fontWeight: FontWeight.w600)),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 8,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.class_,
+                            color: Colors.blue,
+                            size: 50,
+                          ),
+                          title: const Text('Title'),
+                          subtitle: const Text('this is a small description'),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/');
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 )
               ],
             ),
