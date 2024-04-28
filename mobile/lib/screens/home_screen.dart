@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:mobile/widgets/navigationbar.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+
+  void _onNavItemSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,36 +132,8 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           )),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.home, size: 30),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: IconButton(
-                color: Colors.white,
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      const Color(0xFF3786A8)), // Use the color you want here
-                ),
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.add,
-                  size: 30,
-                )),
-            label: '',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              size: 30,
-            ),
-            label: '',
-          ),
-        ],
-        selectedItemColor: const Color(0xFF3786A8),
-      ),
+      bottomNavigationBar: CustomNavigationBar(
+          currentIndex: _selectedIndex, onItemSelected: _onNavItemSelected),
     );
   }
 }
