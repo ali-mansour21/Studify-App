@@ -116,10 +116,40 @@ class HomeScreen extends StatelessWidget {
                       );
                     },
                   ),
-                )
+                ),
               ],
             ),
           )),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.home, size: 30),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: IconButton(
+                color: Colors.white,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      const Color(0xFF3786A8)), // Use the color you want here
+                ),
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.add,
+                  size: 30,
+                )),
+            label: '',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+              size: 30,
+            ),
+            label: '',
+          ),
+        ],
+        selectedItemColor: const Color(0xFF3786A8),
+      ),
     );
   }
 }
