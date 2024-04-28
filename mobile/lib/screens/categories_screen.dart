@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/card_category.dart';
+import 'package:mobile/widgets/mainbutton.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -70,6 +71,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        scrolledUnderElevation: 0,
         title: const Text('Categories'),
         leading: IconButton(
           style: const ButtonStyle(
@@ -92,9 +96,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
               'Choose a category according to your expertise',
               textAlign: TextAlign.left,
             ),
-            const SizedBox(height: 16.0), // Add some spacing
+            const SizedBox(height: 16.0), 
             Expanded(
-              // GridView must be wrapped in Expanded when in a Column
               child: GridView.count(
                 crossAxisCount: 2,
                 crossAxisSpacing: 16.0,
@@ -103,6 +106,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 children: cards,
               ),
             ),
+            const SizedBox(height: 16.0),
+            SizedBox(
+              width: double.infinity, 
+              child: MainButton(
+                buttonColor: const Color(0xFF3786A8),
+                buttonText: "Next",
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/home');
+                },
+              ),
+            )
           ],
         ),
       ),
