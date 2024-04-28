@@ -18,6 +18,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const int notificationCount = 3;
+    final List<String> notifications = [
+      "Your appointment is tomorrow.",
+      "New updates are available.",
+      "Reminder: Meeting at 3 PM today."
+    ];
     return Scaffold(
       body: GestureDetector(
           onTap: () {
@@ -31,10 +37,72 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text('Hello, Ali',
-                      style:
-                          TextStyle(fontSize: 26, fontWeight: FontWeight.w600)),
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Hello, Ali',
+                        style: TextStyle(
+                            fontSize: 26, fontWeight: FontWeight.w600),
+                      ),
+                      PopupMenuButton(
+                          icon: Stack(
+                            children: <Widget>[
+                              ClipOval(
+                                child: Container(
+                                  width: 47,
+                                  height: 47,
+                                  color: const Color(
+                                      0xFF3786A8), // Background color
+                                  child: const Icon(Icons.notifications,
+                                      size: 24, color: Colors.white),
+                                ),
+                              ),
+                              Positioned(
+                                right: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.all(1),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  constraints: const BoxConstraints(
+                                    minWidth: 15,
+                                    minHeight: 15,
+                                  ),
+                                  child: const Text(
+                                    '$notificationCount',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          iconSize: 24,
+                          color: Colors.white,
+                          onSelected: (String value) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(value),
+                              ),
+                            );
+                          },
+                          offset: const Offset(0, 60),
+                          itemBuilder: (BuildContext context) {
+                            return notifications.map((String notification) {
+                              return PopupMenuItem<String>(
+                                value: notification,
+                                child: Text(notification),
+                              );
+                            }).toList();
+                          }),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
