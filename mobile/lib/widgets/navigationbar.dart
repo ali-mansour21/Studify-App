@@ -1,4 +1,7 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+
+import 'package:mobile/screens/camera_screen.dart';
 
 class CustomNavigationBar extends StatefulWidget {
   final int currentIndex;
@@ -13,6 +16,31 @@ class CustomNavigationBar extends StatefulWidget {
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
   void _onItemTapped(int index) {
     widget.onItemSelected(index);
+  }
+
+  Future<void> _openCamera(BuildContext context) async {
+    // Obtain a list of the available cameras on the device.
+    final cameras = await availableCameras();
+
+    // Get a specific camera from the list of available cameras.
+    final firstCamera = cameras.first;
+
+    // You can now initialize the camera and start the camera stream.
+    // Usually, you would navigate to a new screen where you can display
+    // the camera feed.
+    final cameraController = CameraController(
+      firstCamera,
+      ResolutionPreset.medium,
+    );
+
+    await cameraController.initialize();
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CameraScreen(cameraController: cameraController),
+      ),
+    );
   }
 
   @override
@@ -30,7 +58,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 backgroundColor: MaterialStateProperty.all<Color>(
                     const Color(0xFF3786A8)), // Use the color you want here
               ),
-              onPressed: () {},
+              onPressed: () => _openCamera(context),
               icon: const Icon(
                 Icons.add,
                 size: 30,
