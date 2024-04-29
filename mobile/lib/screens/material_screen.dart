@@ -12,7 +12,7 @@ class MaterialScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.popAndPushNamed(context, "/home");
+            Navigator.pop(context);
           },
         ),
         title: Text(

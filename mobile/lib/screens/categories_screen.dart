@@ -83,7 +83,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pop(context);
           },
         ),
       ),
@@ -96,7 +96,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               'Choose a category according to your expertise',
               textAlign: TextAlign.left,
             ),
-            const SizedBox(height: 16.0), 
+            const SizedBox(height: 16.0),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
@@ -108,7 +108,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ),
             const SizedBox(height: 16.0),
             SizedBox(
-              width: double.infinity, 
+              width: double.infinity,
               child: MainButton(
                 buttonColor: const Color(0xFF3786A8),
                 buttonText: "Next",
