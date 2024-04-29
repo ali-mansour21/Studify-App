@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/material_model.dart';
+import 'package:mobile/models/topic_material.dart';
 import 'package:mobile/screens/material_screen.dart';
 import 'package:mobile/widgets/navigationbar.dart';
 
@@ -19,8 +20,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final List<MaterialItem> materials = [
-    MaterialItem(id: 1, title: 'Material 1', topics: ['Topic 1', 'Topic 2']),
-    MaterialItem(id: 2, title: 'Material 2', topics: ['Topic 3', 'Topic 4']),
+    MaterialItem(
+      id: 1,
+      title: 'Material 1',
+      topics: [
+        Topic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
+        Topic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
+      ],
+    ),
+    MaterialItem(
+      id: 2,
+      title: 'Material 2',
+      topics: [
+        Topic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
+        Topic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
+      ],
+    ),
     // Add more materials as needed
   ];
 

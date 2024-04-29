@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/topic_material.dart';
 
 class TopicListWidget extends StatelessWidget {
-  final List<String> topics;
+  final List<Topic> topics;
   const TopicListWidget({super.key, required this.topics});
 
   @override
@@ -9,9 +10,10 @@ class TopicListWidget extends StatelessWidget {
     return ListView.separated(
       itemCount: topics.length,
       itemBuilder: (context, index) {
+        final topic = topics[index]; // Get the Topic object at this index
         return ListTile(
           title: Text(
-            topics[index],
+            topic.title, // Use the title property of the Topic object
             style: const TextStyle(color: Colors.black),
           ),
           trailing: const Icon(
@@ -19,7 +21,8 @@ class TopicListWidget extends StatelessWidget {
             color: Colors.grey,
           ),
           onTap: () {
-            // Handle the tap here
+            // Handle the tap here, for example, navigate to a details screen
+            // You can pass the Topic object to the next screen if needed
           },
         );
       },
