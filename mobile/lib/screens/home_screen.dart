@@ -138,23 +138,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       scrollDirection: Axis.horizontal,
                       itemCount: 8,
                       itemBuilder: (context, index) {
-                        return const Card(
-                          color: Color(0xFF3786A8),
+                        return Card(
+                          color: const Color(0xFF3786A8),
                           child: SizedBox(
                             width: 105,
                             height: 140,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Icon(
-                                  Icons.medical_information,
-                                  size: 48,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                      Icons.medical_information,
+                                      size: 48,
+                                      color: Colors.white,
+                                    )),
+                                const SizedBox(
                                     height:
                                         8), // Provides spacing between the icon and text
-                                Text(
+                                const Text(
                                   'Material',
                                   style: TextStyle(
                                     color: Colors.white,
