@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/screens/categories_screen.dart';
 import 'package:mobile/screens/home_screen.dart';
 import 'package:mobile/screens/login_screen.dart';
+import 'package:mobile/screens/material_screen.dart';
 import 'package:mobile/screens/register_screen.dart';
 
 void main() {

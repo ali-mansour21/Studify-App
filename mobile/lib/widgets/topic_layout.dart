@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/topic_material.dart';
+import 'package:mobile/screens/topic_detail_screen.dart';
 
 class TopicListWidget extends StatelessWidget {
   final List<Topic> topics;
@@ -21,8 +22,12 @@ class TopicListWidget extends StatelessWidget {
             color: Colors.grey,
           ),
           onTap: () {
-            // Handle the tap here, for example, navigate to a details screen
-            // You can pass the Topic object to the next screen if needed
+             Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TopicDetailScreen(topic: topic),
+              ),
+            );
           },
         );
       },
