@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/material_model.dart';
+import 'package:mobile/screens/material_screen.dart';
 import 'package:mobile/widgets/navigationbar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,6 +17,12 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedIndex = index;
     });
   }
+
+  final List<MaterialItem> materials = [
+    MaterialItem(id: 1, title: 'Material 1', topics: ['Topic 1', 'Topic 2']),
+    MaterialItem(id: 2, title: 'Material 2', topics: ['Topic 3', 'Topic 4']),
+    // Add more materials as needed
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -136,34 +144,45 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 100,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 8,
+                      itemCount: materials.length, // Use materials count
                       itemBuilder: (context, index) {
+                        MaterialItem material = materials[index];
                         return Card(
                           color: const Color(0xFF3786A8),
                           child: SizedBox(
                             width: 105,
                             height: 140,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.medical_information,
-                                      size: 48,
-                                      color: Colors.white,
-                                    )),
-                                const SizedBox(
-                                    height:
-                                        8), // Provides spacing between the icon and text
-                                const Text(
-                                  'Material',
-                                  style: TextStyle(
+                            child: InkWell(
+                              // Use InkWell for tap recognition
+                              onTap: () {
+                                // Navigate to material detail screen
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MaterialScreen(material: material)),
+                                );
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  const Icon(
+                                    Icons.medical_information,
+                                    size: 48,
                                     color: Colors.white,
-                                    fontWeight: FontWeight.w600,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(
+                                      height:
+                                          8), // Provides spacing between the icon and text
+                                  Text(
+                                    material.title,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         );

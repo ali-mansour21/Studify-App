@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/material_model.dart';
 
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
-
+class MaterialScreen extends StatelessWidget {
+  final MaterialItem material;
+  const MaterialScreen({super.key, required this.material});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,9 +14,9 @@ class MyWidget extends StatelessWidget {
             Navigator.popAndPushNamed(context, "/home");
           },
         ),
-        title: const Text(
-          "Material Title",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+        title: Text(
+          material.title,
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
       ),
     );
