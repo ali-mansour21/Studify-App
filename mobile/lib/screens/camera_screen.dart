@@ -55,21 +55,48 @@ class _CameraScreenState extends State<CameraScreen> {
       );
     }
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         title: const Text(
           "Take a photo for your summary",
-          style: TextStyle(
-            fontSize: 18,
-          ),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
       ),
-      body: ,
+      body: Stack(
+        children: <Widget>[
+          // Camera preview
+          Positioned.fill(
+            child: CameraPreview(_controller),
+          ),
+          // Capture button
+          Positioned(
+            bottom: 50,
+            left: 0,
+            right: 0,
+            child: ElevatedButton(
+              style: const ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Colors.transparent),
+                  elevation: MaterialStatePropertyAll(0)),
+              onPressed: _takePicture,
+              child: const Icon(
+                Icons.camera,
+                size: 50,
+                color: Colors.red,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
