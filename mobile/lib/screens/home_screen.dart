@@ -24,15 +24,13 @@ class _HomeScreenState extends State<HomeScreen> {
       "New updates are available.",
       "Reminder: Meeting at 3 PM today."
     ];
-    return Scaffold(
-      body: GestureDetector(
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
-          },
-          child: SafeArea(
+    return GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          currentFocus.unfocus();
+        },
+        child: Scaffold(
+          body: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -199,9 +197,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-          )),
-      bottomNavigationBar: CustomNavigationBar(
-          currentIndex: _selectedIndex, onItemSelected: _onNavItemSelected),
-    );
+          ),
+          bottomNavigationBar: CustomNavigationBar(
+              currentIndex: _selectedIndex, onItemSelected: _onNavItemSelected),
+        ));
   }
 }
