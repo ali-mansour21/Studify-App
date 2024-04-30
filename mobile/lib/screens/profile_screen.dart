@@ -58,6 +58,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
           )
         ],
       ),
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: 500, // Adjust the height as needed
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(35),
+              topRight: Radius.circular(35),
+            ),
+          ),
+          child: const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              // Add your widgets here
+              children: [
+                Text('Add your data and widgets here'),
+                // More widgets go here
+              ],
+            ),
+          ),
+        ),
+      ),
       bottomNavigationBar: CustomNavigationBar(
           currentIndex: _selectedIndex, onItemSelected: _onNavItemSelected),
     );
