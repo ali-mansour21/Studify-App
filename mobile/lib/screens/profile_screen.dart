@@ -1,34 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:mobile/widgets/navigation_bar.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  int _selectedIndex = 2;
+
+  void _onNavItemSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF3786A8),
       appBar: AppBar(
+        centerTitle: true,
         leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/home');
-            },
-            style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(Color(0xFFFFFFFF)),
-            ),
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Color.fromARGB(46, 0, 0, 0),
-            )),
+          icon: const Icon(
+            Icons.arrow_back,
+            size: 24,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, '/home');
+          },
+        ),
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
-              gradient: LinearGradient(
-            colors: [Color(0xFF3786A8), Color(0xFF3786A8)],
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-          )),
+            gradient: LinearGradient(
+              colors: [Color(0xFF3786A8), Color(0xFF3786A8)],
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+            ),
+          ),
         ),
+        title: const Text(
+          "Profile",
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 8),
+            child: Container(
+              child: const Icon(Icons.settings, color: Colors.white),
+            ),
+          )
+        ],
       ),
+      bottomNavigationBar: CustomNavigationBar(
+          currentIndex: _selectedIndex, onItemSelected: _onNavItemSelected),
     );
   }
 }
