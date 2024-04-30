@@ -70,20 +70,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
               topRight: Radius.circular(35),
             ),
           ),
-          child: const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              // Add your widgets here
-              children: [
-                Text('Add your data and widgets here'),
-                // More widgets go here
-              ],
-            ),
+          child: const Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Positioned(
+                top: -85,
+                left: 0,
+                right: 0,
+                child: CircleAvatar(
+                  radius: 60,
+                  child: Text('AM',
+                      style: TextStyle(fontSize: 24, color: Colors.white)),
+                ),
+              ),
+              Positioned(
+                top: 45,
+                left: 0,
+                right: 0,
+                child: Text(
+                  'Ali Mansour',
+                  style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           ),
         ),
       ),
       bottomNavigationBar: CustomNavigationBar(
-          currentIndex: _selectedIndex, onItemSelected: _onNavItemSelected),
+        currentIndex: _selectedIndex,
+        onItemSelected: _onNavItemSelected,
+      ),
     );
   }
 }
