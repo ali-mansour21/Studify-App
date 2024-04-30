@@ -1,13 +1,16 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-
 import 'package:mobile/screens/camera_screen.dart';
 
 class CustomNavigationBar extends StatefulWidget {
   final int currentIndex;
   final Function(int) onItemSelected;
-  const CustomNavigationBar(
-      {super.key, required this.currentIndex, required this.onItemSelected});
+
+  const CustomNavigationBar({
+    super.key,
+    required this.currentIndex,
+    required this.onItemSelected,
+  });
 
   @override
   State<CustomNavigationBar> createState() => _CustomNavigationBarState();
@@ -16,25 +19,31 @@ class CustomNavigationBar extends StatefulWidget {
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
   void _onItemTapped(int index) {
     widget.onItemSelected(index);
+    switch (index) {
+      case 0:
+        // Navigate to home
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        _openCamera(context);
+        break;
+      case 2:
+        // Navigate to profile
+        Navigator.pushNamed(context, '/profile');
+        break;
+      default:
+        break;
+    }
   }
 
   Future<void> _openCamera(BuildContext context) async {
-    // Obtain a list of the available cameras on the device.
     final cameras = await availableCameras();
-
-    // Get a specific camera from the list of available cameras.
     final firstCamera = cameras.first;
-
-    // You can now initialize the camera and start the camera stream.
-    // Usually, you would navigate to a new screen where you can display
-    // the camera feed.
     final cameraController = CameraController(
       firstCamera,
       ResolutionPreset.medium,
     );
-
     await cameraController.initialize();
-
     Navigator.push(
       context,
       MaterialPageRoute(

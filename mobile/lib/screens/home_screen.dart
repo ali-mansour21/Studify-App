@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/material_model.dart';
 import 'package:mobile/models/topic_material.dart';
 import 'package:mobile/screens/material_screen.dart';
-import 'package:mobile/widgets/navigationbar.dart';
+import 'package:mobile/widgets/navigation_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

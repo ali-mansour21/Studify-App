@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/screens/categories_screen.dart';
 import 'package:mobile/screens/home_screen.dart';
 import 'package:mobile/screens/login_screen.dart';
+import 'package:mobile/screens/profile_screen.dart';
 import 'package:mobile/screens/register_screen.dart';
 
 void main() {
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/home': (context) => const HomeScreen(),
-        '/category': (context) => const CategoryScreen()
+        '/category': (context) => const CategoryScreen(),
+        '/profile': (context) => const ProfileScreen()
       },
     );
   }
