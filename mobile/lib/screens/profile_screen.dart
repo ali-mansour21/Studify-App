@@ -51,8 +51,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         actions: [
           Padding(
-            padding: EdgeInsets.only(right: 8),
-            child: Container(
+            padding: const EdgeInsets.only(right: 8),
+            child:  Container(
               child: const Icon(Icons.settings, color: Colors.white),
             ),
           )
