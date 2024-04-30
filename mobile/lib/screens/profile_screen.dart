@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobile/widgets/navigation_bar.dart';
+import 'package:mobile/widgets/state_layout.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -52,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8),
-            child:  Container(
+            child: Container(
               child: const Icon(Icons.settings, color: Colors.white),
             ),
           )
@@ -95,6 +96,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: Colors.black,
                   ),
                   textAlign: TextAlign.center,
+                ),
+              ),
+              Positioned(
+                top: 140,
+                left: 0,
+                right: 0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    StateWidget(
+                      count: '13',
+                      label: 'Rank',
+                      icon: Icons.star,
+                    ),
+                    StateWidget(
+                      count: '13',
+                      label: 'Documents',
+                      icon: Icons.document_scanner,
+                    ),
+                    StateWidget(
+                      count: '13',
+                      label: 'Comments',
+                      icon: Icons.comment,
+                    ),
+                  ],
                 ),
               ),
             ],
