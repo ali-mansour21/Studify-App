@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/screens/edit_screen.dart';
+import 'package:mobile/screens/student_materials_screen.dart';
 import 'package:mobile/widgets/navigation_bar.dart';
 import 'package:mobile/widgets/profile_screen_layout.dart';
 import 'package:mobile/widgets/state_layout.dart';
@@ -127,7 +128,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 leading: const Icon(Icons.book),
                 title: const Text('Material'),
                 trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const StudentMaterialScreen()),
+                  );
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.class_),
