@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobile/widgets/navigation_bar.dart';
@@ -71,10 +72,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               topRight: Radius.circular(35),
             ),
           ),
-          child: const Stack(
+          child:  Stack(
             clipBehavior: Clip.none,
             children: [
-              Positioned(
+              const Positioned(
                 top: -85,
                 left: 0,
                 right: 0,
@@ -84,7 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: TextStyle(fontSize: 24, color: Colors.white)),
                 ),
               ),
-              Positioned(
+              const Positioned(
                 top: 45,
                 left: 0,
                 right: 0,
@@ -98,7 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              Positioned(
+              const Positioned(
                 top: 140,
                 left: 0,
                 right: 0,
@@ -123,6 +124,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
+              ListView(
+                 padding: const EdgeInsets.only(top: 200), 
+                shrinkWrap: true,
+                children: ListTile.divideTiles(
+                  context: context,
+                  tiles: []
+                  ).toList(),
+              )
             ],
           ),
         ),
