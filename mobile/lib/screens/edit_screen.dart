@@ -36,9 +36,44 @@ class EditScreen extends StatelessWidget {
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
       ),
-      body: const ProfileLayout(
+      body: ProfileLayout(
         height: 600,
-        children: [],
+        children: [
+          Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: [
+              const Positioned(
+                top: -65,
+                left: 0,
+                right: 0,
+                child: CircleAvatar(
+                  radius: 60,
+                  child: Text('AM',
+                      style: TextStyle(fontSize: 24, color: Colors.white)),
+                ),
+              ),
+              Positioned(
+                top: -65,
+                left: 0,
+                right: 0,
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.black.withOpacity(0.5),
+                  ),
+                  child: const Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
