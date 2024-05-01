@@ -125,23 +125,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Search",
-                      prefixIcon: const Icon(Icons.search),
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.filter_list),
-                        onPressed: () {},
-                      ),
-                      border: OutlineInputBorder(
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Search",
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.filter_list),
+                          onPressed: () {},
+                        ),
+                        contentPadding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                        border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                           borderSide:
-                              const BorderSide(color: Color(0xFFD0D0D0))),
-                      focusedBorder: OutlineInputBorder(
+                              const BorderSide(color: Color(0xFFD0D0D0)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
-                          borderSide: const BorderSide(color: Colors.black)),
-                      filled: true,
-                      fillColor: Colors.white,
+                          borderSide: const BorderSide(color: Colors.black),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
                     ),
                   ),
                 ),
