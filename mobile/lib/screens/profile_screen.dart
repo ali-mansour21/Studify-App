@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/screens/edit_screen.dart';
 import 'package:mobile/widgets/navigation_bar.dart';
 import 'package:mobile/widgets/profile_screen_layout.dart';
 import 'package:mobile/widgets/state_layout.dart';
@@ -60,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: ProfileLayout(
         children: [
           const Positioned(
-            top: -85,
+            top: -65,
             left: 0,
             right: 0,
             child: CircleAvatar(
@@ -70,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           const Positioned(
-            top: 45,
+            top: 70,
             left: 0,
             right: 0,
             child: Text(
@@ -84,7 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           const Positioned(
-            top: 100,
+            top: 125,
             left: 0,
             right: 0,
             child: Row(
@@ -109,14 +110,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           ListView(
-            padding: const EdgeInsets.only(top: 200),
+            padding: const EdgeInsets.only(top: 210),
             shrinkWrap: true,
             children: ListTile.divideTiles(context: context, tiles: [
               ListTile(
                 leading: const Icon(Icons.edit),
                 title: const Text('Edit Profile'),
                 trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const EditScreen()),
+                  );
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.book),
