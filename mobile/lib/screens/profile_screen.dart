@@ -134,6 +134,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {},
                   ),
+                  ListTile(
+                    leading: const Icon(Icons.book),
+                    title: const Text('Material'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () {}, 
+                  ),
                 ]).toList(),
               )
             ],
