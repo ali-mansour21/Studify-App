@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/material_model.dart';
-import 'package:mobile/widgets/topic_layout.dart';
+import 'package:mobile/screens/student_topics_screen.dart';
 
 class MaterialCard extends StatelessWidget {
   final MaterialItem materialItem;
@@ -14,7 +14,7 @@ class MaterialCard extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  TopicListWidget(topics: materialItem.topics)),
+                  StudentTopicScreen(material: materialItem)),
         );
       },
       child: Card(
