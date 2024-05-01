@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mobile/widgets/navigation_bar.dart';
 import 'package:mobile/widgets/state_layout.dart';
 
@@ -51,19 +49,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           "Profile",
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: Container(
-              child: const Icon(Icons.settings, color: Colors.white),
-            ),
+            padding: EdgeInsets.only(right: 8),
+            child: Icon(Icons.settings, color: Colors.white),
           )
         ],
       ),
       body: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          height: 500, // Adjust the height as needed
+          height: 500, 
           width: double.infinity,
           decoration: const BoxDecoration(
             color: Colors.white,
