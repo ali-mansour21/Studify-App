@@ -84,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           const Positioned(
-            top: 140,
+            top: 100,
             left: 0,
             right: 0,
             child: Row(
@@ -133,7 +133,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ListTile(
                 leading: const Icon(Icons.logout),
                 title: const Text('Logout'),
-                trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {},
               ),
             ]).toList(),

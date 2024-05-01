@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.all(16.0),
                   child: Text('Materials',
                       style:
-                          TextStyle(fontSize: 21, fontWeight: FontWeight.w600)),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 ),
                 SizedBox(
                   height: 100,
@@ -207,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.all(16.0),
                   child: Text('Available Classes',
                       style:
-                          TextStyle(fontSize: 21, fontWeight: FontWeight.w600)),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 ),
                 Expanded(
                   child: ListView.builder(
