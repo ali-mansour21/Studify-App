@@ -72,7 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               topRight: Radius.circular(35),
             ),
           ),
-          child:  Stack(
+          child: Stack(
             clipBehavior: Clip.none,
             children: [
               const Positioned(
@@ -125,12 +125,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               ListView(
-                 padding: const EdgeInsets.only(top: 200), 
+                padding: const EdgeInsets.only(top: 200),
                 shrinkWrap: true,
-                children: ListTile.divideTiles(
-                  context: context,
-                  tiles: []
-                  ).toList(),
+                children: ListTile.divideTiles(context: context, tiles: [
+                  ListTile(
+                    leading: const Icon(Icons.edit),
+                    title: const Text('Edit Profile'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () {},
+                  ),
+                ]).toList(),
               )
             ],
           ),
