@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:mobile/widgets/customtextformfield.dart';
+import 'package:mobile/widgets/mainbutton.dart';
 import 'package:mobile/widgets/profile_screen_layout.dart';
 
 class EditScreen extends StatelessWidget {
@@ -73,6 +76,34 @@ class EditScreen extends StatelessWidget {
               ),
             ],
           ),
+          Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 80),
+                const CustomTextFormField(
+                  iconData: Icons.person,
+                  labelText: "Ali Mansour",
+                ),
+                const SizedBox(height: 8),
+                const CustomTextFormField(
+                  iconData: Icons.email,
+                  labelText: "ali@gmail.com",
+                ),
+                const SizedBox(height: 8),
+                const CustomTextFormField(
+                  iconData: Icons.lock,
+                  labelText: "password",
+                ),
+                const SizedBox(height: 30),
+                MainButton(
+                  buttonColor: const Color(0xFF3786A8),
+                  buttonText: "Save",
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
