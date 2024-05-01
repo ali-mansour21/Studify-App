@@ -138,13 +138,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     leading: const Icon(Icons.book),
                     title: const Text('Material'),
                     trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () {}, 
+                    onTap: () {},
                   ),
-                    ListTile(
+                  ListTile(
                     leading: const Icon(Icons.class_),
                     title: const Text('Classes'),
                     trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () {}, 
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.logout),
+                    title: const Text('Logout'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () {},
                   ),
                 ]).toList(),
               )
