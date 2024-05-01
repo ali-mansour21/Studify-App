@@ -152,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 12),
+                  padding: const EdgeInsets.only(left: 10),
                   child: SizedBox(
                     height: 100,
                     child: ListView.builder(
@@ -205,6 +205,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 ),
                 Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
                   child: ListView.builder(
                     itemCount: 8,
                     itemBuilder: (context, index) {
@@ -225,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-                ),
+                )),
               ],
             ),
           ),
