@@ -36,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
         Topic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
       ],
     ),
-    // Add more materials as needed
   ];
 
   @override
@@ -74,8 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Container(
                                   width: 47,
                                   height: 47,
-                                  color: const Color(
-                                      0xFF3786A8), // Background color
+                                  color: const Color(0xFF3786A8),
                                   child: const Icon(Icons.notifications,
                                       size: 24, color: Colors.white),
                                 ),
@@ -133,9 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       prefixIcon: const Icon(Icons.search),
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.filter_list),
-                        onPressed: () {
-                          // Define the action when filter icon is pressed
-                        },
+                        onPressed: () {},
                       ),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
@@ -155,53 +151,52 @@ class _HomeScreenState extends State<HomeScreen> {
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 ),
-                SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: materials.length, // Use materials count
-                      itemBuilder: (context, index) {
-                        MaterialItem material = materials[index];
-                        return Card(
-                          color: const Color(0xFF3786A8),
-                          child: SizedBox(
-                            width: 105,
-                            height: 140,
-                            child: InkWell(
-                              // Use InkWell for tap recognition
-                              onTap: () {
-                                // Navigate to material detail screen
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          MaterialScreen(material: material)),
-                                );
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  const Icon(
-                                    Icons.medical_information,
-                                    size: 48,
-                                    color: Colors.white,
-                                  ),
-                                  const SizedBox(
-                                      height:
-                                          8), // Provides spacing between the icon and text
-                                  Text(
-                                    material.title,
-                                    style: const TextStyle(
+                Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: materials.length,
+                        itemBuilder: (context, index) {
+                          MaterialItem material = materials[index];
+                          return Card(
+                            color: const Color(0xFF3786A8),
+                            child: SizedBox(
+                              width: 105,
+                              height: 140,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MaterialScreen(material: material)),
+                                  );
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    const Icon(
+                                      Icons.medical_information,
+                                      size: 48,
                                       color: Colors.white,
-                                      fontWeight: FontWeight.w600,
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      material.title,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
+                  ),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(16.0),
