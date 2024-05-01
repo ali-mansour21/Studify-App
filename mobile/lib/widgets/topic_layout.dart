@@ -11,10 +11,10 @@ class TopicListWidget extends StatelessWidget {
     return ListView.separated(
       itemCount: topics.length,
       itemBuilder: (context, index) {
-        final topic = topics[index]; // Get the Topic object at this index
+        final topic = topics[index];
         return ListTile(
           title: Text(
-            topic.title, // Use the title property of the Topic object
+            topic.title,
             style: const TextStyle(color: Colors.black),
           ),
           trailing: const Icon(
@@ -22,7 +22,7 @@ class TopicListWidget extends StatelessWidget {
             color: Colors.grey,
           ),
           onTap: () {
-             Navigator.push(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => TopicDetailScreen(topic: topic),

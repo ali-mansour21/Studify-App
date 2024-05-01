@@ -14,7 +14,7 @@ class TopicDetailScreen extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: const Icon(
-              Icons.file_download, // Download icon
+              Icons.file_download,
               size: 24,
             ),
             onPressed: () {},
@@ -37,8 +37,7 @@ class TopicDetailScreen extends StatelessWidget {
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-            topLeft:
-                Radius.circular(24), // Adjust the radius to match the design
+            topLeft: Radius.circular(24),
             topRight: Radius.circular(24),
           ),
         ),
