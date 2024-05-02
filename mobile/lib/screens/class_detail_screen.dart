@@ -74,7 +74,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
             style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 16, // Example size, adjust as necessary
+              fontSize: 16, 
             ),
           ),
           subtitle: Text(
@@ -104,15 +104,43 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
   }
 
   Widget _buildPeopleList(List<model.Person> people) {
-    return ListView.builder(
-      itemCount: people.length,
-      itemBuilder: (context, index) {
-        final person = people[index];
-        return ListTile(
-          title: Text(person.name),
-          subtitle: Text(person.role),
-        );
-      },
+    List<model.Person> teachers =
+        people.where((person) => person.role == 'Teacher').toList();
+    List<model.Person> students =
+        people.where((person) => person.role == 'Student').toList();
+
+    return ListView(
+      children: [
+        _buildRoleSection('Teachers', teachers),
+        _buildRoleSection('Students', students),
+      ],
+    );
+  }
+
+  Widget _buildRoleSection(String title, List<model.Person> people) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(title,
+              style:
+                  const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: people.length,
+          itemBuilder: (context, index) {
+            final person = people[index];
+            return ListTile(
+              leading: const Icon(Icons.account_circle, size: 40.0),
+              title: Text(person.name),
+            );
+          },
+          separatorBuilder: (context, index) => const Divider(height: 1),
+        ),
+      ],
     );
   }
 }

@@ -98,13 +98,13 @@ final List<ClassData> classInfo = [
     people: [
       Person(
         name: "Dr. Emily White",
-        role: "Professor",
+        role: "Teacher",
         profileImage:
             "Dr. Emily White is a leading expert in Genetics and Cell Biology.",
       ),
       Person(
         name: "John Doe",
-        role: "Teaching Assistant",
+        role: "Student",
         profileImage:
             "John Doe assists in the lab and coordinates student projects.",
       ),
