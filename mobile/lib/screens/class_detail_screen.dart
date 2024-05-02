@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart';
 import 'package:mobile/widgets/segmented_control.dart';
@@ -12,6 +11,7 @@ class ClassDetailScreen extends StatefulWidget {
 }
 
 class _ClassDetailScreenState extends State<ClassDetailScreen> {
+  int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,12 +26,35 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
             },
           ),
           title: Text(widget.classDetail.title),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: TextButton(
+                style: const ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll(Color(0xFF3786A8))),
+                onPressed: () {},
+                child:
+                    const Text('Join', style: TextStyle(color: Colors.white)),
+              ),
+            )
+          ],
         ),
-        body: const Column(children: [
-          SizedBox(height: 10),
+        body: Column(children: [
+          const SizedBox(height: 30),
           SizedBox(
             width: double.infinity,
-            child: SegmentedControl(),
+            child: SegmentedControl(
+              labels: const ['Material', 'People'],
+              onSegmentChosen: (int index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              width: 105,
+              height: 35,
+              groupValue: _selectedIndex,
+            ),
           ),
         ]));
   }

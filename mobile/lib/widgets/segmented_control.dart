@@ -5,11 +5,20 @@ class SegmentedControl extends StatefulWidget {
   final List<String> labels;
   final Function(int) onSegmentChosen;
   final int groupValue;
-  const SegmentedControl(
-      {super.key,
-      required this.labels,
-      required this.groupValue,
-      required this.onSegmentChosen});
+  final double borderRadius;
+  final EdgeInsets padding;
+  final double? width;
+  final double? height;
+  const SegmentedControl({
+    super.key,
+    required this.labels,
+    required this.onSegmentChosen,
+    required this.groupValue,
+    this.borderRadius = 10.0,
+    this.padding = const EdgeInsets.all(16.0),
+    this.width,
+    this.height,
+  });
 
   @override
   State<SegmentedControl> createState() => _SegmentedControlState();
@@ -20,13 +29,31 @@ class _SegmentedControlState extends State<SegmentedControl> {
   Widget build(BuildContext context) {
     Map<int, Widget> children = {};
     for (int i = 0; i < widget.labels.length; i++) {
-      children[i] = Text(widget.labels[i]);
+      children[i] = Container(
+        width: widget.width,
+        height: widget.height,
+        alignment: Alignment.center,
+        child: Text(widget.labels[i]),
+      );
     }
 
-    return CupertinoSegmentedControl<int>(
-      children: children,
-      onValueChanged: widget.onSegmentChosen,
-      groupValue: widget.groupValue,
+    return Padding(
+      padding: widget.padding,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          color: Colors.transparent,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          child: CupertinoSegmentedControl<int>(
+            children: children,
+            onValueChanged: widget.onSegmentChosen,
+            groupValue: widget.groupValue,
+            padding: const EdgeInsets.all(4.0),
+          ),
+        ),
+      ),
     );
   }
 }
