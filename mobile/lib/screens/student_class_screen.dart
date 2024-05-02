@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart';
+import 'package:mobile/screens/class_detail_screen.dart';
 
 class StudentClassScreen extends StatelessWidget {
   const StudentClassScreen({super.key});
@@ -39,7 +40,15 @@ class StudentClassScreen extends StatelessWidget {
                       title: Text(classData.title),
                       subtitle: Text(classData.description),
                       trailing: const Icon(Icons.chevron_right),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ClassDetailScreen(
+                                    classDetail: classData,
+                                  )),
+                        );
+                      },
                     ),
                   );
                 },

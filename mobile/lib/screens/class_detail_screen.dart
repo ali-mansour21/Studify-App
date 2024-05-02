@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart' as model;
-import 'package:mobile/screens/topic_detail_screen.dart';
+import 'package:mobile/screens/class_material_screen.dart';
 import 'package:mobile/widgets/segmented_control.dart';
 
 class ClassDetailScreen extends StatefulWidget {
@@ -74,7 +74,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
             style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 16, 
+              fontSize: 16,
             ),
           ),
           subtitle: Text(
@@ -88,7 +88,16 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
             Icons.chevron_right,
             color: Colors.grey,
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ClassMaterialDetailScreen(
+                  material: material,
+                ),
+              ),
+            );
+          },
         );
       },
       separatorBuilder: (context, index) {
