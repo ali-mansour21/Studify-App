@@ -5,6 +5,14 @@ class Topic {
   Topic({required this.title, required this.content});
 }
 
+class Person {
+  final String name;
+  final String role;
+  final String profileImage;
+
+  Person({required this.name, required this.role, required this.profileImage});
+}
+
 class Assignment {
   final String title;
   final String description;
@@ -27,11 +35,13 @@ class ClassData {
   final String title;
   final String description;
   final List<Material> materials;
+  final List<Person> people;
 
   ClassData(
       {required this.title,
       required this.description,
-      required this.materials});
+      required this.materials,
+      required this.people});
 }
 
 final List<ClassData> classInfo = [
@@ -79,6 +89,19 @@ final List<ClassData> classInfo = [
         ],
       ),
     ],
-  ),
-  // Additional ClassData objects can be added here if needed
+    people: [
+      Person(
+        name: "Dr. Emily White",
+        role: "Professor",
+        profileImage:
+            "Dr. Emily White is a leading expert in Genetics and Cell Biology.",
+      ),
+      Person(
+        name: "John Doe",
+        role: "Teaching Assistant",
+        profileImage:
+            "John Doe assists in the lab and coordinates student projects.",
+      ),
+    ],
+  )
 ];

@@ -14,6 +14,10 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
+     List<Widget> _content = [
+      _buildMaterialList(widget.classDetail.materials),
+      _buildPeopleList(widget.people),
+    ];
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -56,6 +60,8 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
               groupValue: _selectedIndex,
             ),
           ),
-        ]));
+          Expanded(child: _content(_selectedIndex))
+        ]
+        ));
   }
 }
