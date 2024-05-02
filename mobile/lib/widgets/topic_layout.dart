@@ -3,7 +3,7 @@ import 'package:mobile/models/topic_material.dart';
 import 'package:mobile/screens/topic_detail_screen.dart';
 
 class TopicListWidget extends StatelessWidget {
-  final List<Topic> topics;
+  final List<NotesTopic> topics;
   const TopicListWidget({super.key, required this.topics});
 
   @override

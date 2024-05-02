@@ -13,32 +13,32 @@ class StudentMaterialScreen extends StatelessWidget {
         id: 1,
         title: 'Material 1',
         topics: [
-          Topic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
-          Topic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
+          NotesTopic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
+          NotesTopic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
         ],
       ),
       MaterialItem(
         id: 2,
         title: 'Material 2',
         topics: [
-          Topic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
-          Topic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
+          NotesTopic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
+          NotesTopic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
         ],
       ),
       MaterialItem(
         id: 2,
         title: 'Material 2',
         topics: [
-          Topic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
-          Topic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
+          NotesTopic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
+          NotesTopic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
         ],
       ),
       MaterialItem(
         id: 2,
         title: 'Material 2',
         topics: [
-          Topic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
-          Topic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
+          NotesTopic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
+          NotesTopic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
         ],
       ),
     ];

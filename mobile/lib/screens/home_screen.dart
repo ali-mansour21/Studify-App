@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/classes/class_data.dart';
 import 'package:mobile/models/material_model.dart';
 import 'package:mobile/models/topic_material.dart';
 import 'package:mobile/screens/material_screen.dart';
@@ -24,16 +25,16 @@ class _HomeScreenState extends State<HomeScreen> {
       id: 1,
       title: 'Material 1',
       topics: [
-        Topic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
-        Topic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
+        NotesTopic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
+        NotesTopic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
       ],
     ),
     MaterialItem(
       id: 2,
       title: 'Material 2',
       topics: [
-        Topic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
-        Topic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
+        NotesTopic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
+        NotesTopic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
       ],
     ),
   ];
@@ -215,8 +216,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   child: ListView.builder(
-                    itemCount: 8,
+                    itemCount: classInfo.length,
                     itemBuilder: (context, index) {
+                      final classData = classInfo[index];
                       return Card(
                         child: ListTile(
                           leading: const Icon(
@@ -224,12 +226,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.blue,
                             size: 50,
                           ),
-                          title: const Text('Title'),
-                          subtitle: const Text('this is a small description'),
+                          title: Text(classData.title),
+                          subtitle: Text(classData.description),
                           trailing: const Icon(Icons.chevron_right),
-                          onTap: () {
-                            Navigator.pushNamed(context, '/');
-                          },
+                          onTap: () {},
                         ),
                       );
                     },

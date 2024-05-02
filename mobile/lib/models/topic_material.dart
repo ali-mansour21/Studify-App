@@ -1,7 +1,7 @@
-class Topic {
+class NotesTopic {
   final int id;
   final String title;
   final String content;
 
-  Topic({required this.id, required this.title, required this.content});
+  NotesTopic({required this.id, required this.title, required this.content});
 }
