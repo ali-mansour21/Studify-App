@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart';
+import 'package:mobile/widgets/segmented_control.dart';
 
 class ClassDetailScreen extends StatefulWidget {
   final ClassData classDetail;
@@ -13,18 +15,24 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            size: 24,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              size: 24,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          title: Text(widget.classDetail.title),
         ),
-        title: Text(widget.classDetail.title),
-      ),
-    );
+        body: const Column(children: [
+          SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            child: SegmentedControl(),
+          ),
+        ]));
   }
 }
