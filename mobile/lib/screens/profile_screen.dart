@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/screens/edit_screen.dart';
+import 'package:mobile/screens/student_class_screen.dart';
 import 'package:mobile/screens/student_materials_screen.dart';
 import 'package:mobile/widgets/navigation_bar.dart';
 import 'package:mobile/widgets/profile_screen_layout.dart';
@@ -130,7 +131,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const StudentMaterialScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const StudentMaterialScreen()),
                   );
                 },
               ),
@@ -138,7 +140,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 leading: const Icon(Icons.class_),
                 title: const Text('Classes'),
                 trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const StudentClassScreen()),
+                  );
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.logout),
