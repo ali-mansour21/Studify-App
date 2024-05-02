@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/classes/class_data.dart';
+import 'package:mobile/models/classes/class_data.dart' as model;
 import 'package:mobile/widgets/segmented_control.dart';
 
 class ClassDetailScreen extends StatefulWidget {
-  final ClassData classDetail;
+  final model.ClassData classDetail;
   const ClassDetailScreen({super.key, required this.classDetail});
 
   @override
@@ -12,56 +12,85 @@ class ClassDetailScreen extends StatefulWidget {
 
 class _ClassDetailScreenState extends State<ClassDetailScreen> {
   int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-     List<Widget> _content = [
+    List<Widget> content = [
       _buildMaterialList(widget.classDetail.materials),
-      _buildPeopleList(widget.people),
+      _buildPeopleList(widget.classDetail.people),
     ];
+
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              size: 24,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            icon: const Icon(Icons.arrow_back, size: 24),
+            onPressed: () => Navigator.pop(context),
           ),
           title: Text(widget.classDetail.title),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 10),
               child: TextButton(
-                style: const ButtonStyle(
-                    backgroundColor:
-                        MaterialStatePropertyAll(Color(0xFF3786A8))),
                 onPressed: () {},
-                child:
-                    const Text('Join', style: TextStyle(color: Colors.white)),
+                style: TextButton.styleFrom(
+                  backgroundColor: const Color(0xFF3786A8),
+                ),
+                child: const Text('Join'),
               ),
             )
           ],
         ),
-        body: Column(children: [
-          const SizedBox(height: 30),
-          SizedBox(
-            width: double.infinity,
-            child: SegmentedControl(
-              labels: const ['Material', 'People'],
-              onSegmentChosen: (int index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-              width: 105,
-              height: 35,
-              groupValue: _selectedIndex,
-            ),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              const SizedBox(height: 30),
+              SegmentedControl(
+                labels: const ['Material', 'People'],
+                onSegmentChosen: (int index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
+                width: 105,
+                height: 35,
+                groupValue: _selectedIndex,
+              ),
+              Expanded(child: content[_selectedIndex]),
+            ],
           ),
-          Expanded(child: _content(_selectedIndex))
-        ]
         ));
+  }
+
+  Widget _buildMaterialList(List<model.Material> materials) {
+    return ListView.builder(
+      itemCount: materials.length,
+      itemBuilder: (context, index) {
+        final material = materials[index];
+        return ListTile(
+          title: Text(material.title),
+          subtitle: Text(material.description),
+          onTap: () {
+            // Handle material tap
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildPeopleList(List<model.Person> people) {
+    return ListView.builder(
+      itemCount: people.length,
+      itemBuilder: (context, index) {
+        final person = people[index];
+        return ListTile(
+          title: Text(person.name),
+          subtitle: Text(person.role),
+          onTap: () {
+            // Handle person tap
+          },
+        );
+      },
+    );
   }
 }

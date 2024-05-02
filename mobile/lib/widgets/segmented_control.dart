@@ -6,7 +6,6 @@ class SegmentedControl extends StatefulWidget {
   final Function(int) onSegmentChosen;
   final int groupValue;
   final double borderRadius;
-  final EdgeInsets padding;
   final double? width;
   final double? height;
   const SegmentedControl({
@@ -15,7 +14,6 @@ class SegmentedControl extends StatefulWidget {
     required this.onSegmentChosen,
     required this.groupValue,
     this.borderRadius = 10.0,
-    this.padding = const EdgeInsets.all(16.0),
     this.width,
     this.height,
   });
@@ -37,21 +35,18 @@ class _SegmentedControlState extends State<SegmentedControl> {
       );
     }
 
-    return Padding(
-      padding: widget.padding,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(widget.borderRadius),
-          color: Colors.transparent,
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(widget.borderRadius),
-          child: CupertinoSegmentedControl<int>(
-            children: children,
-            onValueChanged: widget.onSegmentChosen,
-            groupValue: widget.groupValue,
-            padding: const EdgeInsets.all(4.0),
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(widget.borderRadius),
+        color: Colors.transparent,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(widget.borderRadius),
+        child: CupertinoSegmentedControl<int>(
+          children: children,
+          onValueChanged: widget.onSegmentChosen,
+          groupValue: widget.groupValue,
+          padding: const EdgeInsets.all(4.0),
         ),
       ),
     );

@@ -24,11 +24,15 @@ class Assignment {
 
 class Material {
   final String title;
+  final String description;
   final List<Topic> topics;
   final List<Assignment> assignments;
 
   Material(
-      {required this.title, required this.topics, required this.assignments});
+      {required this.title,
+      required this.description,
+      required this.topics,
+      required this.assignments});
 }
 
 class ClassData {
@@ -51,6 +55,7 @@ final List<ClassData> classInfo = [
     materials: [
       Material(
         title: "Cell Biology",
+        description: "Hello world",
         topics: [
           Topic(
               title: "Cell Structure",
@@ -73,6 +78,7 @@ final List<ClassData> classInfo = [
       ),
       Material(
         title: "Genetics",
+        description: "Hello world",
         topics: [
           Topic(
               title: "DNA Replication",
