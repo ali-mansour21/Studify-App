@@ -36,7 +36,10 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                 style: TextButton.styleFrom(
                   backgroundColor: const Color(0xFF3786A8),
                 ),
-                child: const Text('Join'),
+                child: const Text(
+                  'Join',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             )
           ],
