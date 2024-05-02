@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart' as model;
+import 'package:mobile/screens/topic_detail_screen.dart';
 import 'package:mobile/widgets/segmented_control.dart';
 
 class ClassDetailScreen extends StatefulWidget {
@@ -63,16 +64,40 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
   }
 
   Widget _buildMaterialList(List<model.Material> materials) {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: materials.length,
       itemBuilder: (context, index) {
         final material = materials[index];
         return ListTile(
-          title: Text(material.title),
-          subtitle: Text(material.description),
-          onTap: () {
-            // Handle material tap
-          },
+          title: Text(
+            material.title,
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 16, // Example size, adjust as necessary
+            ),
+          ),
+          subtitle: Text(
+            material.description,
+            style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 14,
+            ),
+          ),
+          trailing: const Icon(
+            Icons.chevron_right,
+            color: Colors.grey,
+          ),
+          onTap: () {},
+        );
+      },
+      separatorBuilder: (context, index) {
+        return Divider(
+          color: Colors.grey.shade300,
+          height: 1,
+          thickness: 1,
+          indent: 16,
+          endIndent: 16,
         );
       },
     );
@@ -86,9 +111,6 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
         return ListTile(
           title: Text(person.name),
           subtitle: Text(person.role),
-          onTap: () {
-            // Handle person tap
-          },
         );
       },
     );
