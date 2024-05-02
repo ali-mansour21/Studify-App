@@ -8,8 +8,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthLayout(
-        imagePath: 'assets/Studify-logo.png', // Path to logo image
-        title: "Welcome Back", // Page title
+        imagePath: 'assets/Studify-logo.png', 
+        title: "Welcome Back", 
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(

@@ -37,7 +37,7 @@ class CategoryCard extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0), // Padding around the text
+              padding: const EdgeInsets.all(8.0), 
               child: Text(
                 title,
                 textAlign: TextAlign.center,

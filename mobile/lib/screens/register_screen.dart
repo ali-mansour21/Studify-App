@@ -10,7 +10,7 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AuthLayout(
       imagePath:
-          'assets/Studify-logo.png', // Update with your actual logo image path
+          'assets/Studify-logo.png', 
       title: "Let’s Get Started",
       child: Padding(
         padding: const EdgeInsets.all(16.0),

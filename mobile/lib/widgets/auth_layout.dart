@@ -14,23 +14,17 @@ class AuthLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate the screen size
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      resizeToAvoidBottomInset:
-          true, // Make sure the scaffold resizes when keyboard is shown
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
-          // This enables scrolling
           padding: const EdgeInsets.all(16.0),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: size.height -
-                  MediaQuery.of(context)
-                      .viewInsets
-                      .bottom, // Adjust the height according to the keyboard presence
+              minHeight: size.height - MediaQuery.of(context).viewInsets.bottom,
             ),
             child: IntrinsicHeight(
               child: Column(
@@ -44,7 +38,7 @@ class AuthLayout extends StatelessWidget {
                   const SizedBox(height: 20),
                   Text(title, style: const TextStyle(fontSize: 24)),
                   const SizedBox(height: 20),
-                  child, // The child passed in as parameter
+                  child,
                 ],
               ),
             ),

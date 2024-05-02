@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart';
 import 'package:mobile/models/material_model.dart';
 import 'package:mobile/models/topic_material.dart';
+import 'package:mobile/screens/class_detail_screen.dart';
 import 'package:mobile/screens/material_screen.dart';
 import 'package:mobile/widgets/navigation_bar.dart';
 
@@ -229,7 +230,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           title: Text(classData.title),
                           subtitle: Text(classData.description),
                           trailing: const Icon(Icons.chevron_right),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ClassDetailScreen(
+                                        classDetail: classData,
+                                      )),
+                            );
+                          },
                         ),
                       );
                     },
