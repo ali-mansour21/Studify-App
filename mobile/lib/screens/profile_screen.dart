@@ -142,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const StudentClassScreen()),
+                    MaterialPageRoute(builder: (context) =>  StudentClassScreen()),
                   );
                 },
               ),

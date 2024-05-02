@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/classes/class_data.dart';
 
 class StudentClassScreen extends StatelessWidget {
   const StudentClassScreen({super.key});
@@ -25,8 +26,9 @@ class StudentClassScreen extends StatelessWidget {
                 child: Padding(
               padding: const EdgeInsets.only(left: 10, right: 10),
               child: ListView.builder(
-                itemCount: 12,
+                itemCount: classInfo.length,
                 itemBuilder: (context, index) {
+                  final classData = classInfo[index];
                   return Card(
                     child: ListTile(
                       leading: const Icon(
@@ -34,8 +36,8 @@ class StudentClassScreen extends StatelessWidget {
                         color: Colors.blue,
                         size: 50,
                       ),
-                      title: const Text('Title'),
-                      subtitle: const Text('this is a small description'),
+                      title: Text(classData.title),
+                      subtitle: Text(classData.description),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () {},
                     ),
