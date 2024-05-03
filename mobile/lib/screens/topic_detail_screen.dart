@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/topic_material.dart';
 
 class TopicDetailScreen extends StatelessWidget {
-  final NotesTopic topic;
+  final Topic topic;
   const TopicDetailScreen({super.key, required this.topic});
 
   @override

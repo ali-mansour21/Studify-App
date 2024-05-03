@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart' as model;
+import 'package:mobile/screens/topic_detail_screen.dart';
 import 'package:mobile/widgets/segmented_control.dart';
 
 class ClassMaterialDetailScreen extends StatefulWidget {
@@ -55,7 +56,7 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
   }
 }
 
-Widget _buildTopicList(List<model.Topic> topics) {
+Widget _buildTopicList(List<model.ClassTopic> topics) {
   return ListView.separated(
     itemCount: topics.length,
     itemBuilder: (context, index) {
@@ -73,7 +74,16 @@ Widget _buildTopicList(List<model.Topic> topics) {
           Icons.chevron_right,
           color: Colors.grey,
         ),
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TopicDetailScreen(
+                topic: topic,
+              ),
+            ),
+          );
+        },
       );
     },
     separatorBuilder: (context, index) {

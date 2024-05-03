@@ -1,8 +1,12 @@
-class Topic {
+import 'package:mobile/models/topic_material.dart';
+
+class ClassTopic implements Topic {
+  @override
   final String title;
+  @override
   final String content;
 
-  Topic({required this.title, required this.content});
+  ClassTopic({required this.title, required this.content});
 }
 
 class Person {
@@ -25,7 +29,7 @@ class Assignment {
 class Material {
   final String title;
   final String description;
-  final List<Topic> topics;
+  final List<ClassTopic> topics;
   final List<Assignment> assignments;
 
   Material(
@@ -57,10 +61,10 @@ final List<ClassData> classInfo = [
         title: "Cell Biology",
         description: "Hello world",
         topics: [
-          Topic(
+          ClassTopic(
               title: "Cell Structure",
               content: "Detailed discussion on cell structure."),
-          Topic(
+          ClassTopic(
               title: "Cell Function", content: "Exploring how cells function."),
         ],
         assignments: [
@@ -80,10 +84,10 @@ final List<ClassData> classInfo = [
         title: "Genetics",
         description: "Hello world",
         topics: [
-          Topic(
+          ClassTopic(
               title: "DNA Replication",
               content: "Processes involved in DNA replication."),
-          Topic(
+          ClassTopic(
               title: "Genetic Diseases", content: "Study of genetic diseases."),
         ],
         assignments: [
