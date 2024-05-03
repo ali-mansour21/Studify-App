@@ -1,5 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:mobile/widgets/mainbutton.dart';
 
 class CameraScreen extends StatefulWidget {
   final CameraController cameraController;
@@ -36,13 +38,60 @@ class _CameraScreenState extends State<CameraScreen> {
     }
 
     try {
-      // Attempt to take a picture and then get the location
-      // where the image file is saved.
       final XFile image = await _controller.takePicture();
-      // You can now store the image file in the file system,
-      // or use it however you like!
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return GestureDetector(
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                currentFocus.unfocus();
+              },
+              child: AlertDialog(
+                title: const Text(
+                  "Create a new material",
+                  style: TextStyle(fontSize: 18),
+                ),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      const SizedBox(
+                        width: 300,
+                        height: 45,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: 'Material',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const SizedBox(
+                        width: 300,
+                        height: 45,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: 'Topic',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      SizedBox(
+                        width: 300,
+                        height: 45,
+                        child: MainButton(
+                            buttonColor: const Color(0xFF3786A8),
+                            buttonText: "Create",
+                            onPressed: () {}),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          });
     } catch (e) {
-      // If an error occurs, log the error to the console.
       print(e);
     }
   }
@@ -74,11 +123,9 @@ class _CameraScreenState extends State<CameraScreen> {
       ),
       body: Stack(
         children: <Widget>[
-          // Camera preview
           Positioned.fill(
             child: CameraPreview(_controller),
           ),
-          // Capture button
           Positioned(
             bottom: 50,
             left: 0,

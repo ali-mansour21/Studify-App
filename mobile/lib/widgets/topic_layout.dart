@@ -25,7 +25,10 @@ class TopicListWidget extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => TopicDetailScreen(topic: topic),
+                builder: (context) => TopicDetailScreen(
+                  topic: topic,
+                  showDownloadButton: true,
+                ),
               ),
             );
           },

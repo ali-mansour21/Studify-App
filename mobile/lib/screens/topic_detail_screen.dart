@@ -3,7 +3,9 @@ import 'package:mobile/models/topic_material.dart';
 
 class TopicDetailScreen extends StatelessWidget {
   final Topic topic;
-  const TopicDetailScreen({super.key, required this.topic});
+  final bool showDownloadButton;
+  const TopicDetailScreen(
+      {super.key, required this.topic, this.showDownloadButton = false});
 
   @override
   Widget build(BuildContext context) {
@@ -12,13 +14,14 @@ class TopicDetailScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white,
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.file_download,
-              size: 24,
+          if (showDownloadButton)
+            IconButton(
+              icon: const Icon(
+                Icons.file_download,
+                size: 24,
+              ),
+              onPressed: () {},
             ),
-            onPressed: () {},
-          ),
         ],
         leading: IconButton(
             onPressed: () {
