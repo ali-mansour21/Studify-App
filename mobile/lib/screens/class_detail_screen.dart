@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart' as model;
 import 'package:mobile/screens/class_material_screen.dart';
+import 'package:mobile/widgets/mainbutton.dart';
 import 'package:mobile/widgets/segmented_control.dart';
 
 class ClassDetailScreen extends StatefulWidget {
@@ -13,6 +14,73 @@ class ClassDetailScreen extends StatefulWidget {
 
 class _ClassDetailScreenState extends State<ClassDetailScreen> {
   int _selectedIndex = 0;
+  void _showJoinClassDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Join Class", style: TextStyle(fontSize: 18)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                alignment: Alignment.centerLeft,
+                child: const Text(
+                  "Enter Class Code",
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
+              const SizedBox(height: 5),
+              SizedBox(
+                width: 300,
+                height: 45,
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Class Code',
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        width: 10,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                height: 45,
+                child: MainButton(
+                  buttonColor: const Color(0xFF3786A8),
+                  buttonText: "Submit",
+                  onPressed: () {
+                    // Submission logic here
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+              const Divider(height: 30, thickness: 2),
+              Center(
+                child: Column(children: [
+                  const Text("Don't have a code?",
+                      style: TextStyle(fontSize: 16)),
+                  TextButton(
+                    child: const Text('Request to join',
+                        style: TextStyle(decoration: TextDecoration.underline)),
+                    onPressed: () {
+                      // Request to join logic
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ]),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +100,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
             Padding(
               padding: const EdgeInsets.only(right: 10),
               child: TextButton(
-                onPressed: () {},
+                onPressed: _showJoinClassDialog,
                 style: TextButton.styleFrom(
                   backgroundColor: const Color(0xFF3786A8),
                 ),
