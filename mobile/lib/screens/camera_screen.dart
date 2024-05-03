@@ -55,24 +55,34 @@ class _CameraScreenState extends State<CameraScreen> {
                 content: SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[
-                      const SizedBox(
+                      SizedBox(
                         width: 300,
                         height: 45,
                         child: TextField(
                           decoration: InputDecoration(
                             labelText: 'Material',
-                            border: OutlineInputBorder(),
+                            border: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                width: 10,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(height: 10),
-                      const SizedBox(
+                      SizedBox(
                         width: 300,
                         height: 45,
                         child: TextField(
                           decoration: InputDecoration(
                             labelText: 'Topic',
-                            border: OutlineInputBorder(),
+                            border: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                width: 10,
+                              ),
+                              borderRadius: BorderRadius.circular(10), //
+                            ),
                           ),
                         ),
                       ),
