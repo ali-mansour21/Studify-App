@@ -17,13 +17,15 @@ class Person {
   Person({required this.name, required this.role, required this.profileImage});
 }
 
-class Assignment {
+class Assignment implements Topic {
+  @override
   final String title;
-  final String description;
+  @override
+  final String content;
   final DateTime dueDate;
 
   Assignment(
-      {required this.title, required this.description, required this.dueDate});
+      {required this.title, required this.content, required this.dueDate});
 }
 
 class Material {
@@ -70,12 +72,12 @@ final List<ClassData> classInfo = [
         assignments: [
           Assignment(
             title: "Cell Diagram",
-            description: "Draw and label parts of a cell.",
+            content: "Draw and label parts of a cell.",
             dueDate: DateTime.now().add(const Duration(days: 7)),
           ),
           Assignment(
             title: "Cell Function Essay",
-            description: "Write an essay on the function of mitochondria.",
+            content: "Write an essay on the function of mitochondria.",
             dueDate: DateTime.now().add(const Duration(days: 14)),
           ),
         ],
@@ -93,7 +95,7 @@ final List<ClassData> classInfo = [
         assignments: [
           Assignment(
             title: "Genetics Homework",
-            description: "Complete the genetics worksheet.",
+            content: "Complete the genetics worksheet.",
             dueDate: DateTime.now().add(const Duration(days: 10)),
           ),
         ],

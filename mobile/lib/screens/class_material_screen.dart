@@ -116,7 +116,16 @@ Widget _buildAssignmentList(List<model.Assignment> assignments) {
           Icons.chevron_right,
           color: Colors.grey,
         ),
-        onTap: () {},
+        onTap: () {
+            Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TopicDetailScreen(
+                topic: assignment,
+              ),
+            ),
+          );
+        },
       );
     },
     separatorBuilder: (context, index) {
