@@ -1,26 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:mobile/models/topic_material.dart';
 
 class AssignmentDetailScreen extends StatelessWidget {
   final Topic assignment;
   const AssignmentDetailScreen({super.key, required this.assignment});
-  void _showBottomSheet(BuildContext context) {
+  void _showBottomSheet(BuildContext context) async {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
           width: double.infinity,
-          height: 500,
+          height: 600,
           padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("More Details",
+              Text("Upload Your Work",
                   style: Theme.of(context).textTheme.titleLarge),
-              const SizedBox(height: 10),
-              const Text("Assignment data"),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF3786A8)),
+                icon: const Icon(
+                  Icons.file_upload,
+                  color: Colors.white,
+                ),
+                label: const Text(
+                  "Select File",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () async {
+                  FilePickerResult? result =
+                      await FilePicker.platform.pickFiles();
+                  if (result != null) {
+                    PlatformFile file = result.files.first;
+                    print(file.name);
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  //  submission logic here
+                },
+                style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                    backgroundColor: const Color(0xFF3786A8)),
+                child: const Text(
+                  "Submit",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ],
           ),
         );
