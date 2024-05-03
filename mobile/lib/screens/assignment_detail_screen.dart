@@ -10,6 +10,8 @@ class AssignmentDetailScreen extends StatelessWidget {
       isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
+          width: double.infinity,
+          height: 500,
           padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -68,6 +70,27 @@ class AssignmentDetailScreen extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+      bottomSheet: GestureDetector(
+        onVerticalDragEnd: (details) {
+          if (details.primaryVelocity != null && details.primaryVelocity! < 0) {
+            _showBottomSheet(context);
+          }
+        },
+        onTap: () => _showBottomSheet(context),
+        child: Container(
+          width: double.infinity,
+          color: Colors.black26,
+          height: 70,
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(Icons.keyboard_arrow_up, color: Colors.white, size: 24),
+              Text('Add your work',
+                  style: TextStyle(color: Colors.white, fontSize: 16)),
+            ],
+          ),
         ),
       ),
     );

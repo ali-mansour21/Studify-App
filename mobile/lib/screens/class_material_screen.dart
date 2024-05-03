@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart' as model;
+import 'package:mobile/screens/assignment_detail_screen.dart';
 import 'package:mobile/screens/topic_detail_screen.dart';
 import 'package:mobile/widgets/segmented_control.dart';
 
@@ -117,11 +118,11 @@ Widget _buildAssignmentList(List<model.Assignment> assignments) {
           color: Colors.grey,
         ),
         onTap: () {
-            Navigator.push(
+          Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => TopicDetailScreen(
-                topic: assignment,
+              builder: (context) => AssignmentDetailScreen(
+                assignment: assignment,
               ),
             ),
           );
