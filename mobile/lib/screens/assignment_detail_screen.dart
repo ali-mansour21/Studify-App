@@ -4,6 +4,27 @@ import 'package:mobile/models/topic_material.dart';
 class AssignmentDetailScreen extends StatelessWidget {
   final Topic assignment;
   const AssignmentDetailScreen({super.key, required this.assignment});
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("More Details",
+                  style: Theme.of(context).textTheme.titleLarge),
+              const SizedBox(height: 10),
+              const Text("Assignment data"),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
