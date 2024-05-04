@@ -12,4 +12,7 @@ class StudyClass extends Model
     {
         return $this->belongsTo(User::class, 'instructor_id');
     }
+    public function materials(){
+        return $this->hasMany(Material::class);
+    }
 }
