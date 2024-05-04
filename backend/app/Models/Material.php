@@ -12,4 +12,11 @@ class Material extends Model
     {
         return $this->belongsTo(StudyClass::class);
     }
+    public function topics(){
+        return $this->hasMany(Topic::class);
+    }
+    public function assignments(){
+        return $this->hasMany(Assignment::class);
+    }
+
 }

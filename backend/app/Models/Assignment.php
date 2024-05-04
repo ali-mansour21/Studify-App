@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Assignment extends Model
 {
     use HasFactory;
+    public function material()
+    {
+        return $this->belongsTo(Material::class);
+    }
 }
