@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class SubmissionFeedback extends Model
 {
     use HasFactory;
+    public function assignmentSubmission()
+    {
+        return $this->belongsTo(AssignmentSubmission::class);
+    }
 }
