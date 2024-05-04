@@ -1,5 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faKey } from "@fortawesome/free-solid-svg-icons";
 import "./styles/login.css";
 const Login = () => {
   const navigator = useNavigate();
@@ -11,8 +13,14 @@ const Login = () => {
         </div>
         <h2>Sign In to your account</h2>
         <form className="signin-form">
-          <input type="email" placeholder="Enter your email" required />
-          <input type="password" placeholder="Password" required />
+          <div>
+            <input type="email" placeholder="Enter your email" required />
+            <FontAwesomeIcon icon={faEnvelope} className="input-icon" />
+          </div>
+          <div>
+            <input type="password" placeholder="Password" required />
+            <FontAwesomeIcon icon={faKey} className="input-icon" />
+          </div>
           <button type="submit">Sign In</button>
         </form>
         <div className="signup-link">
