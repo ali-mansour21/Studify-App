@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('student_notes', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('student_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
