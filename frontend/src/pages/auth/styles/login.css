@@ -1,0 +1,39 @@
+.signin-container {
+  width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+}
+.signin-container > h2 {
+  font-size: 24px;
+  font-weight: 600;
+}
+.signin-logo img {
+  width: 400px;
+  margin-bottom: 15px;
+}
+.signin-form input {
+  width: 455px;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.signin-form button {
+  width: 95%;
+  padding: 10px;
+  color: white;
+  background-color: #3786a8;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.signup-link {
+  margin-top: 20px;
+}
+.signup-link a {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #3786a8;
+}
