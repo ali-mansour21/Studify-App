@@ -29,13 +29,13 @@ const SignUp = () => {
           <button type="submit">Sign Up</button>
         </form>
         <div className="signin-link">
-          New user?{" "}
+          Have an account?{" "}
           <a
             onClick={() => {
               navigator("/");
             }}
           >
-            Sign Up
+            Sign In
           </a>
         </div>
       </div>
