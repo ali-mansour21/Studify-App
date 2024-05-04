@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class FaqAnswer extends Model
 {
     use HasFactory;
+    public function materialFaq()
+    {
+        return $this->belongsTo(Faq::class);
+    }
 }

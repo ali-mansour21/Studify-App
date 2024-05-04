@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Faq extends Model
 {
     use HasFactory;
+    public function answer(){
+        return $this->hasOne(FaqAnswer::class);
+    }
 }
