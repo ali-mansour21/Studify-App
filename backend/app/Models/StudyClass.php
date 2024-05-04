@@ -12,7 +12,14 @@ class StudyClass extends Model
     {
         return $this->belongsTo(User::class, 'instructor_id');
     }
-    public function materials(){
+    public function materials()
+    {
         return $this->hasMany(Material::class);
+    }
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'class_enrollment', 'class_id', 'student_id')
+            ->using(ClassEnrollment::class)
+            ->withTimestamps();
     }
 }
