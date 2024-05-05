@@ -12,4 +12,12 @@ class Category extends Model
     {
         return $this->belongsToMany(User::class, 'user_categories', 'category_id', 'student_id');
     }
+    public function studyClasses()
+    {
+        return $this->hasMany(StudyClass::class);
+    }
+    public function studentNotes()
+    {
+        return $this->hasMany(StudentNote::class);
+    }
 }

@@ -22,4 +22,8 @@ class StudyClass extends Model
             ->using(ClassEnrollment::class)
             ->withTimestamps();
     }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

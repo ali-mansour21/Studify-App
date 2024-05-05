@@ -16,4 +16,8 @@ class StudentNote extends Model
     {
         return $this->hasMany(NoteDescription::class, 'note_id');
     }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
