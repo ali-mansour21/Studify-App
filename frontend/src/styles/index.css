@@ -12,18 +12,6 @@ body {
 a {
   text-decoration: none;
 }
-::-webkit-scrollbar {
-  width: 15px;
-}
-::-webkit-scrollbar-track {
-  background-color: white;
-}
-::-webkit-scrollbar-thumb {
-  background-color: var(--blue-color);
-}
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--blue-color-alt);
-}
 .page {
   min-height: 100vh;
 }
@@ -131,4 +119,27 @@ a {
   text-align: center;
   font-size: 30px;
   font-weight: bold;
+}
+.content .actions {
+  margin: 20px 20px 40px;
+}
+.content .actions button {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--blue-color);
+}
+.content .actions button svg {
+  width: 30px;
+  height: 30px;
+  color: #ffffff;
+}
+.content .actions p {
+  margin-top: 13px;
+  font-size: 30px;
+}
+.classes-page {
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
 }
