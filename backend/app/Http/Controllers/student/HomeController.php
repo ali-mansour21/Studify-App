@@ -9,14 +9,27 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $user = auth()->user();
         $categories = $user->categories;
-        $student_notes = StudentNote::whereHas('categories', function ($query) use ($categories) {
-            $query->whereIn('id', $categories->pluck('id'));
+        $student_notes = $this->fetchStudentNotes($categories);
+        $classes = $this->fetchStudyClasses($categories);
+    }
+    private function fetchStudentNotes($categories)
+    {
+        $categoryIds = $categories->pluck('id');
+
+        return StudentNote::whereHas('category', function ($query) use ($categoryIds) {
+            $query->whereIn('id', $categoryIds);
         })->get();
-        $classes = StudyClass::whereHas('categories', function ($query) use ($categories) {
-            $query->whereIn('id', $categories->pluck('id'));
+    }
+    private function fetchStudyClasses($categories)
+    {
+        $categoryIds = $categories->pluck('id');
+
+        return StudyClass::whereHas('category', function ($query) use ($categoryIds) {
+            $query->whereIn('id', $categoryIds);
         })->get();
     }
 }
