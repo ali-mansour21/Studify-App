@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\student\AuthController;
+use App\Http\Controllers\student\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('jwt.auth')->group(function () {
+    Route::middleware('student')->group(function () {
+        Route::post('categories/select', [CategoryController::class, 'storeSelectedCategory']);
+    });
+});
+Route::middleware('guest')->group(function () {
+    Route::post('student_register', [AuthController::class, 'register']);
+    Route::post('student_login', [AuthController::class, 'login']);
 });
