@@ -15,6 +15,10 @@ class HomeController extends Controller
         $categories = $user->categories;
         $student_notes = $this->fetchStudentNotes($categories);
         $classes = $this->fetchStudyClasses($categories);
+        return response()->json(['status' => 'success', 'data' => [
+            'recommended_notes' => $student_notes,
+            'recommented_classes' => $classes
+        ]]);
     }
     private function fetchStudentNotes($categories)
     {
