@@ -11,6 +11,7 @@ const Home = () => {
       <SideBar />
       <div className="content  w-full">
         <div className="head bg-white p-15 between-flex">
+          <div className="welcome-widget">Hello Ali</div>
           <div className="icons d-flex align-center">
             <span className=" notification  p-relative ">
               <FontAwesomeIcon icon={faBell} />
