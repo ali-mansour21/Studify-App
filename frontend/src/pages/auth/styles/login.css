@@ -1,6 +1,9 @@
+body {
+  background-color: #ffff !important;
+}
 .signin-container {
   width: 500px;
-  margin: 20px auto;
+  margin: auto;
   padding: 20px;
   text-align: center;
   border-radius: 8px;

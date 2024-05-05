@@ -1,4 +1,9 @@
-import { faEnvelope, faKey, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEnvelope,
+  faImage,
+  faKey,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +26,10 @@ const SignUp = () => {
           <div>
             <input type="email" placeholder="john@gmail.com" required />
             <FontAwesomeIcon icon={faEnvelope} className="input-icon" />
+          </div>
+          <div>
+            <input type="file" required />
+            <FontAwesomeIcon icon={faImage} className="input-icon" />
           </div>
           <div>
             <input type="password" placeholder="password" required />

@@ -1,6 +1,6 @@
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react'
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
 
 const Class = () => {
   return (
@@ -18,10 +18,10 @@ const Class = () => {
           <FontAwesomeIcon icon={faUser} />
           950
         </span>
-        <span className="title bg-blue c-white btn-shape">Course Info</span>
+        <span className="title bg-blue c-white btn-shape">View</span>
       </div>
     </div>
   );
-}
+};
 
-export default Class
+export default Class;
