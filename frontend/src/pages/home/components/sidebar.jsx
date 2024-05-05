@@ -1,7 +1,13 @@
-import { faArrowRightFromBracket, faGaugeHigh, faUsersRectangle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRightFromBracket,
+  faGaugeHigh,
+  faUsersRectangle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 const SideBar = () => {
+  const navigate = useNavigate();
   return (
     <div className="sidebar bg-white p-20 p-relative">
       <h3 className="p-relative txt-c mt-0">Studify</h3>
@@ -9,7 +15,9 @@ const SideBar = () => {
         <li>
           <a
             className="active d-flex align-center fs-14 c-black rad-6 p-10"
-            href="index.html"
+            onClick={() => {
+              navigate("/home");
+            }}
           >
             <FontAwesomeIcon icon={faGaugeHigh} />
             <span className="hide-mobile">Dashboard</span>
@@ -18,7 +26,9 @@ const SideBar = () => {
         <li>
           <a
             className=" d-flex align-center fs-14 c-black rad-6 p-10"
-            href="settings.html"
+            onClick={() => {
+              navigate("/classes");
+            }}
           >
             <FontAwesomeIcon icon={faUsersRectangle} />
             <span className="hide-mobile">Classes</span>
