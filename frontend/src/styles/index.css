@@ -81,7 +81,7 @@ a {
   margin-left: 15px;
 }
 .page h1 {
-  margin: 20px 20px 40px;
+  margin: 20px 20px 20px;
 }
 .wrapper {
   grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
@@ -121,7 +121,7 @@ a {
   font-weight: bold;
 }
 .content .actions {
-  margin: 20px 20px 40px;
+  margin: 15px 20px 40px;
 }
 .content .actions button {
   width: 60px;
@@ -141,5 +141,29 @@ a {
   font-size: 30px;
 }
 .classes-page {
-  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+@media (max-width: 767px) {
+  .classes-page {
+    grid-template-columns: minmax(200px, 1fr);
+    margin-left: 10px;
+    margin-right: 10px;
+    gap: 10px;
+  }
+}
+.classes-page .class {
+  overflow: hidden;
+}
+.classes-page .class .cover {
+  max-width: 100%;
+}
+.classes-page .class .description {
+  line-height: 1.6;
+}
+.classes-page .class .info {
+  border-top: 1px solid #eee;
+  font-size: 13px;
+}
+.classes-page .class .info span {
+  align-content: center;
 }
