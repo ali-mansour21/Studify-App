@@ -13,4 +13,10 @@ class CategoryController extends Controller
         $categories = Category::all();
         return response()->json(['status' => 'success', 'data' => $categories]);
     }
+    public function storeSelectedCategory(Request $request)
+    {
+        $user = auth()->user();
+        $categoryIds = $request->categories;
+        $user->categories()->sync($categoryIds);
+    }
 }

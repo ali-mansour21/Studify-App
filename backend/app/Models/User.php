@@ -68,4 +68,8 @@ class User extends Authenticatable implements JWTSubject
                     ->using(ClassEnrollment::class)
                     ->withTimestamps();
     }
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'user_categories', 'student_id', 'category_id');
+    }
 }
