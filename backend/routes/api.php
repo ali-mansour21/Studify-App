@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\student\AuthController;
 use App\Http\Controllers\student\CategoryController;
+use App\Http\Controllers\student\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('jwt.auth')->group(function () {
     Route::middleware('student')->group(function () {
         Route::post('categories/select', [CategoryController::class, 'storeSelectedCategory']);
+        Route::get('resources', [HomeController::class, 'index']);
     });
 });
 Route::middleware('guest')->group(function () {

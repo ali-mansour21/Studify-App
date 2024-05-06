@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\student;
 
 use App\Http\Controllers\Controller;
+use App\Models\NoteDescription;
 use App\Models\StudentNote;
 use App\Models\StudyClass;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class HomeController extends Controller
 {
@@ -19,6 +21,16 @@ class HomeController extends Controller
             'recommended_notes' => $student_notes,
             'recommented_classes' => $classes
         ]]);
+    }
+    public function store(Request $request)
+    {
+        $user_id = auth()->id();
+        $data = $request->validate([
+            'title' => ['required', 'string', 'min:3', 'max:255'],
+            'category_id' => ['required', Rule::exists('categories', 'id')],
+            'note_title' => ['required', 'string', 'min:3', 'max:255'],
+            'note_content' => ['required', 'string']
+        ]);
     }
     private function fetchStudentNotes($categories)
     {
