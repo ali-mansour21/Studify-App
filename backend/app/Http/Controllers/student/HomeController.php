@@ -31,6 +31,20 @@ class HomeController extends Controller
             'note_title' => ['required', 'string', 'min:3', 'max:255'],
             'note_content' => ['required', 'string']
         ]);
+        $student_note = StudentNote::where('title', $data['title'])
+            ->where('student_id', $user_id)
+            ->first();
+        if ($student_note) {
+            $message = 'Added new note description to existing student note.';
+        }else{
+            $student_note = new StudentNote([
+                'title' => $data['title'],
+                'category_id' => $data['category_id'],
+                'student_id' => $user_id,
+            ]);
+            $student_note->save();
+            $message = 'Successfully created a new student note.';
+        }
     }
     private function fetchStudentNotes($categories)
     {
