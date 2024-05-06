@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\common;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClassRequest;
 use App\Models\StudyClass;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -29,6 +30,19 @@ class ClassRequestController extends Controller
 
         $user->studentClasses()->attach($class->id);
 
-        return response()->json(['message' => 'Enrolled in class successfully']);
+        return response()->json(['message' => 'Enrolled in class successfully'], 201);
+    }
+    public function requestJoin(Request $request)
+    {
+        $request->validate([
+            'class_id' => ['required', Rule::exists('study_classes', 'id')],
+        ]);
+
+        $classRequest = new ClassRequest();
+        $classRequest->student_id = auth()->id();
+        $classRequest->class_id = $request->class_id;
+        $classRequest->save();
+
+        return response()->json(['message' => 'Request to join class sent successfully'], 201);
     }
 }

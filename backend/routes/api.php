@@ -24,6 +24,8 @@ Route::middleware('jwt.auth')->group(function () {
         Route::get('resources', [HomeController::class, 'index']);
         Route::post('resources', [HomeController::class, 'store']);
         Route::post('join_class', [ClassRequestController::class, 'enrollWithCode']);
+        Route::post('request_join_class', [ClassRequestController::class, 'requestJoin']);
+
     });
 });
 Route::middleware('guest')->group(function () {
