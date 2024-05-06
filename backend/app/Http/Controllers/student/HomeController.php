@@ -29,7 +29,8 @@ class HomeController extends Controller
         $user_id = auth()->id();
         $data = $request->validate([
             'title' => ['required', 'string', 'min:3', 'max:255'],
-            'category_id' => ['required', Rule::exists('categories', 'id')],
+            'category_id' => ['sometimes', 'integer', Rule::exists('categories', 'id')],
+            'category_name' => ['sometimes', 'string', 'min:3', 'max:255'],
             'note_title' => ['required', 'string', 'min:3', 'max:255'],
             'note_content' => ['required', 'string']
         ]);
@@ -41,7 +42,7 @@ class HomeController extends Controller
         $noteResult = $this->manageStudentNote($data, $user_id, $category_id);
         $student_note = $noteResult['note'];
         $message = $noteResult['message'];
-        
+
         $note_description = new NoteDescription([
             'title' => $data['note_title'],
             'content' => $data['note_content'],
