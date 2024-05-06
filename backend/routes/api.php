@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\common\ClassRequestController;
 use App\Http\Controllers\student\AuthController;
 use App\Http\Controllers\student\CategoryController;
 use App\Http\Controllers\student\HomeController;
@@ -22,6 +23,7 @@ Route::middleware('jwt.auth')->group(function () {
         Route::post('categories/select', [CategoryController::class, 'storeSelectedCategory']);
         Route::get('resources', [HomeController::class, 'index']);
         Route::post('resources', [HomeController::class, 'store']);
+        Route::post('join_class', [ClassRequestController::class, 'enrollWithCode']);
     });
 });
 Route::middleware('guest')->group(function () {
