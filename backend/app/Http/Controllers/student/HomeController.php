@@ -36,7 +36,7 @@ class HomeController extends Controller
             ->first();
         if ($student_note) {
             $message = 'Added new note description to existing student note.';
-        }else{
+        } else {
             $student_note = new StudentNote([
                 'title' => $data['title'],
                 'category_id' => $data['category_id'],
@@ -45,6 +45,14 @@ class HomeController extends Controller
             $student_note->save();
             $message = 'Successfully created a new student note.';
         }
+        $note_description = new NoteDescription([
+            'title' => $data['note_title'],
+            'content' => $data['note_content'],
+            'note_id' => $student_note->id,
+        ]);
+        $note_description->save();
+
+        return response()->json(['status' => 'success', 'message' => $message]);
     }
     private function fetchStudentNotes($categories)
     {
