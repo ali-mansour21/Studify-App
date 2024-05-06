@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\student;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\NoteDescription;
 use App\Models\StudentNote;
 use App\Models\StudyClass;
@@ -22,6 +23,7 @@ class HomeController extends Controller
             'recommented_classes' => $classes
         ]]);
     }
+
     public function store(Request $request)
     {
         $user_id = auth()->id();
@@ -31,6 +33,10 @@ class HomeController extends Controller
             'note_title' => ['required', 'string', 'min:3', 'max:255'],
             'note_content' => ['required', 'string']
         ]);
+        $category_id = $this->resolveCategory($data);
+        if (is_null($category_id)) {
+            return response()->json(['status' => 'error', 'message' => 'Category is required']);
+        }
         $student_note = StudentNote::where('title', $data['title'])
             ->where('student_id', $user_id)
             ->first();
@@ -54,6 +60,7 @@ class HomeController extends Controller
 
         return response()->json(['status' => 'success', 'message' => $message]);
     }
+
     private function fetchStudentNotes($categories)
     {
         $categoryIds = $categories->pluck('id');
@@ -62,6 +69,7 @@ class HomeController extends Controller
             $query->whereIn('id', $categoryIds);
         })->get();
     }
+
     private function fetchStudyClasses($categories)
     {
         $categoryIds = $categories->pluck('id');
@@ -69,5 +77,16 @@ class HomeController extends Controller
         return StudyClass::whereHas('category', function ($query) use ($categoryIds) {
             $query->whereIn('id', $categoryIds);
         })->get();
+    }
+    protected function resolveCategory($data)
+    {
+        if (!empty($data['category_id'])) {
+            return $data['category_id'];
+        } else if (!empty($data['category_name'])) {
+            $category = Category::firstOrCreate(['name' => $data['category_name']]);
+            return $category->id;
+        } else {
+            return null;
+        }
     }
 }
