@@ -26,4 +26,8 @@ class StudyClass extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    public function classRequests()
+    {
+        return $this->hasMany(ClassRequest::class);
+    }
 }

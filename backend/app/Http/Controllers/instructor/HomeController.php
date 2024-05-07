@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\StudyClass;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -27,6 +28,11 @@ class HomeController extends Controller
     {
         $instructor = auth()->user();
         $nbStudentPerMonth = $instructor->getEnrollmentCountsByMonth;
+        $classRequestsPerStatus = $this->getClassRequestsByStatus($instructor->id);
+        return response()->json(['status' => 'success', 'data' => [
+            'nbStudentPerMonth' => $nbStudentPerMonth,
+            'classRequestsPerStatus' => $classRequestsPerStatus
+        ]]);
     }
     private function getSubmissionRate($classes)
     {
@@ -43,5 +49,28 @@ class HomeController extends Controller
         }
 
         return $totalAssignments > 0 ? ($totalSubmissions / $totalAssignments) * 100 : 0;
+    }
+    public function getClassRequestsByStatus($instructorId)
+    {
+        $instructor = User::with(['instructorClasses.classRequests' => function ($query) {
+            $query->select('status', DB::raw('count(*) as total'))
+                ->groupBy('status');
+        }])->find($instructorId);
+
+        if ($instructor) {
+            $classRequestsStatus = [];
+            foreach ($instructor->instructorClasses as $class) {
+                foreach ($class->classRequests as $request) {
+                    $status = $request->status;
+                    if (!isset($classRequestsStatus[$status])) {
+                        $classRequestsStatus[$status] = 0;
+                    }
+                    $classRequestsStatus[$status] += $request->total;
+                }
+            }
+            return $classRequestsStatus;
+        }
+
+        return null;
     }
 }
