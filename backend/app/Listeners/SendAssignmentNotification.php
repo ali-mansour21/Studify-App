@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\AssignmentCreated;
+use App\Jobs\SendAssignmentNotificationJob;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Kreait\Firebase\Messaging\CloudMessage;
@@ -20,23 +21,12 @@ class SendAssignmentNotification
     /**
      * Handle the event.
      */
-    public function handle(AssignmentCreated $event): void
+    public function handle(AssignmentCreated $event)
     {
-        $messaging = app('firebase.messaging');
-        $material = $event->assignment->material;
-        $class = $material->class;
+        $students = $event->assignment->material->class->students;
 
-        foreach ($class->students as $student) {
-            $token = $student->firebase_token;
-            if ($token) {
-                $message = CloudMessage::withTarget('token', $token)
-                    ->withNotification(Notification::fromArray([
-                        'title' => 'New Assignment Created',
-                        'body' => "An assignment '{$event->assignment->title}' has been posted in your class: {$class->name}"
-                    ]));
-
-                $messaging->send($message);
-            }
+        foreach ($students as $student) {
+            SendAssignmentNotificationJob::dispatch($student, $event->assignment);
         }
     }
 }
