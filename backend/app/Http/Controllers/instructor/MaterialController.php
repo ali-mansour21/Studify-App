@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\instructor;
 
+use App\Events\TopicCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Assignment;
 use App\Models\Material;
@@ -38,6 +39,7 @@ class MaterialController extends Controller
             $topic->content = $data['content'];
             $topic->material_id = $data['material_id'];
             $topic->save();
+            event(new TopicCreated($topic));
             return response()->json(['message' => 'Topic created successfully'], 201);
         } elseif ($data['type'] == 1) {
             $assignment = new Assignment();
