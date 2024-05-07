@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\instructor;
 
 use App\Http\Controllers\Controller;
+use App\Models\StudyClass;
 use Illuminate\Http\Request;
 
 class StudyClassController extends Controller
@@ -10,9 +11,14 @@ class StudyClassController extends Controller
     public function index()
     {
         $instructor = auth()->user();
+        $classes = $instructor->instructorClasses()->with(['materials.topics', 'materials.assignments'])
+            ->get();
         $studyClasses = $instructor->instructorClasses()->with('students')->get();
-        $studyClasses = $this->getClassesWithStudentCounts($studyClasses);
-        return response()->json(['status' => 'success', 'data' => $studyClasses]);
+        $studentCount = $this->getClassesWithStudentCounts($studyClasses);
+        return response()->json(['status' => 'success', 'data' => [
+            'studentCount' => $studentCount,
+            'clases' => $classes
+        ]]);
     }
     public function store(Request $request)
     {
