@@ -21,7 +21,7 @@ class CategoryController extends Controller
             'categories.*' => 'exists:categories,id'
         ]);
 
-        // Sync the user's categories
+
         $user->categories()->sync($validated['categories']);
         return response()->json(['success' => 'success']);
     }
