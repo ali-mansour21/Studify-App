@@ -2,13 +2,12 @@
 
 namespace App\Listeners;
 
-use App\Events\TopicCreated;
+use App\Events\AssignmentCreated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
-
-class SendTopicNotification
+class SendAssignmentNotification
 {
     /**
      * Create the event listener.
@@ -21,19 +20,19 @@ class SendTopicNotification
     /**
      * Handle the event.
      */
-    public function handle(TopicCreated $event): void
+    public function handle(AssignmentCreated $event): void
     {
         $messaging = app('firebase.messaging');
-        $material = $event->topic->material;
+        $material = $event->assignment->material;
         $class = $material->class;
-        $students = $class->students;
-        foreach ($students as $student) {
+
+        foreach ($class->students as $student) {
             $token = $student->firebase_token;
             if ($token) {
                 $message = CloudMessage::withTarget('token', $token)
                     ->withNotification(Notification::fromArray([
-                        'title' => 'New Topic Created',
-                        'body' => 'A new topic has been posted in your class: ' . $event->topic->title
+                        'title' => 'New Assignment Created',
+                        'body' => "An assignment '{$event->assignment->title}' has been posted in your class: {$class->name}"
                     ]));
 
                 $messaging->send($message);
