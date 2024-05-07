@@ -14,7 +14,7 @@ class AssignmentSubmissionController extends Controller
     {
         $request->validate([
             'assignment_id' => ['required', Rule::exists('assignments', 'id')],
-            'solution' => 'required|file|mimes:pdf,doc,docx|max:10240', // Max 10MB
+            'solution' => 'required|file|mimes:pdf,doc,docx|max:10240',
         ]);
 
         $assignment = Assignment::findOrFail($request->assignment_id);
@@ -35,6 +35,6 @@ class AssignmentSubmissionController extends Controller
         ]);
         $submission->save();
 
-        return response()->json(['message' => 'Assignment submitted successfully!', 'file_path' => $path]);
+        return response()->json(['message' => 'Assignment submitted successfully!']);
     }
 }

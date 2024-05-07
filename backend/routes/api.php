@@ -27,6 +27,10 @@ Route::middleware('jwt.auth')->group(function () {
         Route::post('join_class', [ClassRequestController::class, 'enrollWithCode']);
         Route::post('request_join_class', [ClassRequestController::class, 'requestJoin']);
         Route::post('submit_assignment', [AssignmentSubmissionController::class, 'submitSolution']);
+        Route::post('student_logout', [AuthController::class, 'logout']);
+    });
+    Route::middleware('instructor')->group(function(){
+        
     });
 });
 Route::middleware('guest')->group(function () {
