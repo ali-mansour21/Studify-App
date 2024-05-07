@@ -37,7 +37,7 @@ Route::middleware('jwt.auth')->group(function () {
         Route::get('home/data', [InstructorHomeController::class, 'chartData']);
         Route::get('classes', [StudyClassController::class, 'index']);
         Route::post('classes', [StudyClassController::class, 'store']);
-        Route::post('classes/material', [MaterialController::class, 'store']);
+        Route::post('classes/material',[MaterialController::class,'store']);
     });
 });
 Route::middleware('guest')->group(function () {

@@ -22,4 +22,13 @@ class MaterialController extends Controller
         $material->save();
         return response()->json(['message' => 'Material created successfully'], 201);
     }
+    public function storeData(Request $request)
+    {
+        $data = $request->validate([
+            'material_id' => ['required', 'integer', Rule::exists('materials', 'id')],
+            'title' => ['required', 'string', 'min:3', 'max:30'],
+            'content' => ['required', 'string', 'min:10'],
+            'type' => ['required', 'integer']
+        ]);
+    }
 }
