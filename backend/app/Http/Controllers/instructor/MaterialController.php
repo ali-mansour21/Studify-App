@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\instructor;
 
+use App\Events\AssignmentCreated;
 use App\Events\TopicCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Assignment;
@@ -47,6 +48,7 @@ class MaterialController extends Controller
             $assignment->content = $data['content'];
             $assignment->material_id = $data['material_id'];
             $assignment->save();
+            event(new AssignmentCreated($assignment));
             return response()->json(['message' => 'Assignment created successfully'], 201);
         } else {
             return response()->json(['status' => 'error', 'message' => 'Invalid type provided'], 400);
