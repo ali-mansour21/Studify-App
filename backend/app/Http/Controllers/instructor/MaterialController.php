@@ -4,6 +4,7 @@ namespace App\Http\Controllers\instructor;
 
 use App\Http\Controllers\Controller;
 use App\Models\Material;
+use App\Models\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Validation\Rule;
@@ -30,5 +31,13 @@ class MaterialController extends Controller
             'content' => ['required', 'string', 'min:10'],
             'type' => ['required', 'integer']
         ]);
+        if($data['type'] == 0){
+            $topic = new Topic();
+            $topic->title = $data['title'];
+            $topic->content = $data['content'];
+            $topic->material_id = $data['material_id'];
+            $topic->save();
+            return response()->json(['message' => 'Topic created successfully'], 201);
+        }
     }
 }
