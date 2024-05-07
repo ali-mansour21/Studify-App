@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\AssignmentCreated;
+use App\Events\TopicCreated;
 use App\Listeners\SendAssignmentNotification;
+use App\Listeners\SendTopicNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -29,6 +31,7 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
         Event::listen(AssignmentCreated::class,[SendAssignmentNotification::class, 'handle']);
+        Event::listen(TopicCreated::class,[SendTopicNotification::class, 'handle']);
     }
 
     /**
