@@ -62,7 +62,7 @@ class User extends Authenticatable implements JWTSubject
     }
     public function instructorClasses()
     {
-        return $this->hasMany(StudyClass::class);
+        return $this->hasMany(StudyClass::class,'instructor_id');
     }
     public function studentClasses()
     {
@@ -76,12 +76,31 @@ class User extends Authenticatable implements JWTSubject
     }
     public function getUniqueStudentCount()
     {
-        return $this->classesTeaching()
+        return $this->instructorClasses()
             ->with('students')
             ->get()
             ->pluck('students')
             ->flatten()
             ->unique('id')
             ->count();
+    }
+    public function calculateSubmissionRate()
+    {
+        $classes = $this->instructorClasses()->with('assignments.submissions')->get();
+
+        $totalAssignments = 0;
+        $totalSubmissions = 0;
+
+        foreach ($classes as $class) {
+            foreach ($class->assignments as $assignment) {
+                $totalAssignments++;
+                $totalSubmissions += $assignment->submissions->count();  // Count submissions for each assignment
+            }
+        }
+
+        // Avoid division by zero
+        if ($totalAssignments == 0) return 0;
+
+        return ($totalSubmissions / $totalAssignments) * 100;  // Return the percentage rate
     }
 }
