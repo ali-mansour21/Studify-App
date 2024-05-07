@@ -17,6 +17,16 @@ class HomeController extends Controller
         $studentCount = $instructor->getUniqueStudentCount();
         $classes = $instructor->instructorClasses()->with('materials.assignments.submissions')->get();
         $submissionRate = $this->getSubmissionRate($classes);
+        return response()->json(['status' => 'success', 'data' => [
+            'nbOfClasses' => $numClasses,
+            'nbOfStudents' => $studentCount,
+            'submissionRate' => $submissionRate,
+        ]]);
+    }
+    public function chartData()
+    {
+        $instructor = auth()->user();
+        $nbStudentPerMonth = $instructor->getEnrollmentCountsByMonth;
     }
     private function getSubmissionRate($classes)
     {

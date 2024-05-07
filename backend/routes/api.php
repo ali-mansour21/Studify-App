@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\common\ClassRequestController;
+use App\Http\Controllers\instructor\HomeController as InstructorHomeController;
 use App\Http\Controllers\student\AssignmentSubmissionController;
 use App\Http\Controllers\student\AuthController;
 use App\Http\Controllers\student\CategoryController;
@@ -29,8 +30,8 @@ Route::middleware('jwt.auth')->group(function () {
         Route::post('submit_assignment', [AssignmentSubmissionController::class, 'submitSolution']);
         Route::post('student_logout', [AuthController::class, 'logout']);
     });
-    Route::middleware('instructor')->group(function(){
-        
+    Route::middleware('instructor')->group(function () {
+        Route::get('home/state', [InstructorHomeController::class, 'index']);
     });
 });
 Route::middleware('guest')->group(function () {

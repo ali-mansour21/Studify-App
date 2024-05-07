@@ -62,7 +62,7 @@ class User extends Authenticatable implements JWTSubject
     }
     public function instructorClasses()
     {
-        return $this->hasMany(StudyClass::class,'instructor_id');
+        return $this->hasMany(StudyClass::class, 'instructor_id');
     }
     public function studentClasses()
     {
@@ -94,13 +94,33 @@ class User extends Authenticatable implements JWTSubject
         foreach ($classes as $class) {
             foreach ($class->assignments as $assignment) {
                 $totalAssignments++;
-                $totalSubmissions += $assignment->submissions->count();  // Count submissions for each assignment
+                $totalSubmissions += $assignment->submissions->count();
             }
         }
 
-        // Avoid division by zero
         if ($totalAssignments == 0) return 0;
 
-        return ($totalSubmissions / $totalAssignments) * 100;  // Return the percentage rate
+        return ($totalSubmissions / $totalAssignments) * 100;
+    }
+    public function getEnrollmentCountsByMonth()
+    {
+        $enrollmentCounts = [];
+        $currentYear = now()->year;
+
+        for ($month = 1; $month <= 12; $month++) {
+            $startDate = now()->setYear($currentYear)->setMonth($month)->startOfMonth();
+            $endDate = now()->setYear($currentYear)->setMonth($month)->endOfMonth();
+
+            $count = $this->instructorClasses()
+                ->join('class_enrollment', 'study_classes.id', '=', 'class_enrollment.study_class_id')
+                ->whereBetween('class_enrollment.created_at', [$startDate, $endDate])
+                ->distinct()
+                ->count('class_enrollment.student_id');
+
+            $monthName = $startDate->format('M');
+            $enrollmentCounts[$monthName] = $count;
+        }
+
+        return $enrollmentCounts;
     }
 }
