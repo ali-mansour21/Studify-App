@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\common;
 
+use App\Events\RequestSent;
 use App\Http\Controllers\Controller;
 use App\Models\ClassRequest;
 use App\Models\StudyClass;
@@ -42,7 +43,7 @@ class ClassRequestController extends Controller
         $classRequest->student_id = auth()->id();
         $classRequest->class_id = $request->class_id;
         $classRequest->save();
-
+        event(new RequestSent($request));
         return response()->json(['message' => 'Request to join class sent successfully'], 201);
     }
 }

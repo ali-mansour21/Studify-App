@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Events\AssignmentCreated;
+use App\Events\RequestSent;
 use App\Events\TopicCreated;
 use App\Listeners\SendAssignmentNotification;
+use App\Listeners\SendRequestNotification;
 use App\Listeners\SendTopicNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -30,8 +32,9 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         parent::boot();
-        Event::listen(AssignmentCreated::class,[SendAssignmentNotification::class, 'handle']);
-        Event::listen(TopicCreated::class,[SendTopicNotification::class, 'handle']);
+        Event::listen(AssignmentCreated::class, [SendAssignmentNotification::class, 'handle']);
+        Event::listen(TopicCreated::class, [SendTopicNotification::class, 'handle']);
+        Event::listen(RequestSent::class, [SendRequestNotification::class, 'handle']);
     }
 
     /**
