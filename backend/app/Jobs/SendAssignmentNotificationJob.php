@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Assignment;
+use App\Models\Notification as ModelsNotification;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -28,16 +29,27 @@ class SendAssignmentNotificationJob implements ShouldQueue
     public function handle()
     {
         $messaging = app('firebase.messaging');
+        $content = "An assignment '{$this->assignment->title}' has been posted in your class.";
+        $material = $this->assignment->material();
+        $class = $material->class();
         $token = $this->student->firebase_token;
+
+        ModelsNotification::create([
+            'content' => $content,
+            'sender_id' => $class->instructor_id,
+            'receiver_id' => $this->student->id,
+            'type_id' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         if ($token) {
             $message = CloudMessage::withTarget('token', $token)
                 ->withNotification(Notification::fromArray([
                     'title' => 'New Assignment Created',
-                    'body' => "An assignment '{$this->assignment->title}' has been posted in your class."
+                    'body' => $content
                 ]));
             $messaging->send($message);
         }
     }
-    
 }
