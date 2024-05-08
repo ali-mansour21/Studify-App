@@ -6,9 +6,11 @@ use App\Events\ClassRequestApproved;
 use App\Events\ClassRequestRejected;
 use App\Events\RequestSent;
 use App\Http\Controllers\Controller;
+use App\Mail\InviteStudentMail;
 use App\Models\ClassRequest;
 use App\Models\StudyClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 
 class ClassRequestController extends Controller
@@ -34,6 +36,17 @@ class ClassRequestController extends Controller
         $user->studentClasses()->attach($class->id);
 
         return response()->json(['message' => 'Enrolled in class successfully'], 201);
+    }
+    public function inviteStudent(Request $request)
+    {
+        $data =  $request->validate([
+            'class_id' => ['required', Rule::exists('study_classes', 'id')],
+            'student_email' => ['required', 'email']
+        ]);
+        $class = StudyClass::findOrFail($data['class_id']);
+        $class_code = $class->class_code;
+        Mail::to($data['student_email'])->send(new InviteStudentMail($class_code));
+        return response()->json(['status' => 'success', 'message' => 'Invitation sent successfully'], 201);
     }
     public function requestJoin(Request $request)
     {

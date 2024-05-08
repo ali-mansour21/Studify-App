@@ -41,6 +41,7 @@ Route::middleware('jwt.auth')->group(function () {
         Route::post('classes/material', [MaterialController::class, 'store']);
         Route::post('classes/material/addUnit', [MaterialController::class, 'storeData']);
         Route::post('class/request', [ClassRequestController::class, 'approveRequest']);
+        Route::post('classes/invite', [ClassRequestController::class, 'inviteStudent']);
         Route::post('instructor_logout', [InstructorAuthController::class, 'logout']);
     });
 });
