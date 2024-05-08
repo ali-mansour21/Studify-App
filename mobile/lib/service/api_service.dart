@@ -23,4 +23,18 @@ class ApiService {
       throw Exception('Failed to login: $e');
     }
   }
+
+  Future<dynamic> register(String name, String email, String password) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/student_register'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode({
+        'name': name,
+        'email': email,
+        'password': password,
+      }),
+    );
+  }
 }
