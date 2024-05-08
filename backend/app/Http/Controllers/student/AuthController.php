@@ -13,15 +13,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $data = $request->validate([
-            'name' => ['required', 'string', 'min:2', 'max:50'],
-            'email' => ['required', 'email', Rule::unique('users', 'email')],
-            'password' => [
-                'required',
-                'min:6',
-                'max:16',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/'
-            ],
-            'firebase_token' => ['required', 'string']
+            
         ]);
         $user = new User();
         $user->name = $data['name'];
