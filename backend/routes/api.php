@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\common\ClassRequestController;
+use App\Http\Controllers\instructor\AuthController as InstructorAuthController;
 use App\Http\Controllers\instructor\HomeController as InstructorHomeController;
 use App\Http\Controllers\instructor\MaterialController;
 use App\Http\Controllers\instructor\StudyClassController;
@@ -40,9 +41,12 @@ Route::middleware('jwt.auth')->group(function () {
         Route::post('classes/material', [MaterialController::class, 'store']);
         Route::post('classes/material/addUnit', [MaterialController::class, 'storeData']);
         Route::post('class/request', [ClassRequestController::class, 'approveRequest']);
+        Route::post('instructor_logout', [InstructorAuthController::class, 'logout']);
     });
 });
 Route::middleware('guest')->group(function () {
     Route::post('student_register', [AuthController::class, 'register']);
     Route::post('student_login', [AuthController::class, 'login']);
+    Route::post('instructor_register', [InstructorAuthController::class, 'register']);
+    Route::post('instructor_login', [InstructorAuthController::class, 'login']);
 });
