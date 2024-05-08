@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/models/users/user_data.dart';
 import 'package:mobile/screens/categories_screen.dart';
 import 'package:mobile/screens/home_screen.dart';
 import 'package:mobile/screens/login_screen.dart';
@@ -8,6 +9,7 @@ import 'package:mobile/screens/profile_screen.dart';
 import 'package:mobile/screens/register_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:provider/provider.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
@@ -25,7 +27,10 @@ void main() async {
           ),
         )
       : await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => UserData(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
