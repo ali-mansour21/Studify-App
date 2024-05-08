@@ -30,26 +30,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     try {
       final result =
           await _apiService.register(name, email, password, firebaseAccess);
-      if (result != null && result.containsKey('status')) {
-        String status = result['status'];
-        if (status == 'success') {
-          String jwtToken = result['authorization']['token'];
-          Provider.of<UserData>(context, listen: false)
-              .setUserData(name, jwtToken);
-          Navigator.of(context).pushReplacementNamed('/category');
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Registration failed with status: $status')),
-          );
-        }
-      } else {
-        throw Exception(
-            "Received null or invalid response from registration API");
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration failed: $e')),
-      );
+      String jwtToken = result['authorization']['token'];
+      Provider.of<UserData>(context, listen: false).setUserData(name, jwtToken);
+      Navigator.of(context).pushReplacementNamed('/category');
+    } catch (error) {
+      print('The returned error is: $error');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Registration Error: $error')));
     }
   }
 

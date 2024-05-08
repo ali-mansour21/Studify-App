@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\student\AuthLoginRequest;
 use App\Http\Requests\student\AuthRegisterRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
@@ -15,7 +17,14 @@ class AuthController extends Controller
     public function register(AuthRegisterRequest $authRegisterRequest)
     {
         $data =
-            $authRegisterRequest->validated();
+            $authRegisterRequest->all();
+        $validator = Validator::make($data, $authRegisterRequest->rules());
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
         $user = new User();
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -33,11 +42,6 @@ class AuthController extends Controller
                     'type' => 'bearer',
                 ]
             ]);
-        } else {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Failed to create user'
-            ], 500);
         }
     }
     public function login(AuthLoginRequest $authLoginRequest)

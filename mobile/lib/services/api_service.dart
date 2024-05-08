@@ -39,9 +39,12 @@ class ApiService {
       );
       if (response.statusCode == 200) {
         return json.decode(response.body);
+      } else if (response.statusCode == 422) {
+        final errors = json.decode(response.body);
+        throw Exception('Validation failed: ${errors['errors']}');
       }
     } catch (e) {
-      throw Exception('Error failed to create a new account:  $e.toString()');
+      throw Exception('Failed to register: $e');
     }
   }
 }
