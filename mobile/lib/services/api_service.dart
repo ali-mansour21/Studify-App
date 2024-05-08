@@ -24,7 +24,8 @@ class ApiService {
     }
   }
 
-  Future<dynamic> register(String name, String email, String password) async {
+  Future<dynamic> register(
+      String name, String email, String password, String firebaseAccess) async {
     final response = await http.post(
       Uri.parse('$baseUrl/student_register'),
       headers: <String, String>{
@@ -34,6 +35,7 @@ class ApiService {
         'name': name,
         'email': email,
         'password': password,
+        'firebase_access': firebaseAccess
       }),
     );
   }

@@ -2,31 +2,62 @@ import 'package:flutter/material.dart';
 import 'package:mobile/widgets/auth_layout.dart';
 import 'package:mobile/widgets/customtextformfield.dart';
 import 'package:mobile/widgets/mainbutton.dart';
+import 'package:mobile/services/api_service.dart'; // Import your ApiService
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
+
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final ApiService _apiService = ApiService();
+
+  void _register() async {
+    final name = _nameController.text;
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    final firebaseAccess =
+        "YourFirebaseAccessToken";
+
+    try {
+      final result =
+          await _apiService.register(name, email, password, firebaseAccess);
+      Navigator.of(context).pushReplacementNamed('/category');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registration failed: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return AuthLayout(
-      imagePath:
-          'assets/Studify-logo.png', 
-      title: "Let’s Get Started",
+      imagePath: 'assets/Studify-logo.png',
+      title: "Let's Get Started",
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const CustomTextFormField(
+            CustomTextFormField(
+              controller: _nameController,
               labelText: "Name",
               iconData: Icons.person,
             ),
-            const CustomTextFormField(
+            CustomTextFormField(
+              controller: _emailController,
               labelText: "Email",
               iconData: Icons.email,
               keyboardType: TextInputType.emailAddress,
             ),
-            const CustomTextFormField(
+            CustomTextFormField(
+              controller: _passwordController,
               labelText: "Password",
               iconData: Icons.lock,
               obscureText: true,
@@ -35,9 +66,7 @@ class RegisterScreen extends StatelessWidget {
             MainButton(
               buttonColor: const Color(0xFF3786A8),
               buttonText: "Sign up",
-              onPressed: () {
-                Navigator.of(context).pushReplacementNamed('/category');
-              },
+              onPressed: _register,
             ),
             const SizedBox(height: 20),
             GestureDetector(
@@ -53,5 +82,13 @@ class RegisterScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
