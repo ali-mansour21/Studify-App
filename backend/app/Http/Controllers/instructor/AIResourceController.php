@@ -15,16 +15,23 @@ class AIResourceController extends Controller
             'material_id' => ['required', 'integer', Rule::exists('materials', 'id')],
             'faq_file' => ['required', 'file', 'mimes:pdf,doc,docx', 'max:10240'],
         ]);
-        if($request->has('faq_file')){
+        if ($request->has('faq_file')) {
             $file = $request->file('faq_file');
-            $filename = time() . '_' . $file->getClientOriginalName();
+            $filename = $this->generateFileName($file);
             $path = $file->storeAs('materialsData', $filename, 'public');
             $materialFile = new Faq();
             $materialFile->material_id = $data['material_id'];
             $materialFile->file_name = $filename;
             $materialFile->file_path = $path;
             $materialFile->save();
+            return response()->json(['status' => 'success', 'message' => 'Material file was successfully created']);
         }
-        return response()->json(['status' => 'success']);
+        return response()->json(['status' => 'error', 'message' => 'File upload failed']);
+    }
+    private function generateFileName($file)
+    {
+        $timestamp = time();
+        $randomStr = bin2hex(random_bytes(5));
+        return $timestamp . '_' . $randomStr . '.' . $file->getClientOriginalExtension();
     }
 }

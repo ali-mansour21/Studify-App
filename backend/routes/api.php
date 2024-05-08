@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\common\ClassRequestController;
+use App\Http\Controllers\instructor\AIResourceController;
 use App\Http\Controllers\instructor\AuthController as InstructorAuthController;
 use App\Http\Controllers\instructor\HomeController as InstructorHomeController;
 use App\Http\Controllers\instructor\MaterialController;
@@ -43,6 +44,7 @@ Route::middleware('jwt.auth')->group(function () {
         Route::post('class/request', [ClassRequestController::class, 'approveRequest']);
         Route::post('classes/invite', [ClassRequestController::class, 'inviteStudent']);
         Route::post('instructor_logout', [InstructorAuthController::class, 'logout']);
+        Route::post('faq_file', [AIResourceController::class, 'submitFaqFile']);
     });
 });
 Route::middleware('guest')->group(function () {
