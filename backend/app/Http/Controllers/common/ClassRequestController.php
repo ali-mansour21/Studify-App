@@ -46,4 +46,19 @@ class ClassRequestController extends Controller
         event(new RequestSent($request));
         return response()->json(['message' => 'Request to join class sent successfully'], 201);
     }
+    public function approveRequest(Request $request)
+    {
+        $data = $request->validate([
+            'request_id' => ['required', 'integer', Rule::exists('class_requests', 'id')],
+            'status' => ['required', 'in:approved,rejected']
+        ]);
+        $classRequest = ClassRequest::findOrFail($data['request_id']);
+        if ($data['status'] === 'approved') {
+            $classRequest->status = $data['status'];
+            $classRequest->save();
+            $class = StudyClass::findOrFail($classRequest->class_id);
+            $class->students()->attach($classRequest->student_id);
+            return response()->json(['message' => 'Request approved successfully'], 200);
+        }
+    }
 }
