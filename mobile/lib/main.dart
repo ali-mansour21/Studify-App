@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/screens/categories_screen.dart';
 import 'package:mobile/screens/home_screen.dart';
@@ -8,17 +10,21 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
+  print("Handling a background message: ${message.messageId}");
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  try {
-    await Firebase.initializeApp();
-  } catch (e) {
-    print("Firebase initialization failed: $e");
-  }
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  Platform.isAndroid
+      ? await Firebase.initializeApp(
+          options: const FirebaseOptions(
+            apiKey: "AIzaSyBaQti8ruCaJih0bpivm5UEvdCW79RCTNo",
+            appId: "1:607925811224:android:6890f6de28ddf7e6cf6b6d",
+            messagingSenderId: "607925811224",
+            projectId: "studify-81155",
+          ),
+        )
+      : await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

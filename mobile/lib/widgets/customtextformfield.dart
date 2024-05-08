@@ -5,22 +5,23 @@ class CustomTextFormField extends StatelessWidget {
   final IconData iconData;
   final TextInputType keyboardType;
   final bool obscureText;
-
-  const CustomTextFormField({
-    super.key,
-    required this.labelText,
-    required this.iconData,
-    this.keyboardType = TextInputType.text, 
-    this.obscureText = false, 
-  });
+  final TextEditingController? controller;
+  const CustomTextFormField(
+      {super.key,
+      required this.labelText,
+      required this.iconData,
+      this.keyboardType = TextInputType.text,
+      this.obscureText = false,
+      this.controller});
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: SizedBox(
-        width: 283, 
-        height: 55, 
+        width: 283,
+        height: 55,
         child: TextFormField(
+          controller: controller,
           decoration: InputDecoration(
             labelText: labelText,
             labelStyle: const TextStyle(color: Colors.black),

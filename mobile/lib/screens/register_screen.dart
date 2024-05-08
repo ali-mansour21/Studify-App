@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/services/notification_service.dart';
 import 'package:mobile/widgets/auth_layout.dart';
 import 'package:mobile/widgets/customtextformfield.dart';
 import 'package:mobile/widgets/mainbutton.dart';
@@ -16,23 +17,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final ApiService _apiService = ApiService();
+  final NotificationService _notificationService = NotificationService();
 
   void _register() async {
     final name = _nameController.text;
     final email = _emailController.text;
     final password = _passwordController.text;
-    final firebaseAccess =
-        "YourFirebaseAccessToken";
+    String? firebaseAccess = await _notificationService.getFirebaseToken();
 
     try {
       final result =
           await _apiService.register(name, email, password, firebaseAccess);
-      Navigator.of(context).pushReplacementNamed('/category');
+      print(' the result is :$result');
+      // Navigator.of(context).pushReplacementNamed('/category');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Registration failed: $e')),
       );
     }
+    print('the access token is: $firebaseAccess');
   }
 
   @override

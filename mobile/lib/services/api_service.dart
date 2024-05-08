@@ -24,8 +24,8 @@ class ApiService {
     }
   }
 
-  Future<dynamic> register(
-      String name, String email, String password, String firebaseAccess) async {
+  Future<dynamic> register(String name, String email, String password,
+      String? firebaseAccess) async {
     final response = await http.post(
       Uri.parse('$baseUrl/student_register'),
       headers: <String, String>{
@@ -38,5 +38,10 @@ class ApiService {
         'firebase_access': firebaseAccess
       }),
     );
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to register: $response');
+    }
   }
 }
