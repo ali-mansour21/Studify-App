@@ -13,4 +13,8 @@ class ClassRequest extends Model
     {
         return $this->belongsTo(StudyClass::class, 'class_id');
     }
+    public function student()
+    {
+        return $this->belongsTo(User::class, 'student_id');
+    }
 }
