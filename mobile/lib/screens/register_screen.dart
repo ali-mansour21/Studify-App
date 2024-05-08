@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/users/user_data.dart';
 import 'package:mobile/services/notification_service.dart';
 import 'package:mobile/widgets/auth_layout.dart';
 import 'package:mobile/widgets/customtextformfield.dart';
 import 'package:mobile/widgets/mainbutton.dart';
-import 'package:mobile/services/api_service.dart'; // Import your ApiService
+import 'package:mobile/services/api_service.dart';
+import 'package:provider/provider.dart'; // Import your ApiService
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -28,14 +30,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
     try {
       final result =
           await _apiService.register(name, email, password, firebaseAccess);
-      print(' the result is :$result');
-      // Navigator.of(context).pushReplacementNamed('/category');
+      if (result != null && result.containsKey('status')) {
+        String status = result['status'];
+        if (status == 'success') {
+          String jwtToken = result['authorization']['token'];
+          Provider.of<UserData>(context, listen: false)
+              .setUserData(name, jwtToken);
+          Navigator.of(context).pushReplacementNamed('/category');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Registration failed with status: $status')),
+          );
+        }
+      } else {
+        throw Exception(
+            "Received null or invalid response from registration API");
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Registration failed: $e')),
       );
     }
-    print('the access token is: $firebaseAccess');
   }
 
   @override
