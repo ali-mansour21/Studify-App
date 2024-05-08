@@ -3,9 +3,13 @@
 namespace App\Providers;
 
 use App\Events\AssignmentCreated;
+use App\Events\ClassRequestApproved;
+use App\Events\ClassRequestRejected;
 use App\Events\RequestSent;
 use App\Events\TopicCreated;
 use App\Listeners\SendAssignmentNotification;
+use App\Listeners\SendClassRequestApprovedNotification;
+use App\Listeners\SendClassRequestRejectedNotification;
 use App\Listeners\SendRequestNotification;
 use App\Listeners\SendTopicNotification;
 use Illuminate\Auth\Events\Registered;
@@ -35,6 +39,8 @@ class EventServiceProvider extends ServiceProvider
         Event::listen(AssignmentCreated::class, [SendAssignmentNotification::class, 'handle']);
         Event::listen(TopicCreated::class, [SendTopicNotification::class, 'handle']);
         Event::listen(RequestSent::class, [SendRequestNotification::class, 'handle']);
+        Event::listen(ClassRequestApproved::class, [SendClassRequestApprovedNotification::class, 'handle']);
+        Event::listen(ClassRequestRejected::class, [SendClassRequestRejectedNotification::class, 'handle']);
     }
 
     /**

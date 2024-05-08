@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\common;
 
+use App\Events\ClassRequestApproved;
+use App\Events\ClassRequestRejected;
 use App\Events\RequestSent;
 use App\Http\Controllers\Controller;
 use App\Models\ClassRequest;
@@ -58,10 +60,12 @@ class ClassRequestController extends Controller
             $classRequest->save();
             $class = StudyClass::findOrFail($classRequest->class_id);
             $class->students()->attach($classRequest->student_id);
+            event(new ClassRequestApproved($classRequest));
             return response()->json(['status' => 'success', 'message' => 'Request approved successfully'], 200);
         } else {
             $classRequest->status = $data['status'];
             $classRequest->save();
+            event(new ClassRequestRejected($classRequest));
             return response()->json(['status' => 'success', 'message' => 'Request rejected successfully'], 200);
         }
     }
