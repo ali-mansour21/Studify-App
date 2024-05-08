@@ -5,49 +5,32 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class InviteStudentMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $classCode;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($classCode)
     {
-        //
+        $this->classCode = $classCode;
     }
 
     /**
-     * Get the message envelope.
+     * Build the message.
      */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Invite Student Mail',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'view.name',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this
+            ->subject('Invite Student Mail')
+            ->view('emails.inviteToClass')
+            ->with([
+                'classCode' => $this->classCode,
+            ]);
     }
 }
