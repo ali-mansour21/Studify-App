@@ -16,8 +16,6 @@ class ApiService {
           }));
       if (response.statusCode == 200) {
         return json.decode(response.body);
-      } else {
-        throw Exception('Failed to login: $response.body');
       }
     } catch (e) {
       throw Exception('Failed to login: $e');
@@ -26,22 +24,24 @@ class ApiService {
 
   Future<dynamic> register(String name, String email, String password,
       String? firebaseAccess) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/student_register'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: json.encode({
-        'name': name,
-        'email': email,
-        'password': password,
-        'firebase_access': firebaseAccess
-      }),
-    );
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('Failed to register: $response');
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/student_register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode({
+          'name': name,
+          'email': email,
+          'password': password,
+          'firebase_token': firebaseAccess
+        }),
+      );
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      }
+    } catch (e) {
+      throw Exception('Error failed to create a new account:  $e.toString()');
     }
   }
 }
