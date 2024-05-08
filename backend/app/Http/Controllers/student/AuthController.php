@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\student;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\student\AuthLoginRequest;
+use App\Http\Requests\student\AuthRegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,10 +12,10 @@ use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(AuthRegisterRequest $authRegisterRequest)
     {
         $data =
-            $request->validated();
+            $authRegisterRequest->validated();
         $user = new User();
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -38,17 +40,9 @@ class AuthController extends Controller
             ], 500);
         }
     }
-    public function login(Request $request)
+    public function login(AuthLoginRequest $authLoginRequest)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email', Rule::exists('users', 'email')],
-            'password' => [
-                'required',
-                'min:6',
-                'max:16',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/'
-            ],
-        ]);
+        $credentials = $authLoginRequest->validated();
         $token = Auth::attempt($credentials);
         if (!$token) {
             return response()->json([
