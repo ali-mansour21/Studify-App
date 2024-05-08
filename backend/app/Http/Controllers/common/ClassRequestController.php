@@ -58,7 +58,11 @@ class ClassRequestController extends Controller
             $classRequest->save();
             $class = StudyClass::findOrFail($classRequest->class_id);
             $class->students()->attach($classRequest->student_id);
-            return response()->json(['message' => 'Request approved successfully'], 200);
+            return response()->json(['status' => 'success', 'message' => 'Request approved successfully'], 200);
+        } else {
+            $classRequest->status = $data['status'];
+            $classRequest->save();
+            return response()->json(['status' => 'success', 'message' => 'Request rejected successfully'], 200);
         }
     }
 }
