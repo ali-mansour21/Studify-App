@@ -6,20 +6,21 @@ class MaterialsProvider with ChangeNotifier {
   final HomeApiService _apiService = HomeApiService();
 
   List<MaterialItem> _materials = [];
+  bool _isLoading = false;
 
   List<MaterialItem> get materials => _materials;
+  bool get isLoading => _isLoading;
 
-  void setMaterials(List<MaterialItem> materials) {
-    _materials = materials;
+  void fetchMaterials(BuildContext context) async {
+    _isLoading = true;
     notifyListeners();
-  }
-
-  Future<void> fetchMaterials(BuildContext context) async {
     try {
       _materials = await _apiService.getHomeData(context);
-      notifyListeners();
     } catch (e) {
       print("Failed to fetch materials: $e");
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 }

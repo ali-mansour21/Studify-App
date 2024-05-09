@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile/models/users/user_data.dart';
-import 'package:mobile/models/material_model.dart'; // Make sure this import is correct
+import 'package:mobile/models/material_model.dart';
 import 'package:provider/provider.dart';
 
 class HomeApiService {
