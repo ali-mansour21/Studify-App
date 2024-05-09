@@ -47,4 +47,24 @@ class ApiService {
       throw Exception('Failed to register: $e');
     }
   }
+
+  Future<dynamic> getAllCategories() async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/categories'));
+      if (response.statusCode == 200) {
+        var decodedResponse = json.decode(response.body);
+        if (decodedResponse['status'] == 'success' &&
+            decodedResponse.containsKey('data')) {
+          return decodedResponse['data'];
+        } else {
+          throw Exception('Unexpected JSON structure: ${response.body}');
+        }
+      } else {
+        throw Exception(
+            'Failed to fetch categories: Status code ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to get all categories: $e');
+    }
+  }
 }

@@ -20,7 +20,7 @@ class CategoryCard extends StatelessWidget {
       child: Card(
         margin: EdgeInsets.zero,
         clipBehavior: Clip.antiAlias,
-        color: const Color(0xFFD9D9D9),
+        color: const Color(0xFF3786A8).withOpacity(0.8),
         shape: isSelected
             ? RoundedRectangleBorder(
                 side: const BorderSide(color: Colors.blue, width: 2.0),
@@ -37,11 +37,11 @@ class CategoryCard extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0), 
+              padding: const EdgeInsets.all(8.0),
               child: Text(
                 title,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ],

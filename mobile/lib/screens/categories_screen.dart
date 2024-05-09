@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/card_category.dart';
 import 'package:mobile/widgets/mainbutton.dart';
+import 'package:mobile/services/api_service.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -11,6 +12,36 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   final Set<String> _selectedCategories = {};
+  List<CategoryCard> cards = [];
+  bool isLoading = true;
+  final ApiService _apiService = ApiService();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCategories();
+  }
+
+  Future<void> fetchCategories() async {
+    try {
+      final List<dynamic> categories = await _apiService.getAllCategories();
+      setState(() {
+        cards = categories.map((category) {
+          return CategoryCard(
+            title: category['name'],
+            imagePath: 'assets/categories/${category['name']}.png',
+            isSelected: _selectedCategories.contains('${category['name']}'),
+            onSelect: () => _handleCategoryTap('${category['name']}'),
+          );
+        }).toList();
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() => isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load categories: $e')));
+    }
+  }
 
   void _handleCategoryTap(String title) {
     setState(() {
@@ -24,50 +55,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<CategoryCard> cards = [
-      CategoryCard(
-        title: 'Math',
-        imagePath: 'assets/categories/Math.png',
-        isSelected: _selectedCategories.contains('Math'),
-        onSelect: () => _handleCategoryTap('Math'),
-      ),
-      CategoryCard(
-        title: 'Arabic',
-        imagePath: 'assets/categories/Arabic.png',
-        isSelected: _selectedCategories.contains('Arabic'),
-        onSelect: () => _handleCategoryTap('Arabic'),
-      ),
-      CategoryCard(
-        title: 'English',
-        imagePath: 'assets/categories/English.png',
-        isSelected: _selectedCategories.contains('English'),
-        onSelect: () => _handleCategoryTap('English'),
-      ),
-      CategoryCard(
-        title: 'Geo',
-        imagePath: 'assets/categories/Geo.png',
-        isSelected: _selectedCategories.contains('Geo'),
-        onSelect: () => _handleCategoryTap('Geo'),
-      ),
-      CategoryCard(
-        title: 'History',
-        imagePath: 'assets/categories/History.png',
-        isSelected: _selectedCategories.contains('History'),
-        onSelect: () => _handleCategoryTap('History'),
-      ),
-      CategoryCard(
-        title: 'Science',
-        imagePath: 'assets/categories/Science.png',
-        isSelected: _selectedCategories.contains('Science'),
-        onSelect: () => _handleCategoryTap('Science'),
-      ),
-      CategoryCard(
-        title: 'French',
-        imagePath: 'assets/categories/French.png',
-        isSelected: _selectedCategories.contains('French'),
-        onSelect: () => _handleCategoryTap('French'),
-      ),
-    ];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -82,9 +69,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             Icons.arrow_back,
             color: Colors.white,
           ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Padding(
@@ -94,17 +79,20 @@ class _CategoryScreenState extends State<CategoryScreen> {
           children: <Widget>[
             const Text(
               'Choose a category according to your expertise',
+              style: TextStyle(fontSize: 18.0),
               textAlign: TextAlign.left,
             ),
             const SizedBox(height: 16.0),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                childAspectRatio: 1.0,
-                children: cards,
-              ),
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : GridView.count(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      childAspectRatio: 1.0,
+                      children: cards,
+                    ),
             ),
             const SizedBox(height: 16.0),
             SizedBox(
@@ -112,9 +100,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
               child: MainButton(
                 buttonColor: const Color(0xFF3786A8),
                 buttonText: "Next",
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/home');
-                },
+                onPressed: () =>
+                    Navigator.pushReplacementNamed(context, '/home'),
               ),
             )
           ],

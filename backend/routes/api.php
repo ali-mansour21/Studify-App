@@ -49,6 +49,7 @@ Route::middleware('jwt.auth')->group(function () {
     });
 });
 Route::middleware('guest')->group(function () {
+    Route::get('categories', [CategoryController::class, 'index']);
     Route::post('student_register', [AuthController::class, 'register']);
     Route::post('student_login', [AuthController::class, 'login']);
     Route::post('instructor_register', [InstructorAuthController::class, 'register']);
