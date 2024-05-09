@@ -68,7 +68,7 @@ class HomeController extends Controller
     {
         $categoryIds = $categories->pluck('id');
 
-        return StudyClass::whereHas('category', function ($query) use ($categoryIds) {
+        return StudyClass::with(['materials.topics', 'materials.assignments'])->whereHas('category', function ($query) use ($categoryIds) {
             $query->whereIn('id', $categoryIds);
         })->get();
     }
