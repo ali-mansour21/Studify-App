@@ -15,8 +15,9 @@ class HomeController extends Controller
     public function index()
     {
         $user = auth()->user();
+        $user_id = $user->id;
         $categories = $user->categories;
-        $student_notes = $this->fetchStudentNotes($categories, $user->id);
+        $student_notes = $this->fetchStudentNotes($categories, $user_id);
         $classes = $this->fetchStudyClasses($categories);
         return response()->json(['status' => 'success', 'data' => [
             'recommended_notes' => $student_notes,
@@ -57,11 +58,10 @@ class HomeController extends Controller
     {
         $categoryIds = $categories->pluck('id');
 
-        return StudentNote::with('noteDescriptions')
+        return StudentNote::with('noteDescriptions')->where('student_id', '!=', $user_id)
             ->whereHas('category', function ($query) use ($categoryIds) {
                 $query->whereIn('id', $categoryIds);
             })
-            ->where('student_id', '!=', $user_id)
             ->get();
     }
     private function fetchStudyClasses($categories)

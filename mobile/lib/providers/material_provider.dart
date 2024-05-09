@@ -15,7 +15,7 @@ class MaterialsProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      _materials = await _apiService.getHomeData(context);
+      _materials = await _apiService.getNotesData(context);
     } catch (e) {
       print("Failed to fetch materials: $e");
     } finally {
