@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart';
 import 'package:mobile/models/material_model.dart';
-import 'package:mobile/models/topic_material.dart';
 import 'package:mobile/providers/material_provider.dart';
 import 'package:mobile/screens/class_detail_screen.dart';
 import 'package:mobile/screens/material_screen.dart';

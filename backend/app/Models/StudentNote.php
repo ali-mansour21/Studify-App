@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class StudentNote extends Model
 {
     use HasFactory;
+    protected $fillable = ['title','category_id','student_id'];
     public function student()
     {
         return $this->belongsTo(User::class, 'student_id');

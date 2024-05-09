@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class NoteDescription extends Model
 {
     use HasFactory;
-    public function studentNote(){
+    protected $fillable = ['title', 'content', 'note_id'];
+    public function studentNote()
+    {
         return $this->belongsTo(StudentNote::class);
     }
 }
