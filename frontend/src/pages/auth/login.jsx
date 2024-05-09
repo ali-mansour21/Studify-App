@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faKey } from "@fortawesome/free-solid-svg-icons";
 import sendRequest from "../../core/tools/userRequest.js";
 import { requestMethods } from "../../core/requests/requestMethods.js";
+import { setUser } from "../../redux/boarderSlice.js";
 import "./styles/login.css";
 const Login = () => {
+  const dispatch = useDispatch();
   const navigator = useNavigate();
   const [userData, setUserData] = useState({
     email: "",
@@ -15,6 +18,8 @@ const Login = () => {
     sendRequest(requestMethods.POST, "instructor_login", userData).then(
       (response) => {
         if (response.status === 200) {
+          console.log(response);
+          dispatch(setUser(response.data.user));
           localStorage.setItem("token", response.data.authorization.token);
           navigator("/home");
         }
