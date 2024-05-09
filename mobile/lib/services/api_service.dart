@@ -84,13 +84,7 @@ class ApiService {
         },
       );
       if (response.statusCode == 200) {
-        var decodedResponse = json.decode(response.body);
-        if (decodedResponse['status'] == 'success' &&
-            decodedResponse.containsKey('data')) {
-          return decodedResponse['data'];
-        } else {
-          throw Exception('Unexpected JSON structure: ${response.body}');
-        }
+        return json.decode(response.body);
       } else {
         throw Exception(
             'Failed to fetch home data: Status code ${response.statusCode}');

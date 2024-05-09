@@ -46,6 +46,25 @@ class _CategoryScreenState extends State<CategoryScreen> {
     });
   }
 
+  void _onNextPressed() async {
+    if (_selectedCategoryIds.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select at least one category')),
+      );
+      return;
+    }
+
+    try {
+      final responseData = await _apiService.sendSelectedCategories(
+          _selectedCategoryIds.toList(), context);
+      print("Response from sending categories: $responseData");
+      Navigator.pushReplacementNamed(context, '/home');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error submitting categories: $e')));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,10 +122,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               child: MainButton(
                   buttonColor: const Color(0xFF3786A8),
                   buttonText: "Next",
-                  onPressed: () {
-                    print('the selected ids are: $_selectedCategoryIds');
-                    // Navigator.pushReplacementNamed(context, '/home');
-                  }),
+                  onPressed: _onNextPressed),
             )
           ],
         ),
