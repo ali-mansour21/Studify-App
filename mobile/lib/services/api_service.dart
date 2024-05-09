@@ -1,6 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile/models/users/user_data.dart';
+import 'package:provider/provider.dart';
 
 class ApiService {
   final String baseUrl = "http://192.168.0.104:8001/api";
@@ -65,6 +68,35 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Failed to get all categories: $e');
+    }
+  }
+
+  Future<dynamic> sendSelectedCategories(
+      List<int> selectedCategories, BuildContext context) async {
+    String token = Provider.of<UserData>(context, listen: false).jwtToken;
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/categories/select'),
+        body: json.encode({'categories': selectedCategories}),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        var decodedResponse = json.decode(response.body);
+        if (decodedResponse['status'] == 'success' &&
+            decodedResponse.containsKey('data')) {
+          return decodedResponse['data'];
+        } else {
+          throw Exception('Unexpected JSON structure: ${response.body}');
+        }
+      } else {
+        throw Exception(
+            'Failed to fetch home data: Status code ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to get home data: $e');
     }
   }
 }
