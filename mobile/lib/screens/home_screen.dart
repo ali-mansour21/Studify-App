@@ -29,25 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  final List<MaterialItem> materials = [
-    MaterialItem(
-      id: 1,
-      title: 'Material 1',
-      topics: [
-        NotesTopic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
-        NotesTopic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
-      ],
-    ),
-    MaterialItem(
-      id: 2,
-      title: 'Material 2',
-      topics: [
-        NotesTopic(id: 1, title: 'Topic 1', content: 'Content for topic 1'),
-        NotesTopic(id: 2, title: 'Topic 2', content: 'Content for topic 2'),
-      ],
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     const int notificationCount = 3;
@@ -174,90 +155,72 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 100,
                     child: Consumer<MaterialsProvider>(
                       builder: (context, materialsProvider, child) {
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: materialsProvider.materials.length,
-                          itemBuilder: (context, index) {
-                            MaterialItem material =
-                                materialsProvider.materials[index];
-                            return Card(
-                              color: const Color(0xFF3786A8),
-                              child: SizedBox(
-                                width: 105,
-                                height: 140,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MaterialScreen(
-                                              material: material)),
-                                    );
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      const Icon(
-                                        Icons.medical_information,
-                                        size: 48,
-                                        color: Colors.white,
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        material.title,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
+                        if (materialsProvider.materials.isEmpty) {
+                          return const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              child: Center(
+                                child: Text(
+                                  'No materials available',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ));
+                        } else {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: SizedBox(
+                              height: 100,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: materialsProvider.materials.length,
+                                itemBuilder: (context, index) {
+                                  MaterialItem material =
+                                      materialsProvider.materials[index];
+                                  return Card(
+                                    color: const Color(0xFF3786A8),
+                                    child: SizedBox(
+                                      width: 105,
+                                      height: 140,
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MaterialScreen(
+                                                        material: material)),
+                                          );
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            const Icon(
+                                              Icons.medical_information,
+                                              size: 48,
+                                              color: Colors.white,
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              material.title,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        );
+                            ),
+                          );
+                        }
                       },
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text('Available Classes',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-                ),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: ListView.builder(
-                    itemCount: classInfo.length,
-                    itemBuilder: (context, index) {
-                      final classData = classInfo[index];
-                      return Card(
-                        child: ListTile(
-                          leading: const Icon(
-                            Icons.class_,
-                            color: Colors.blue,
-                            size: 50,
-                          ),
-                          title: Text(classData.title),
-                          subtitle: Text(classData.description),
-                          trailing: const Icon(Icons.chevron_right),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ClassDetailScreen(
-                                        classDetail: classData,
-                                      )),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                )),
               ],
             ),
           ),
@@ -265,4 +228,53 @@ class _HomeScreenState extends State<HomeScreen> {
               currentIndex: _selectedIndex, onItemSelected: _onNavItemSelected),
         ));
   }
+}
+
+Widget _buildClassesSection() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Text(
+          'Available Classes',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        ),
+      ),
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: ListView.builder(
+            itemCount:
+                classInfo.length, // Ensure classInfo is available and populated
+            itemBuilder: (context, index) {
+              final classData =
+                  classInfo[index]; // Ensure classData is properly defined
+              return Card(
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.class_,
+                    color: Colors.blue,
+                    size: 50,
+                  ),
+                  title: Text(classData.title),
+                  subtitle: Text(classData.description),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ClassDetailScreen(classDetail: classData),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    ],
+  );
 }
