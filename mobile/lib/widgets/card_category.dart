@@ -20,7 +20,7 @@ class CategoryCard extends StatelessWidget {
       child: Card(
         margin: EdgeInsets.zero,
         clipBehavior: Clip.antiAlias,
-        color: const Color(0xFF3786A8).withOpacity(0.8),
+        color: const Color(0xFF3786A8).withOpacity(0.6),
         shape: isSelected
             ? RoundedRectangleBorder(
                 side: const BorderSide(color: Colors.blue, width: 2.0),

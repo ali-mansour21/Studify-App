@@ -11,8 +11,8 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  final Set<String> _selectedCategories = {};
-  List<CategoryCard> cards = [];
+  final Set<int> _selectedCategoryIds = {};
+  List<dynamic> categoryData = [];
   bool isLoading = true;
   final ApiService _apiService = ApiService();
 
@@ -26,14 +26,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     try {
       final List<dynamic> categories = await _apiService.getAllCategories();
       setState(() {
-        cards = categories.map((category) {
-          return CategoryCard(
-            title: category['name'],
-            imagePath: 'assets/categories/${category['name']}.png',
-            isSelected: _selectedCategories.contains('${category['name']}'),
-            onSelect: () => _handleCategoryTap('${category['name']}'),
-          );
-        }).toList();
+        categoryData = categories; // Save the data
         isLoading = false;
       });
     } catch (e) {
@@ -43,12 +36,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
     }
   }
 
-  void _handleCategoryTap(String title) {
+  void _handleCategoryTap(int id, String name) {
     setState(() {
-      if (_selectedCategories.contains(title)) {
-        _selectedCategories.remove(title);
+      if (_selectedCategoryIds.contains(id)) {
+        _selectedCategoryIds.remove(id);
       } else {
-        _selectedCategories.add(title);
+        _selectedCategoryIds.add(id);
       }
     });
   }
@@ -91,18 +84,29 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       crossAxisSpacing: 16.0,
                       mainAxisSpacing: 16.0,
                       childAspectRatio: 1.0,
-                      children: cards,
+                      children: categoryData
+                          .map((category) => CategoryCard(
+                                title: category['name'],
+                                imagePath:
+                                    'assets/categories/${category['name']}.png',
+                                isSelected: _selectedCategoryIds
+                                    .contains(category['id']),
+                                onSelect: () => _handleCategoryTap(
+                                    category['id'], category['name']),
+                              ))
+                          .toList(),
                     ),
             ),
             const SizedBox(height: 16.0),
             SizedBox(
               width: double.infinity,
               child: MainButton(
-                buttonColor: const Color(0xFF3786A8),
-                buttonText: "Next",
-                onPressed: () =>
-                    Navigator.pushReplacementNamed(context, '/home'),
-              ),
+                  buttonColor: const Color(0xFF3786A8),
+                  buttonText: "Next",
+                  onPressed: () {
+                    print('the selected ids are: $_selectedCategoryIds');
+                    // Navigator.pushReplacementNamed(context, '/home');
+                  }),
             )
           ],
         ),
