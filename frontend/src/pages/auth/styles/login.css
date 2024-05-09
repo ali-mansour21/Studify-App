@@ -20,7 +20,7 @@ body {
   position: relative;
 }
 .signin-form input {
-  width: 455px;
+  width: 250px;
   padding: 10px 10px 10px 40px;
   margin: 10px 0;
   border: 1px solid #ddd;
@@ -30,15 +30,16 @@ body {
 .signin-form .input-icon {
   position: absolute;
   top: 20px;
-  left: 20px;
+  left: 27%;
   color: rgba(0, 0, 0, 0.45);
   transform: translateX(-50%);
   pointer-events: none;
 }
 .signin-form button {
-  width: 100%;
+  width: 250px;
   padding: 10px;
   margin-top: 10px;
+  font-weight: bold;
   color: white;
   background-color: #3786a8;
   border: none;
