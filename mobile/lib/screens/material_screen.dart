@@ -12,6 +12,7 @@ class MaterialScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
+            print(material.topics);
             Navigator.pop(context);
           },
         ),

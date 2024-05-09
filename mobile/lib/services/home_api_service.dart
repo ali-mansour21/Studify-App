@@ -26,6 +26,7 @@ class HomeApiService {
               .map((dynamic item) => MaterialItem.fromJson(item))
               .cast<MaterialItem>()
               .toList();
+          print(studentNotes);
           return studentNotes;
         } else {
           throw Exception("No notes data found or failed status");

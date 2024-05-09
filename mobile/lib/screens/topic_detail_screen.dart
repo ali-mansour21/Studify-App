@@ -45,15 +45,15 @@ class TopicDetailScreen extends StatelessWidget {
           ),
         ),
         padding: const EdgeInsets.all(16),
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Expanded(
               child: SingleChildScrollView(
                 child: Text(
-                  'this is the text for the document, this is the text for the document...',
-                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  topic.content,
+                  style: const TextStyle(fontSize: 16, color: Colors.black),
                 ),
               ),
             ),

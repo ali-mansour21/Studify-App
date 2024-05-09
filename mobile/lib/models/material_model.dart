@@ -7,7 +7,7 @@ class MaterialItem {
 
   MaterialItem({required this.id, required this.title, required this.topics});
   factory MaterialItem.fromJson(Map<String, dynamic> json) {
-    List<dynamic>? topicsData = json['topics'];
+    List<dynamic>? topicsData = json['note_descriptions'];
     List<NotesTopic> topicsList = [];
 
     if (topicsData != null) {
