@@ -46,7 +46,14 @@ class AuthController extends Controller
     }
     public function login(AuthLoginRequest $authLoginRequest)
     {
-        $credentials = $authLoginRequest->validated();
+        $credentials = $authLoginRequest->all();
+        $validator = Validator::make($credentials, $authLoginRequest->rules());
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
         $token = Auth::attempt($credentials);
         if (!$token) {
             return response()->json([
@@ -59,11 +66,11 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'user' => $user,
-            'authorisation' => [
+            'authorization' => [
                 'token' => $token,
                 'type' => 'bearer',
             ]
-        ]);
+        ], 200);
     }
     public function logout()
     {
