@@ -5,6 +5,7 @@ namespace App\Http\Controllers\instructor;
 use App\Http\Controllers\Controller;
 use App\Models\StudyClass;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class StudyClassController extends Controller
 {
@@ -24,9 +25,10 @@ class StudyClassController extends Controller
     {
         $instructor = auth()->user();
         $data = $request->validate([
-            'class_name' => ['required', 'string', 'min:3', 'max:255'],
+            'name' => ['required', 'string', 'min:3', 'max:255'],
             'class_image' => ['required', 'file'],
-            'description' => ['required', 'string', 'max:255', 'min:10']
+            'description' => ['required', 'string', 'max:255', 'min:10'],
+            'category_id' => ['required', 'integer', Rule::exists('categories', 'id')]
         ]);
         $path = $request->file('class_image')->store('class_images', 'public');
         $data['class_image'] = $path;

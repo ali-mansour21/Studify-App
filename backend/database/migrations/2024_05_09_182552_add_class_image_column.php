@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('study_classes', function (Blueprint $table) {
-            $table->string('class_code')->unique();
-            $table->string('link')->nullable();
-            $table->string('description');
+            $table->string('class_image');
         });
     }
 
@@ -24,6 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('study_classes', function (Blueprint $table) {
+            //
         });
     }
 };

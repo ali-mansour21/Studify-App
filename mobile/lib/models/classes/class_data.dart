@@ -52,6 +52,9 @@ class ClassData {
       required this.description,
       required this.materials,
       required this.people});
+  factory ClassData.fromJson(Map<String, dynamic> json){
+    
+  }
 }
 
 final List<ClassData> classInfo = [
