@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:mobile/models/users/user_data.dart';
 import 'package:provider/provider.dart';
 
-class ApiService {
+class AuthApiService {
   final String baseUrl = "http://192.168.0.104:8001/api";
   Future<dynamic> login(String email, String password) async {
     try {

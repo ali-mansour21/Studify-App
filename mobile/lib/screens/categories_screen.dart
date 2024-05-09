@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/card_category.dart';
 import 'package:mobile/widgets/mainbutton.dart';
-import 'package:mobile/services/api_service.dart';
+import 'package:mobile/services/auth_api_service.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -14,7 +14,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   final Set<int> _selectedCategoryIds = {};
   List<dynamic> categoryData = [];
   bool isLoading = true;
-  final ApiService _apiService = ApiService();
+  final AuthApiService _apiService = AuthApiService();
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     try {
       final List<dynamic> categories = await _apiService.getAllCategories();
       setState(() {
-        categoryData = categories; // Save the data
+        categoryData = categories;
         isLoading = false;
       });
     } catch (e) {

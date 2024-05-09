@@ -4,8 +4,8 @@ import 'package:mobile/services/notification_service.dart';
 import 'package:mobile/widgets/auth_layout.dart';
 import 'package:mobile/widgets/customtextformfield.dart';
 import 'package:mobile/widgets/mainbutton.dart';
-import 'package:mobile/services/api_service.dart';
-import 'package:provider/provider.dart'; // Import your ApiService
+import 'package:mobile/services/auth_api_service.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -18,7 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final ApiService _apiService = ApiService();
+  final AuthApiService _apiService = AuthApiService();
   final NotificationService _notificationService = NotificationService();
 
   void _register() async {

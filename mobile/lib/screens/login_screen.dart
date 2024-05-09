@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/users/user_data.dart';
-import 'package:mobile/services/api_service.dart';
+import 'package:mobile/services/auth_api_service.dart';
 import 'package:mobile/widgets/auth_layout.dart';
 import 'package:mobile/widgets/customtextformfield.dart';
 import 'package:mobile/widgets/mainbutton.dart';
@@ -14,7 +14,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final ApiService _apiService = ApiService();
+  final AuthApiService _apiService = AuthApiService();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
