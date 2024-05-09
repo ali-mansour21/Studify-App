@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile/models/users/user_data.dart';
-import 'package:mobile/models/material_model.dart';
-import 'package:mobile/models/topic_material.dart';
+import 'package:mobile/models/material_model.dart'; // Make sure this import is correct
 import 'package:provider/provider.dart';
 
 class HomeApiService {
@@ -13,15 +12,21 @@ class HomeApiService {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/home'),
+        Uri.parse('$baseUrl/resources'),
         headers: {'Authorization': 'Bearer $token'},
       );
       if (response.statusCode == 200) {
-        List<dynamic> body = json.decode(response.body);
-        List<MaterialItem> materials = body.map((dynamic item) {
-          return MaterialItem.fromJson(item);
-        }).toList();
-        return materials;
+        var data = json.decode(response.body);
+        if (data['status'] == 'success' &&
+            data['data']['recommended_notes'] != null) {
+          List<dynamic> notesJson = data['data']['recommended_notes'];
+          List<MaterialItem> studentNotes = notesJson
+              .map((dynamic item) => MaterialItem.fromJson(item))
+              .toList();
+          return studentNotes;
+        } else {
+          throw Exception("No notes data found or failed status");
+        }
       } else {
         throw Exception(
             'Failed to load materials. Status code: ${response.statusCode}');

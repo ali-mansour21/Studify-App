@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart';
 import 'package:mobile/models/material_model.dart';
 import 'package:mobile/models/topic_material.dart';
+import 'package:mobile/providers/material_provider.dart';
 import 'package:mobile/screens/class_detail_screen.dart';
 import 'package:mobile/screens/material_screen.dart';
 import 'package:mobile/widgets/navigation_bar.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,6 +16,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<MaterialsProvider>(context, listen: false);
+    provider.fetchMaterials(context);
+  }
 
   void _onNavItemSelected(int index) {
     setState(() {
@@ -164,47 +172,53 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.only(left: 10),
                   child: SizedBox(
                     height: 100,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: materials.length,
-                        itemBuilder: (context, index) {
-                          MaterialItem material = materials[index];
-                          return Card(
-                            color: const Color(0xFF3786A8),
-                            child: SizedBox(
-                              width: 105,
-                              height: 140,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            MaterialScreen(material: material)),
-                                  );
-                                },
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    const Icon(
-                                      Icons.medical_information,
-                                      size: 48,
-                                      color: Colors.white,
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      material.title,
-                                      style: const TextStyle(
+                    child: Consumer<MaterialsProvider>(
+                      builder: (context, materialsProvider, child) {
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: materialsProvider.materials.length,
+                          itemBuilder: (context, index) {
+                            MaterialItem material =
+                                materialsProvider.materials[index];
+                            return Card(
+                              color: const Color(0xFF3786A8),
+                              child: SizedBox(
+                                width: 105,
+                                height: 140,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MaterialScreen(
+                                              material: material)),
+                                    );
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      const Icon(
+                                        Icons.medical_information,
+                                        size: 48,
                                         color: Colors.white,
-                                        fontWeight: FontWeight.w600,
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        material.title,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
                 const Padding(

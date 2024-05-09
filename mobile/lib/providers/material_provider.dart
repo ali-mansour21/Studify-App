@@ -14,9 +14,9 @@ class MaterialsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchMaterials() async {
+  Future<void> fetchMaterials(BuildContext context) async {
     try {
-      _materials = await _apiService.getHomeData();
+      _materials = await _apiService.getHomeData(context);
       notifyListeners();
     } catch (e) {
       print("Failed to fetch materials: $e");
