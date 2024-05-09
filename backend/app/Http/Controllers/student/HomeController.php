@@ -16,7 +16,7 @@ class HomeController extends Controller
     {
         $user = auth()->user();
         $categories = $user->categories;
-        $student_notes = $this->fetchStudentNotes($categories);
+        $student_notes = $this->fetchStudentNotes($categories, $user->id);
         $classes = $this->fetchStudyClasses($categories);
         return response()->json(['status' => 'success', 'data' => [
             'recommended_notes' => $student_notes,
@@ -53,15 +53,17 @@ class HomeController extends Controller
         return response()->json(['status' => 'success', 'message' => $message]);
     }
 
-    private function fetchStudentNotes($categories)
+    private function fetchStudentNotes($categories, $user_id)
     {
         $categoryIds = $categories->pluck('id');
 
-        return StudentNote::with('noteDescriptions')->whereHas('category', function ($query) use ($categoryIds) {
-            $query->whereIn('id', $categoryIds);
-        })->get();
+        return StudentNote::with('noteDescriptions')
+            ->whereHas('category', function ($query) use ($categoryIds) {
+                $query->whereIn('id', $categoryIds);
+            })
+            ->where('student_id', '!=', $user_id)
+            ->get();
     }
-
     private function fetchStudyClasses($categories)
     {
         $categoryIds = $categories->pluck('id');
