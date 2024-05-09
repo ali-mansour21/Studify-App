@@ -20,6 +20,7 @@ class HomeApiService {
         if (data['status'] == 'success' &&
             data['data']['recommended_notes'] != null) {
           List<dynamic> notesJson = data['data']['recommended_notes'];
+          print(notesJson.length);
           List<MaterialItem> studentNotes = notesJson
               .map((dynamic item) => MaterialItem.fromJson(item))
               .toList();
