@@ -57,7 +57,7 @@ class HomeController extends Controller
     {
         $categoryIds = $categories->pluck('id');
 
-        return StudentNote::whereHas('category', function ($query) use ($categoryIds) {
+        return StudentNote::with('noteDescriptions')->whereHas('category', function ($query) use ($categoryIds) {
             $query->whereIn('id', $categoryIds);
         })->get();
     }

@@ -7,9 +7,14 @@ class MaterialItem {
 
   MaterialItem({required this.id, required this.title, required this.topics});
   factory MaterialItem.fromJson(Map<String, dynamic> json) {
-    var list = json['topics'] as List;
-    List<NotesTopic> topicsList =
-        list.map((i) => NotesTopic.fromJson(i)).toList();
+    List<dynamic>? topicsData = json['topics'];
+    List<NotesTopic> topicsList = [];
+
+    if (topicsData != null) {
+      topicsList = topicsData
+          .map((topicJson) => NotesTopic.fromJson(topicJson))
+          .toList();
+    }
 
     return MaterialItem(
       id: json['id'],

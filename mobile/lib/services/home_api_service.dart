@@ -17,12 +17,14 @@ class HomeApiService {
       );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
+        print(data['data']);
         if (data['status'] == 'success' &&
+            data['data'] != null &&
             data['data']['recommended_notes'] != null) {
           List<dynamic> notesJson = data['data']['recommended_notes'];
-          print(notesJson.length);
           List<MaterialItem> studentNotes = notesJson
               .map((dynamic item) => MaterialItem.fromJson(item))
+              .cast<MaterialItem>()
               .toList();
           return studentNotes;
         } else {
