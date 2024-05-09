@@ -1,15 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const boardsSlice = createSlice({
-  name: "instructor",
-  initialState: {
-    user: null,
-  },
-  reducers: {
-    setUser(state, action) {
-      state.user = action.payload;
-    },
-  },
+  name: "user",
+  initialState: {},
+  reducers: {},
 });
 
 export default boardsSlice;

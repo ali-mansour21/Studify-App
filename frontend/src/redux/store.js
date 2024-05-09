@@ -3,7 +3,7 @@ import boardsSlice from "./boarderSlice.js";
 
 const store = configureStore({
   reducer: {
-    instructor: boardsSlice.reducer,
+    user: boardsSlice.reducer,
   },
 });
 
