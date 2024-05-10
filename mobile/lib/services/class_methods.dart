@@ -21,6 +21,7 @@ class ClassOperations {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> data = json.decode(response.body);
+        print(data);
         return {'status': data['status'], 'message': data['message']};
       } else {
         return {
@@ -29,6 +30,7 @@ class ClassOperations {
         };
       }
     } catch (e) {
+      print(e);
       return {'status': 'error', 'message': 'Exception occurred: $e'};
     }
   }

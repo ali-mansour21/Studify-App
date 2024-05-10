@@ -4,6 +4,7 @@ import 'package:mobile/screens/class_material_screen.dart';
 import 'package:mobile/services/class_methods.dart';
 import 'package:mobile/widgets/mainbutton.dart';
 import 'package:mobile/widgets/segmented_control.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ClassDetailScreen extends StatefulWidget {
   final model.ClassData classDetail;
@@ -74,6 +75,15 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                     onPressed: () async {
                       Map<String, String> result = await _apiService
                           .requestJoinClass(context, widget.classDetail.id);
+                      Navigator.pop(context);
+                      Fluttertoast.showToast(
+                          msg: result['message'] ?? 'Failed to join class',
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 5,
+                          backgroundColor: const Color(0xFF3786A8),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
                     },
                   )
                 ]),
