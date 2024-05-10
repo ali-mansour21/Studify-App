@@ -39,6 +39,7 @@ class HomeApiService {
       throw Exception('Failed to get home data: $e');
     }
   }
+
   Future<List<ClassData>> getClassesData(BuildContext context) async {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
     try {
@@ -47,17 +48,11 @@ class HomeApiService {
         headers: {'Authorization': 'Bearer $token'},
       );
       if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        if (data['status'] == 'success' &&
-            data['data'] != null &&
-            data['data']['recommented_classes'] != null) {
-          List<dynamic> classesJson = data['data']['recommented_classes'];
-        } else {
-          throw Exception("No notes data found or failed status");
-        }
+        List<dynamic> jsonData = json.decode(response.body);
+        return jsonData.map((data) => ClassData.fromJson(data)).toList();
       } else {
         throw Exception(
-            'Failed to load materials. Status code: ${response.statusCode}');
+            'Failed to load classes. Status code: ${response.statusCode}');
       }
     } catch (e) {
       throw Exception('Failed to get home data: $e');

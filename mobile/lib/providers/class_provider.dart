@@ -9,16 +9,12 @@ class StudyClassProvider with ChangeNotifier {
 
   List<ClassData> get studyClasses => _studyClasses;
   bool get is_loading => _isLoading;
-  void fetchClasses(BuildContext context) async {
-    _isLoading = true;
-    notifyListeners();
+  Future<void> loadClasses(BuildContext context) async {
     try {
       _studyClasses = await _apiService.getClassesData(context);
-    } catch (e) {
-      print("Failed to fetch classes: $e");
-    } finally {
-      _isLoading = false;
       notifyListeners();
+    } catch (e) {
+      print('Failed to load classes: $e');
     }
   }
 }

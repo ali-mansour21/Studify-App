@@ -7,6 +7,12 @@ class ClassTopic implements Topic {
   final String content;
 
   ClassTopic({required this.title, required this.content});
+  factory ClassTopic.fromJson(Map<String, dynamic> json) {
+    return ClassTopic(
+      title: json['title'],
+      content: json['content'],
+    );
+  }
 }
 
 class Person {
@@ -26,6 +32,13 @@ class Assignment implements Topic {
 
   Assignment(
       {required this.title, required this.content, required this.dueDate});
+  factory Assignment.fromJson(Map<String, dynamic> json) {
+    return Assignment(
+      title: json['title'],
+      content: json['content'],
+      dueDate: DateTime.parse(json['due_date']),
+    );
+  }
 }
 
 class Material {
@@ -39,6 +52,22 @@ class Material {
       required this.description,
       required this.topics,
       required this.assignments});
+  factory Material.fromJson(Map<String, dynamic> json) {
+    var topicsList = json['topics']
+        .map<ClassTopic>((topicJson) => ClassTopic.fromJson(topicJson))
+        .toList();
+    var assignmentsList = json['assignments']
+        .map<Assignment>(
+            (assignmentJson) => Assignment.fromJson(assignmentJson))
+        .toList();
+
+    return Material(
+      title: json['title'],
+      description: json['description'],
+      topics: topicsList,
+      assignments: assignmentsList,
+    );
+  }
 }
 
 class ClassData {
@@ -52,8 +81,30 @@ class ClassData {
       required this.description,
       required this.materials,
       required this.people});
-  factory ClassData.fromJson(Map<String, dynamic> json){
-    
+  factory ClassData.fromJson(Map<String, dynamic> json) {
+    List<Material> materials = json['materials']
+        .map<Material>((matJson) => Material.fromJson(matJson))
+        .toList();
+
+    return ClassData(
+      title: json['title'],
+      description: json['description'],
+      materials: materials,
+      people: [
+        Person(
+          name: "Dr. Emily White",
+          role: "Teacher",
+          profileImage:
+              "Dr. Emily White is a leading expert in Genetics and Cell Biology.",
+        ),
+        Person(
+          name: "John Doe",
+          role: "Student",
+          profileImage:
+              "John Doe assists in the lab and coordinates student projects.",
+        ),
+      ],
+    );
   }
 }
 
