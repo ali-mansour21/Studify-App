@@ -68,10 +68,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                   TextButton(
                     child: const Text('Request to join',
                         style: TextStyle(decoration: TextDecoration.underline)),
-                    onPressed: () {
-                      // Request to join logic
-                      Navigator.of(context).pop();
-                    },
+                    onPressed: () {},
                   )
                 ]),
               ),

@@ -59,7 +59,7 @@ class ClassRequestController extends Controller
         $classRequest->class_id = $request->class_id;
         $classRequest->save();
         event(new RequestSent($classRequest));
-        return response()->json(['message' => 'Request to join class sent successfully'], 201);
+        return response()->json(['status' => 'success', 'message' => 'Request to join class sent successfully'], 200);
     }
     public function approveRequest(Request $request)
     {
