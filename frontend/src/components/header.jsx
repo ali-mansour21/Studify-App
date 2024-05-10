@@ -2,7 +2,9 @@ import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
-const Header = ({ name, image }) => {
+const Header = () => {
+  const name = localStorage.getItem("name");
+  const profile = localStorage.getItem("profile_image");
   return (
     <div className="head bg-white p-15 between-flex">
       <div className="welcome-widget">Hello {name}</div>
@@ -10,7 +12,7 @@ const Header = ({ name, image }) => {
         <span className=" notification  p-relative ">
           <FontAwesomeIcon icon={faBell} />
         </span>
-        <img srcSet={`http://192.168.0.104:8001/storage/${image}`} alt="" />
+        <img srcSet={`http://192.168.0.104:8001/storage/${profile}`} alt="" />
       </div>
     </div>
   );

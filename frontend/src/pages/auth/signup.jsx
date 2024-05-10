@@ -47,7 +47,9 @@ const SignUp = () => {
       "instructor_register",
       userDatawithToken
     ).then((response) => {
-      console.log(response);
+      if (response.status === 200) {
+        navigator("/");
+      }
     });
   };
   return (

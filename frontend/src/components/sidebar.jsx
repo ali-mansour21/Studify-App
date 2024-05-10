@@ -6,8 +6,23 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { requestMethods } from "../core/requests/requestMethods.js";
+import sendAuthRequest from "../core/tools/authRequest.js";
+
 const SideBar = () => {
   const navigate = useNavigate();
+  const handleLogout = () => {
+    sendAuthRequest(requestMethods.POST, "instructor_logout").then(
+      (response) => {
+        if (response.status === 200) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("name");
+          localStorage.removeItem("profile_image");
+          navigate("/");
+        }
+      }
+    );
+  };
   return (
     <div className="sidebar bg-white p-20 p-relative">
       <h3 className="p-relative txt-c mt-0">Studify</h3>
@@ -37,7 +52,10 @@ const SideBar = () => {
         <li>
           <a
             className="d-flex align-center fs-14 c-black rad-6 p-10"
-            href="profile.html"
+            onClick={(e) => {
+              e.preventDefault();
+              handleLogout();
+            }}
           >
             <FontAwesomeIcon icon={faArrowRightFromBracket} />
             <span className="hide-mobile">Logout</span>
