@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart' as model;
 import 'package:mobile/screens/class_material_screen.dart';
+import 'package:mobile/services/class_methods.dart';
 import 'package:mobile/widgets/mainbutton.dart';
 import 'package:mobile/widgets/segmented_control.dart';
 
@@ -13,6 +14,8 @@ class ClassDetailScreen extends StatefulWidget {
 }
 
 class _ClassDetailScreenState extends State<ClassDetailScreen> {
+  final ClassOperations _apiService = ClassOperations();
+
   int _selectedIndex = 0;
   void _showJoinClassDialog() {
     showDialog(
@@ -68,7 +71,10 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                   TextButton(
                     child: const Text('Request to join',
                         style: TextStyle(decoration: TextDecoration.underline)),
-                    onPressed: () {},
+                    onPressed: () async {
+                      Map<String, String> result = await _apiService
+                          .requestJoinClass(context, widget.classDetail.id);
+                    },
                   )
                 ]),
               ),

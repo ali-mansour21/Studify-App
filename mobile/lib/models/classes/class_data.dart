@@ -70,6 +70,7 @@ class Material {
 }
 
 class ClassData {
+  final int id;
   final String title;
   final String description;
   final List<Material> materials;
@@ -77,6 +78,7 @@ class ClassData {
 
   ClassData(
       {required this.title,
+      required this.id,
       required this.description,
       required this.materials,
       required this.people});
@@ -89,6 +91,7 @@ class ClassData {
     }
 
     return ClassData(
+      id: json['id'],
       title: json['name'],
       description: json['description'],
       materials: materials,
@@ -112,6 +115,7 @@ class ClassData {
 
 final List<ClassData> classInfo = [
   ClassData(
+    id:1,
     title: "Biology 101",
     description: "An introductory course into the world of living organisms.",
     materials: [
