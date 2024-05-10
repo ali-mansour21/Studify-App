@@ -125,6 +125,9 @@ a {
   margin: 15px 20px 40px;
 }
 .content .actions button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 60px;
   height: 60px;
   cursor: pointer;

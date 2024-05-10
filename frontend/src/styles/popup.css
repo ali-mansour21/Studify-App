@@ -85,8 +85,11 @@ input[type="file"] {
   display: block;
   margin-bottom: 7px;
 }
-.popup-inner form input {
+.popup-inner form input,
+.popup-inner form select,
+.popup-inner form textarea {
   width: 100%;
+  resize: none;
   padding: 5px 10px;
   border-radius: 5px;
   border: 1px solid #939393;
