@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/api/firebase_api.dart';
 import 'package:mobile/models/users/user_data.dart';
 import 'package:mobile/providers/class_provider.dart';
 import 'package:mobile/screens/categories_screen.dart';
@@ -13,22 +14,17 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/providers/material_provider.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
-}
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Platform.isAndroid
       ? await Firebase.initializeApp(
           options: const FirebaseOptions(
-            apiKey: "AIzaSyBaQti8ruCaJih0bpivm5UEvdCW79RCTNo",
-            appId: "1:607925811224:android:6890f6de28ddf7e6cf6b6d",
-            messagingSenderId: "607925811224",
-            projectId: "studify-81155",
-          ),
-        )
+              apiKey: "AIzaSyCU-MVgP1If7umfeTK92a4ZfoCN-p-Q5d0",
+              appId: "1:256089037545:android:8e417a08611cb97f05ae78",
+              messagingSenderId: "256089037545",
+              projectId: "studify-notifications"))
       : await Firebase.initializeApp();
+  await FirebaseApi().initNotifications();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => UserData()),

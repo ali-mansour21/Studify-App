@@ -1,32 +1,13 @@
 {
   "project_info": {
-    "project_number": "607925811224",
-    "project_id": "studify-81155",
-    "storage_bucket": "studify-81155.appspot.com"
+    "project_number": "256089037545",
+    "project_id": "studify-notifications",
+    "storage_bucket": "studify-notifications.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:607925811224:android:eb1b8ccbcaca4195cf6b6d",
-        "android_client_info": {
-          "package_name": "Studify.App"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBaQti8ruCaJih0bpivm5UEvdCW79RCTNo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:607925811224:android:6890f6de28ddf7e6cf6b6d",
+        "mobilesdk_app_id": "1:256089037545:android:8e417a08611cb97f05ae78",
         "android_client_info": {
           "package_name": "com.example.mobile"
         }
@@ -34,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBaQti8ruCaJih0bpivm5UEvdCW79RCTNo"
+          "current_key": "AIzaSyCU-MVgP1If7umfeTK92a4ZfoCN-p-Q5d0"
         }
       ],
       "services": {
