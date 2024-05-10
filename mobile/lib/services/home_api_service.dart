@@ -18,7 +18,6 @@ class HomeApiService {
       );
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        print(data['data']);
         if (data['status'] == 'success' &&
             data['data'] != null &&
             data['data']['recommended_notes'] != null) {
@@ -48,8 +47,17 @@ class HomeApiService {
         headers: {'Authorization': 'Bearer $token'},
       );
       if (response.statusCode == 200) {
-        List<dynamic> jsonData = json.decode(response.body);
-        return jsonData.map((data) => ClassData.fromJson(data)).toList();
+        var data = json.decode(response.body);
+        if (data['status'] == 'success' &&
+            data['data'] != null &&
+            data['data']['recommended_classes'] != null) {
+          List<dynamic> jsonData = data['data']['recommended_classes'];
+          return jsonData
+              .map((classJson) => ClassData.fromJson(classJson))
+              .toList();
+        } else {
+          throw Exception('No classes data found or failed status');
+        }
       } else {
         throw Exception(
             'Failed to load classes. Status code: ${response.statusCode}');

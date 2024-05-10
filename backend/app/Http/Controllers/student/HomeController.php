@@ -21,7 +21,7 @@ class HomeController extends Controller
         $classes = $this->fetchStudyClasses($categories);
         return response()->json(['status' => 'success', 'data' => [
             'recommended_notes' => $student_notes,
-            'recommented_classes' => $classes
+            'recommended_classes' => $classes
         ]]);
     }
 

@@ -148,13 +148,6 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
               fontSize: 16,
             ),
           ),
-          subtitle: Text(
-            material.description,
-            style: const TextStyle(
-              color: Colors.grey,
-              fontSize: 14,
-            ),
-          ),
           trailing: const Icon(
             Icons.chevron_right,
             color: Colors.grey,

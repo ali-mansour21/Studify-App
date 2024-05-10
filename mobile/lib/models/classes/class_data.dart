@@ -28,42 +28,41 @@ class Assignment implements Topic {
   final String title;
   @override
   final String content;
-  final DateTime dueDate;
 
-  Assignment(
-      {required this.title, required this.content, required this.dueDate});
+  Assignment({required this.title, required this.content});
   factory Assignment.fromJson(Map<String, dynamic> json) {
     return Assignment(
       title: json['title'],
       content: json['content'],
-      dueDate: DateTime.parse(json['due_date']),
     );
   }
 }
 
 class Material {
   final String title;
-  final String description;
   final List<ClassTopic> topics;
   final List<Assignment> assignments;
 
   Material(
-      {required this.title,
-      required this.description,
-      required this.topics,
-      required this.assignments});
+      {required this.title, required this.topics, required this.assignments});
   factory Material.fromJson(Map<String, dynamic> json) {
-    var topicsList = json['topics']
-        .map<ClassTopic>((topicJson) => ClassTopic.fromJson(topicJson))
-        .toList();
-    var assignmentsList = json['assignments']
-        .map<Assignment>(
-            (assignmentJson) => Assignment.fromJson(assignmentJson))
-        .toList();
+    List<ClassTopic> topicsList = [];
+    if (json['topics'] != null) {
+      topicsList = (json['topics'] as List)
+          .map<ClassTopic>((topicJson) => ClassTopic.fromJson(topicJson))
+          .toList();
+    }
+
+    List<Assignment> assignmentsList = [];
+    if (json['assignments'] != null) {
+      assignmentsList = (json['assignments'] as List)
+          .map<Assignment>(
+              (assignmentJson) => Assignment.fromJson(assignmentJson))
+          .toList();
+    }
 
     return Material(
-      title: json['title'],
-      description: json['description'],
+      title: json['name'],
       topics: topicsList,
       assignments: assignmentsList,
     );
@@ -82,12 +81,15 @@ class ClassData {
       required this.materials,
       required this.people});
   factory ClassData.fromJson(Map<String, dynamic> json) {
-    List<Material> materials = json['materials']
-        .map<Material>((matJson) => Material.fromJson(matJson))
-        .toList();
+    List<Material> materials = [];
+    if (json['materials'] != null) {
+      materials = (json['materials'] as List)
+          .map<Material>((matJson) => Material.fromJson(matJson))
+          .toList();
+    }
 
     return ClassData(
-      title: json['title'],
+      title: json['name'],
       description: json['description'],
       materials: materials,
       people: [
@@ -115,7 +117,6 @@ final List<ClassData> classInfo = [
     materials: [
       Material(
         title: "Cell Biology",
-        description: "Hello world",
         topics: [
           ClassTopic(
               title: "Cell Structure",
@@ -127,18 +128,15 @@ final List<ClassData> classInfo = [
           Assignment(
             title: "Cell Diagram",
             content: "Draw and label parts of a cell.",
-            dueDate: DateTime.now().add(const Duration(days: 7)),
           ),
           Assignment(
             title: "Cell Function Essay",
             content: "Write an essay on the function of mitochondria.",
-            dueDate: DateTime.now().add(const Duration(days: 14)),
           ),
         ],
       ),
       Material(
         title: "Genetics",
-        description: "Hello world",
         topics: [
           ClassTopic(
               title: "DNA Replication",
@@ -150,7 +148,6 @@ final List<ClassData> classInfo = [
           Assignment(
             title: "Genetics Homework",
             content: "Complete the genetics worksheet.",
-            dueDate: DateTime.now().add(const Duration(days: 10)),
           ),
         ],
       ),

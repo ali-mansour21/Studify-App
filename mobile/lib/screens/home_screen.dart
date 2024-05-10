@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart';
 import 'package:mobile/models/material_model.dart';
+import 'package:mobile/providers/class_provider.dart';
 import 'package:mobile/providers/material_provider.dart';
 import 'package:mobile/screens/class_detail_screen.dart';
 import 'package:mobile/screens/material_screen.dart';
@@ -21,6 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = Provider.of<MaterialsProvider>(context, listen: false);
       provider.fetchMaterials(context);
+      final classProvider =
+          Provider.of<StudyClassProvider>(context, listen: false);
+      classProvider.loadClasses(context);
     });
   }
 
@@ -41,88 +45,102 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SafeArea(
           child: Consumer<MaterialsProvider>(
             builder: (context, materialProvider, child) {
-              if (materialProvider.isLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      buildHeader(context),
-                      buildSearchBar(),
-                      const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text(
-                          'Materials',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
+              return Consumer<StudyClassProvider>(
+                builder: (context, classProvider, child) {
+                  if (materialProvider.isLoading || classProvider.is_loading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        buildHeader(context),
+                        buildSearchBar(),
+                        const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Text(
+                            'Materials',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: materialProvider.materials.isEmpty
-                            ? const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 20),
-                                child: Center(
-                                  child: Text(
-                                    'No materials available',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ),
-                              )
-                            : buildMaterialList(materialProvider, context),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text(
-                          'Available Classes',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: classInfo.length,
-                          itemBuilder: (context, index) {
-                            final classData = classInfo[index];
-                            return Card(
-                              child: ListTile(
-                                leading: const Icon(
-                                  Icons.class_,
-                                  color: Colors.blue,
-                                  size: 50,
-                                ),
-                                title: Text(classData.title),
-                                subtitle: Text(classData.description),
-                                trailing: const Icon(Icons.chevron_right),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ClassDetailScreen(
-                                        classDetail: classData,
-                                      ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: materialProvider.materials.isEmpty
+                              ? const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 20),
+                                  child: Center(
+                                    child: Text(
+                                      'No materials available',
+                                      style: TextStyle(fontSize: 18),
                                     ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
+                                  ),
+                                )
+                              : buildMaterialList(materialProvider, context),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              }
+                        const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Text(
+                            'Available Classes',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: classProvider.studyClasses.isEmpty
+                              ? const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 20),
+                                  child: Center(
+                                    child: Text(
+                                      'No classes available',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                )
+                              : ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: classProvider.studyClasses.length,
+                                  itemBuilder: (context, index) {
+                                    final classData =
+                                        classProvider.studyClasses[index];
+                                    return Card(
+                                      child: ListTile(
+                                        leading: const Icon(
+                                          Icons.class_,
+                                          color: Colors.blue,
+                                          size: 50,
+                                        ),
+                                        title: Text(classData.title),
+                                        subtitle: Text(classData.description),
+                                        trailing:
+                                            const Icon(Icons.chevron_right),
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ClassDetailScreen(
+                                                classDetail: classData,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
             },
           ),
         ),
@@ -295,5 +313,32 @@ Widget buildMaterialCard(MaterialItem material, context) {
         ],
       ),
     ),
+  );
+}
+
+Widget buildClassList(StudyClassProvider classProvider) {
+  return ListView.builder(
+    shrinkWrap: true,
+    physics: NeverScrollableScrollPhysics(),
+    itemCount: classProvider.studyClasses.length,
+    itemBuilder: (context, index) {
+      final classData = classProvider.studyClasses[index];
+      return Card(
+        child: ListTile(
+          leading: const Icon(Icons.class_, color: Colors.blue, size: 50),
+          title: Text(classData.title),
+          subtitle: Text(classData.description),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ClassDetailScreen(classDetail: classData),
+              ),
+            );
+          },
+        ),
+      );
+    },
   );
 }
