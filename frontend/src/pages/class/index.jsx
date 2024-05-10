@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SideBar from "../../components/sidebar";
 import "../../styles/utilities.css";
 import "../../styles/index.css";
 import Header from "../../components/header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Class from "./components/class";
 import PopUp from "../components/PopUp";
 import sendAuthRequest from "../../core/tools/authRequest";
@@ -15,7 +15,7 @@ const Home = () => {
   const [classData, setClassData] = useState({
     name: "",
     description: "",
-    category_id: null,
+    category_id: "",
     class_image: null,
   });
   const closePopup = () => {
@@ -44,10 +44,11 @@ const Home = () => {
     });
   };
   const handleCreateClass = () => {
+    console.log(classData.category_id);
     sendAuthRequest(requestMethods.POST, "classes", classData).then(
       (response) => {
         if (response.status === 200) {
-          console.log(response.data);
+          closePopup();
         }
       }
     );
@@ -127,6 +128,7 @@ const Home = () => {
           <div>
             <label htmlFor="category">Category</label>
             <select
+              defaultValue={1}
               onChange={(e) => {
                 setClassData({
                   ...classData,
