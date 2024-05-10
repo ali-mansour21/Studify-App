@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
@@ -22,22 +23,40 @@ class AuthController extends Controller
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/'
             ],
             'firebase_token' => ['required', 'string'],
-            'profile_image' => ['required', 'string']
+            'profile_image' => ['required', 'string']  
         ]);
+
         $user = new User();
         $user->name = $data['name'];
         $user->email = $data['email'];
         $user->password = bcrypt($data['password']);
         $user->user_type = 'instructor';
         $user->firebase_token = $data['firebase_token'];
-        if ($request->hasFile('profile_image')) {
-            $file = $request->file('profile_image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('profile_images', $filename, 'public');
+
+        if (preg_match('/^data:image\/(\w+);base64,/', $data['profile_image'], $type)) {
+            $imageData = substr($data['profile_image'], strpos($data['profile_image'], ',') + 1);
+            $type = strtolower($type[1]);
+
+            if (!in_array($type, ['jpg', 'jpeg', 'png', 'gif'])) {
+                throw new \Exception('Invalid image type');
+            }
+
+            $imageData = base64_decode($imageData);
+            if ($imageData === false) {
+                throw new \Exception('Base64 decode failed');
+            }
+
+            $filename = time() . '.' . $type;
+            $path = 'profile_images/' . $filename;
+            Storage::disk('public')->put($path, $imageData);
             $user->profile_image = $path;
+        } else {
+            throw new \Exception('Did not match data URI with image data');
         }
+
         $user->save();
         $token = Auth::login($user);
+
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully',
@@ -48,6 +67,7 @@ class AuthController extends Controller
             ]
         ]);
     }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
