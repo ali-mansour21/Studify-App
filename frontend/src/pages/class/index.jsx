@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import SideBar from "../../components/sidebar";
 import "../../styles/utilities.css";
 import "../../styles/index.css";
@@ -9,7 +9,7 @@ import Class from "./components/class";
 import PopUp from "../components/PopUp";
 import sendAuthRequest from "../../core/tools/authRequest";
 import { requestMethods } from "../../core/requests/requestMethods";
-
+import { toast } from "react-toastify";
 const Home = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [classData, setClassData] = useState({
@@ -48,6 +48,7 @@ const Home = () => {
     sendAuthRequest(requestMethods.POST, "classes", classData).then(
       (response) => {
         if (response.status === 200) {
+          toast.success(response.data.message);
           closePopup();
         }
       }

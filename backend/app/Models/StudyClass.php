@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class StudyClass extends Model
 {
     use HasFactory;
+    protected $table = 'study_classes'; 
     protected $fillable = ['name', 'class_image', 'description', 'class_code', 'category_id'];
     public function instructor()
     {
@@ -19,7 +20,7 @@ class StudyClass extends Model
     }
     public function students()
     {
-        return $this->belongsToMany(User::class, 'class_enrollment', 'class_id', 'student_id')
+        return $this->belongsToMany(User::class, 'class_enrollments', 'study_class_id', 'student_id')
             ->using(ClassEnrollment::class)
             ->withTimestamps();
     }

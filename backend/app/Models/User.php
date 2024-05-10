@@ -66,7 +66,7 @@ class User extends Authenticatable implements JWTSubject
     }
     public function studentClasses()
     {
-        return $this->belongsToMany(StudyClass::class, 'class_enrollment', 'student_id', 'study_class_id')
+        return $this->belongsToMany(StudyClass::class, 'class_enrollments', 'student_id', 'study_class_id')
             ->using(ClassEnrollment::class)
             ->withTimestamps();
     }
@@ -112,7 +112,7 @@ class User extends Authenticatable implements JWTSubject
             $endDate = now()->setYear($currentYear)->setMonth($month)->endOfMonth();
 
             $count = $this->instructorClasses()
-                ->join('class_enrollment', 'study_classes.id', '=', 'class_enrollment.study_class_id')
+                ->join('class_enrollments', 'study_classes.id', '=', 'class_enrollment.study_class_id')
                 ->whereBetween('class_enrollment.created_at', [$startDate, $endDate])
                 ->distinct()
                 ->count('class_enrollment.student_id');

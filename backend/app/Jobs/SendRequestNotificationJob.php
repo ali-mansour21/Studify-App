@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\ClassRequest;
 use App\Models\Notification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -10,16 +11,17 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification as FirebaseNotification;
+
 class SendRequestNotificationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $request;
+    protected $request_id;
     /**
      * Create a new job instance.
      */
-    public function __construct($request)
+    public function __construct($requestId)
     {
-        $this->request = $request;
+        $this->request_id = $requestId;
     }
 
     /**
@@ -28,8 +30,9 @@ class SendRequestNotificationJob implements ShouldQueue
     public function handle(): void
     {
         $messaging = app('firebase.messaging');
-        $student = $this->request->student;
-        $instructor = $this->request->class->instructor;
+        $request = ClassRequest::findOrFail($this->request_id);
+        $student = $request->student;
+        $instructor = $request->class->instructor;
 
         $content = "You have a new request from {$student->name}.";
 
@@ -37,7 +40,7 @@ class SendRequestNotificationJob implements ShouldQueue
             'content' => $content,
             'sender_id' => $student->id,
             'receiver_id' => $instructor->id,
-            'type_id' => 2, 
+            'type_id' => 2,
         ]);
 
         $token = $instructor->firebase_token;

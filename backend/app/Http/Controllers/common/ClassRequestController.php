@@ -18,7 +18,7 @@ class ClassRequestController extends Controller
     public function enrollWithCode(Request $request)
     {
         $request->validate([
-            'class_code' => ['required', 'string', Rule::exists('study_class', 'class_code')],
+            'class_code' => ['required', 'string', Rule::exists('study_classes', 'class_code')],
         ]);
 
         $class = StudyClass::where('class_code', $request->class_code)->first();
@@ -58,7 +58,7 @@ class ClassRequestController extends Controller
         $classRequest->student_id = auth()->id();
         $classRequest->class_id = $request->class_id;
         $classRequest->save();
-        event(new RequestSent($request));
+        event(new RequestSent($classRequest));
         return response()->json(['message' => 'Request to join class sent successfully'], 201);
     }
     public function approveRequest(Request $request)
