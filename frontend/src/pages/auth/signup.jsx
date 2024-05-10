@@ -11,6 +11,7 @@ import sendRequest from "../../core/tools/userRequest.js";
 
 import "./styles/signup.css";
 import { requestMethods } from "../../core/requests/requestMethods.js";
+import { generateToken } from "../../firebase.js";
 const SignUp = () => {
   const navigator = useNavigate();
   const [userData, setUserData] = useState({
@@ -38,8 +39,16 @@ const SignUp = () => {
       };
     });
   };
-  const handleSubmit = () => {
-    sendRequest(requestMethods.POST, "instructor_register", userData);
+  const handleSubmit = async () => {
+    const firebaseToken = await generateToken();
+    const userDatawithToken = { ...userData, firebase_token: firebaseToken };
+    sendRequest(
+      requestMethods.POST,
+      "instructor_register",
+      userDatawithToken
+    ).then((response) => {
+      console.log(response);
+    });
   };
   return (
     <div>

@@ -22,7 +22,7 @@ class AuthController extends Controller
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/'
             ],
             'firebase_token' => ['required', 'string'],
-            'profile_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
+            'profile_image' => ['required', 'string']
         ]);
         $user = new User();
         $user->name = $data['name'];
