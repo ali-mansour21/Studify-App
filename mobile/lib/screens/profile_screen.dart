@@ -158,7 +158,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => const StudentClassScreen()),
+                        builder: (context) => StudentClassScreen(studentClasses: [],)),
                   );
                 },
               ),

@@ -3,7 +3,9 @@ import 'package:mobile/models/classes/class_data.dart';
 import 'package:mobile/screens/class_detail_screen.dart';
 
 class StudentClassScreen extends StatelessWidget {
-  const StudentClassScreen({super.key});
+  final List<ClassData> studentClasses;
+
+  const StudentClassScreen({super.key, required this.studentClasses});
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +29,9 @@ class StudentClassScreen extends StatelessWidget {
                 child: Padding(
               padding: const EdgeInsets.only(left: 10, right: 10),
               child: ListView.builder(
-                itemCount: classInfo.length,
+                itemCount: studentClasses.length,
                 itemBuilder: (context, index) {
-                  final classData = classInfo[index];
+                  final classData = studentClasses[index];
                   return Card(
                     child: ListTile(
                       leading: const Icon(
