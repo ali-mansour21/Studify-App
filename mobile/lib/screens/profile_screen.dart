@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/providers/class_provider.dart';
 import 'package:mobile/providers/material_provider.dart';
 import 'package:mobile/screens/edit_screen.dart';
 import 'package:mobile/screens/student_class_screen.dart';
@@ -23,6 +24,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = Provider.of<MaterialsProvider>(context, listen: false);
       provider.fetchStudnetMaterials(context);
+      final classProvider =
+          Provider.of<StudyClassProvider>(context, listen: false);
+      classProvider.loadStudentClasses(context);
     });
   }
 
@@ -156,9 +160,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 title: const Text('Classes'),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
+                  var studentClasses =
+                      Provider.of<StudyClassProvider>(context, listen: false)
+                          .studentStudyClass;
+                  print(studentClasses);
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => StudentClassScreen(studentClasses: [],)),
+                        builder: (context) => StudentClassScreen(
+                              studentClasses: studentClasses,
+                            )),
                   );
                 },
               ),

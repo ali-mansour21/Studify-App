@@ -21,9 +21,11 @@ class StudyClassProvider with ChangeNotifier {
       print('Failed to load classes: $e');
     }
   }
+
   Future<void> loadStudentClasses(BuildContext context) async {
     try {
-      _studentStudyClasses = await _apiService.getClassesData(context);
+      _studentStudyClasses =
+          await _profileApiService.getStudentClassesData(context);
       notifyListeners();
     } catch (e) {
       print('Failed to load classes: $e');

@@ -37,11 +37,11 @@ class ProfileApiService {
     }
   }
 
-  Future<List<ClassData>> getClassesData(BuildContext context) async {
+  Future<List<ClassData>> getStudentClassesData(BuildContext context) async {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/resources'),
+        Uri.parse('$baseUrl/studentClasses'),
         headers: {'Authorization': 'Bearer $token'},
       );
       if (response.statusCode == 200) {

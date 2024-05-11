@@ -8,7 +8,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class ClassDetailScreen extends StatefulWidget {
   final model.ClassData classDetail;
-  const ClassDetailScreen({super.key, required this.classDetail});
+  bool isInClass;
+  ClassDetailScreen(
+      {super.key, required this.classDetail, this.isInClass = false});
 
   @override
   State<ClassDetailScreen> createState() => _ClassDetailScreenState();
@@ -18,7 +20,6 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
   final ClassOperations _apiService = ClassOperations();
   final TextEditingController classCodeController = TextEditingController();
   int _selectedIndex = 0;
-  bool _isUserAuthorized = false;
   void _showJoinClassDialog() {
     showDialog(
       context: context,
@@ -77,7 +78,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                         .enrollWithClassCode(context, classCode);
                     if (result['status'] == 'success') {
                       setState(() {
-                        _isUserAuthorized = true;
+                        widget.isInClass = true;
                       });
                     }
                     Navigator.pop(context);
@@ -138,7 +139,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
           ),
           title: Text(widget.classDetail.title),
           actions: [
-            if (!_isUserAuthorized)
+            if (!widget.isInClass)
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: TextButton(
@@ -190,10 +191,10 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
               fontSize: 16,
             ),
           ),
-          trailing: _isUserAuthorized
+          trailing: widget.isInClass
               ? const Icon(Icons.chevron_right, color: Colors.grey)
               : null,
-          onTap: _isUserAuthorized
+          onTap: widget.isInClass
               ? () {
                   Navigator.push(
                     context,

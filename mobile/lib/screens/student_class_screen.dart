@@ -48,6 +48,7 @@ class StudentClassScreen extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => ClassDetailScreen(
                                     classDetail: classData,
+                                    isInClass: true,
                                   )),
                         );
                       },
