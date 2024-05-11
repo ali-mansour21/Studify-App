@@ -19,7 +19,8 @@ class HomeController extends Controller
         $user_id = $user->id;
         $categories = $user->categories;
         $student_notes = $this->fetchStudentNotes($categories, $user_id);
-        $classes = $this->fetchStudyClasses($categories);
+        $enrolledClassIds = $this->getEnrolledClassIds($user);
+        $classes = $this->fetchStudyClasses($categories, $enrolledClassIds);
         return response()->json(['status' => 'success', 'data' => [
             'recommended_notes' => $student_notes,
             'recommended_classes' => $classes
@@ -65,13 +66,16 @@ class HomeController extends Controller
             })
             ->get();
     }
-    private function fetchStudyClasses($categories)
+    private function fetchStudyClasses($categories, $enrolledClassIds)
     {
         $categoryIds = $categories->pluck('id');
 
-        return StudyClass::with(['materials.topics', 'materials.assignments'])->whereHas('category', function ($query) use ($categoryIds) {
-            $query->whereIn('id', $categoryIds);
-        })->get();
+        return StudyClass::with(['materials.topics', 'materials.assignments'])
+            ->whereHas('category', function ($query) use ($categoryIds) {
+                $query->whereIn('id', $categoryIds);
+            })
+            ->whereNotIn('id', $enrolledClassIds)
+            ->get();
     }
     protected function resolveCategory($data)
     {
@@ -101,5 +105,9 @@ class HomeController extends Controller
             $student_note->save();
             return ['note' => $student_note, 'message' => 'Successfully created a new student note.'];
         }
+    }
+    private function getEnrolledClassIds($user)
+    {
+        return $user->studentClasses()->pluck('study_class_id')->toArray();
     }
 }

@@ -35,7 +35,7 @@ class ClassRequestController extends Controller
 
         $user->studentClasses()->attach($class->id);
 
-        return response()->json(['message' => 'Enrolled in class successfully'], 201);
+        return response()->json(['status'=>'success','message' => 'Enrolled in class successfully'], 200);
     }
     public function inviteStudent(Request $request)
     {
