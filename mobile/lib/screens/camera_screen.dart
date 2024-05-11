@@ -1,6 +1,5 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mobile/widgets/mainbutton.dart';
 
 class CameraScreen extends StatefulWidget {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart' as model;
+import 'package:mobile/models/messages/chat_model.dart';
 import 'package:mobile/screens/assignment_detail_screen.dart';
 import 'package:mobile/screens/topic_detail_screen.dart';
 import 'package:mobile/widgets/segmented_control.dart';
@@ -15,6 +16,109 @@ class ClassMaterialDetailScreen extends StatefulWidget {
 
 class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
   int _selectedIndex = 0;
+  void showChatDialog(BuildContext context) {
+    TextEditingController _controller = TextEditingController();
+    List<ChatMessage> messages = [];
+    ScrollController _scrollController = ScrollController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          content: SizedBox(
+            width: double.maxFinite,
+            height: 400,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(10),
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      final message = messages[index];
+                      return Align(
+                        alignment: message.isUser
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          decoration: BoxDecoration(
+                            color: message.isUser
+                                ? Colors.white
+                                : Colors.green[300],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            message.text,
+                            style: TextStyle(
+                              color:
+                                  message.isUser ? Colors.black : Colors.white,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.send, color: Color(0xFF3786A8)),
+                        onPressed: () {
+                          if (_controller.text.isNotEmpty) {
+                            // Adding user message
+                            messages.add(ChatMessage(
+                                text: _controller.text, isUser: true));
+                            _controller.clear();
+                            // Simulate an AI response
+                            Future.delayed(const Duration(seconds: 1), () {
+                              messages.add(ChatMessage(
+                                  text:
+                                      "AI Response to '${messages.last.text}'",
+                                  isUser: false));
+                              _scrollController.animateTo(
+                                _scrollController.position.maxScrollExtent +
+                                    100,
+                                duration: const Duration(milliseconds: 200),
+                                curve: Curves.easeOut,
+                              );
+                              (context as Element).markNeedsBuild();
+                            });
+                            _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent + 100,
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeOut,
+                            );
+                            (context as Element).markNeedsBuild();
+                          }
+                        },
+                      ),
+                      hintText: "Type your message here",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +133,12 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(widget.material.title),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.question_answer),
+            onPressed: () => showChatDialog(context),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/api/firebase_api.dart';
 import 'package:mobile/models/users/user_data.dart';
-import 'package:mobile/services/notification_service.dart';
 import 'package:mobile/widgets/auth_layout.dart';
 import 'package:mobile/widgets/customtextformfield.dart';
 import 'package:mobile/widgets/mainbutton.dart';
