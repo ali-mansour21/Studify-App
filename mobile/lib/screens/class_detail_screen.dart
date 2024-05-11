@@ -16,8 +16,9 @@ class ClassDetailScreen extends StatefulWidget {
 
 class _ClassDetailScreenState extends State<ClassDetailScreen> {
   final ClassOperations _apiService = ClassOperations();
-
+  final TextEditingController classCodeController = TextEditingController();
   int _selectedIndex = 0;
+  bool _isUserAuthorized = false;
   void _showJoinClassDialog() {
     showDialog(
       context: context,
@@ -40,6 +41,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                 width: 300,
                 height: 45,
                 child: TextField(
+                  controller: classCodeController,
                   decoration: InputDecoration(
                     labelText: 'Class Code',
                     border: OutlineInputBorder(
@@ -58,9 +60,35 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                 child: MainButton(
                   buttonColor: const Color(0xFF3786A8),
                   buttonText: "Submit",
-                  onPressed: () {
-                    // Submission logic here
-                    Navigator.of(context).pop();
+                  onPressed: () async {
+                    final classCode = classCodeController.text;
+                    if (classCode.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: "Please enter class code",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 5,
+                          backgroundColor: const Color(0xFF3786A8),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                      return;
+                    }
+                    Map<String, String> result = await _apiService
+                        .enrollWithClassCode(context, classCode);
+                    if (result['status'] == 'success') {
+                      setState(() {
+                        _isUserAuthorized = true;
+                      });
+                    }
+                    Navigator.pop(context);
+                    Fluttertoast.showToast(
+                        msg: result['message'] ?? 'Failed to join class',
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 5,
+                        backgroundColor: const Color(0xFF3786A8),
+                        textColor: Colors.white,
+                        fontSize: 16.0);
                   },
                 ),
               ),
@@ -110,19 +138,20 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
           ),
           title: Text(widget.classDetail.title),
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: TextButton(
-                onPressed: _showJoinClassDialog,
-                style: TextButton.styleFrom(
-                  backgroundColor: const Color(0xFF3786A8),
+            if (!_isUserAuthorized)
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: TextButton(
+                  onPressed: _showJoinClassDialog,
+                  style: TextButton.styleFrom(
+                    backgroundColor: const Color(0xFF3786A8),
+                  ),
+                  child: const Text(
+                    'Join',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-                child: const Text(
-                  'Join',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            )
+              )
           ],
         ),
         body: Padding(
@@ -161,20 +190,21 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
               fontSize: 16,
             ),
           ),
-          trailing: const Icon(
-            Icons.chevron_right,
-            color: Colors.grey,
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ClassMaterialDetailScreen(
-                  material: material,
-                ),
-              ),
-            );
-          },
+          trailing: _isUserAuthorized
+              ? const Icon(Icons.chevron_right, color: Colors.grey)
+              : null,
+          onTap: _isUserAuthorized
+              ? () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ClassMaterialDetailScreen(
+                        material: material,
+                      ),
+                    ),
+                  );
+                }
+              : null,
         );
       },
       separatorBuilder: (context, index) {

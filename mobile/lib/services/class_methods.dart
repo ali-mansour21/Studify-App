@@ -55,7 +55,7 @@ class ClassOperations {
       } else {
         return {
           'status': 'error',
-          'message': 'Failed to enroll: ${response.statusCode}'
+          'message': 'Failed to enroll '
         };
       }
     } catch (e) {
