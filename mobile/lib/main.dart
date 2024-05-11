@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/api/firebase_api.dart';
 import 'package:mobile/models/users/user_data.dart';
 import 'package:mobile/providers/class_provider.dart';
+import 'package:mobile/providers/notification_provider.dart';
 import 'package:mobile/screens/categories_screen.dart';
 import 'package:mobile/screens/home_screen.dart';
 import 'package:mobile/screens/login_screen.dart';
@@ -29,6 +30,7 @@ void main() async {
       ChangeNotifierProvider(create: (context) => UserData()),
       ChangeNotifierProvider(create: (context) => MaterialsProvider()),
       ChangeNotifierProvider(create: (context) => StudyClassProvider()),
+      ChangeNotifierProvider(create: (context) => NotificationProvider()),
     ],
     child: const MyApp(),
   ));

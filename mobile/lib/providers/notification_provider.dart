@@ -16,4 +16,9 @@ class NotificationProvider with ChangeNotifier {
       print('Failed to load classes: $e');
     }
   }
+
+  void clearNotifications() {
+    _notifications = [];
+    notifyListeners();
+  }
 }

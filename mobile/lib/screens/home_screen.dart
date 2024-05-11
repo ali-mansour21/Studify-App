@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/material_model.dart';
 import 'package:mobile/providers/class_provider.dart';
 import 'package:mobile/providers/material_provider.dart';
+import 'package:mobile/providers/notification_provider.dart';
 import 'package:mobile/screens/class_detail_screen.dart';
 import 'package:mobile/screens/material_screen.dart';
 import 'package:mobile/widgets/navigation_bar.dart';
@@ -24,6 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
       final classProvider =
           Provider.of<StudyClassProvider>(context, listen: false);
       classProvider.loadClasses(context);
+      final notificationProvider =
+          Provider.of<NotificationProvider>(context, listen: false);
+      notificationProvider.getNotifications(context);
     });
   }
 
@@ -161,13 +165,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildNotificationsIcon(context) {
-    const int notificationCount = 3;
-    final List<String> notifications = [
-      "Your appointment is tomorrow.",
-      "New updates are available.",
-      "Reminder: Meeting at 3 PM today."
-    ];
+  Widget buildNotificationsIcon(BuildContext context) {
+    final notificationProvider =
+        Provider.of<NotificationProvider>(context, listen: false);
+    final notifications = notificationProvider.notifications;
 
     return PopupMenuButton(
       icon: Stack(
@@ -190,9 +191,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               constraints: const BoxConstraints(minWidth: 15, minHeight: 15),
-              child: const Text(
-                '$notificationCount',
-                style: TextStyle(color: Colors.white, fontSize: 10),
+              child: Text(
+                notifications.length.toString(),
+                style: const TextStyle(color: Colors.white, fontSize: 10),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -205,12 +206,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(value)));
       },
+      onCanceled: () {
+        notificationProvider.clearNotifications();
+      },
       offset: const Offset(0, 60),
       itemBuilder: (BuildContext context) {
-        return notifications.map((String notification) {
+        return notifications.map((notification) {
           return PopupMenuItem<String>(
-            value: notification,
-            child: Text(notification),
+            value: notification.content,
+            child: Text(
+              notification.content,
+              style: TextStyle(fontSize: 13),
+            ),
           );
         }).toList();
       },
