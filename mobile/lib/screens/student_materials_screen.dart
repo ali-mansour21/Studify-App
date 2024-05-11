@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/material_model.dart';
-import 'package:mobile/models/topic_material.dart';
 import 'package:mobile/widgets/material_card.dart';
 
 class StudentMaterialScreen extends StatelessWidget {
@@ -25,11 +24,21 @@ class StudentMaterialScreen extends StatelessWidget {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
-      body: ListView.builder(
-        itemCount: materials.length,
-        itemBuilder: (context, index) =>
-            MaterialCard(materialItem: materials[index]),
-      ),
+      body: materials.isEmpty
+          ? const Center(
+              child: Text(
+                'No materials available.',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
+            )
+          : ListView.builder(
+              itemCount: materials.length,
+              itemBuilder: (context, index) =>
+                  MaterialCard(materialItem: materials[index]),
+            ),
     );
   }
 }
