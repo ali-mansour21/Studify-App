@@ -101,7 +101,10 @@ class _CameraScreenState extends State<CameraScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Add New Material'),
+            title: const Text(
+              'Add New Material',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
@@ -178,7 +181,88 @@ class _CameraScreenState extends State<CameraScreen> {
     var provider = Provider.of<MaterialsProvider>(context, listen: false);
     List<MaterialItem> materials = provider.studentMaterials;
     int? selectedMaterialId;
+    TextEditingController topicController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Select Existing Material',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                DropdownButtonFormField<int>(
+                  value: selectedMaterialId,
+                  items: materials
+                      .map<DropdownMenuItem<int>>((MaterialItem material) {
+                    return DropdownMenuItem<int>(
+                      value: material.id,
+                      child: SizedBox(
+                        height: 40,
+                        child: Center(
+                          child: Text(material.title),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (int? newValue) {
+                    setState(() {
+                      selectedMaterialId = newValue;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Select Material',
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                SizedBox(
+                  height: 40,
+                  child: TextField(
+                    controller: topicController,
+                    decoration: const InputDecoration(
+                      labelText: 'Topic Title',
+                      border: OutlineInputBorder(),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel',
+                  style: TextStyle(color: Color(0xFF3786A8))),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text(
+                'Save',
+                style: TextStyle(color: Color(0xFF3786A8)),
+              ),
+              onPressed: () {
+                if (selectedMaterialId != null &&
+                    topicController.text.isNotEmpty) {
+                  // Add your logic here
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
+
   @override
   Widget build(BuildContext context) {
     if (!_controller.value.isInitialized) {
