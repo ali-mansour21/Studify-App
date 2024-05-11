@@ -17,5 +17,10 @@ class StudentResources extends Controller
     }
     public function studentCreatedNotes()
     {
+        $student = auth()->user();
+        $studentNotes = $student->studentNotes()
+            ->with('noteDescriptions')
+            ->get();
+        return response()->json(['status' => 'success', 'data' => $studentNotes]);
     }
 }
