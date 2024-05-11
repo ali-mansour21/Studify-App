@@ -1,8 +1,10 @@
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/models/categories/category_model.dart';
+import 'package:mobile/models/material_model.dart';
+import 'package:mobile/providers/material_provider.dart';
 import 'package:mobile/services/auth_api_service.dart';
-import 'package:mobile/widgets/mainbutton.dart';
+import 'package:provider/provider.dart';
 
 class CameraScreen extends StatefulWidget {
   final CameraController cameraController;
@@ -13,10 +15,9 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
-  List<dynamic> categoryData = [];
+  List<MaterialCategory> categories = [];
   int? _selectedCategoryId;
   bool isLoading = true;
-  final AuthApiService _apiService = AuthApiService();
   late CameraController _controller;
   @override
   void initState() {
@@ -39,10 +40,11 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Future<void> fetchCategories() async {
     try {
-      final List<dynamic> categories = await _apiService.getAllCategories();
-      print(categories);
+      final List<dynamic> fetchedCategories =
+          await AuthApiService().getAllCategories();
       setState(() {
-        categoryData = categories;
+        categories =
+            fetchedCategories.map((e) => MaterialCategory.fromJson(e)).toList();
         isLoading = false;
       });
     } catch (e) {
@@ -94,7 +96,7 @@ class _CameraScreenState extends State<CameraScreen> {
         });
   }
 
-void _showNewMaterialForm() {
+  void _showNewMaterialForm() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -103,53 +105,65 @@ void _showNewMaterialForm() {
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Material Name',
-                      border: OutlineInputBorder(),
+                  const SizedBox(
+                    height: 40,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Material Name',
+                        border: OutlineInputBorder(),
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  DropdownButtonFormField<int>(
-                    value: _selectedCategoryId,
-                    decoration: const InputDecoration(
-                      labelText: 'Category',
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      border: OutlineInputBorder(),
-                    ),
-                    items: categoryData
-                        .map<DropdownMenuItem<int>>((Category category) {
-                      return DropdownMenuItem<int>(
-                        value: category.id,
-                        child: Text(category.name),
-                      );
-                    }).toList(),
-                    onChanged: (int? newValue) {
-                      setState(() {
-                        _selectedCategoryId = newValue;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Topic Title',
-                      border: OutlineInputBorder(),
+                  const SizedBox(height: 15),
+                  SizedBox(
+                    height: 40,
+                    child: DropdownButtonFormField<int>(
+                      value: _selectedCategoryId,
+                      decoration: const InputDecoration(
+                        labelText: 'Category',
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        border: OutlineInputBorder(),
+                      ),
+                      items: categories.map<DropdownMenuItem<int>>((category) {
+                        return DropdownMenuItem<int>(
+                          value: category.id,
+                          child: Text(category.name),
+                        );
+                      }).toList(),
+                      onChanged: (int? newValue) {
+                        setState(() {
+                          _selectedCategoryId = newValue;
+                        });
+                      },
                     ),
                   ),
+                  const SizedBox(height: 15),
+                  const SizedBox(
+                    height: 40,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Topic Title',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Cancel'),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(color: Color(0xFF3786A8)),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: const Text('Save'),
+                child: const Text('Save',
+                    style: TextStyle(color: Color(0xFF3786A8))),
                 onPressed: () {
                   // Implement the save functionality here
                   Navigator.of(context).pop();
@@ -160,7 +174,11 @@ void _showNewMaterialForm() {
         });
   }
 
-  void _showExistingMaterialForm() {}
+  void _showExistingMaterialForm() {
+    var provider = Provider.of<MaterialsProvider>(context, listen: false);
+    List<MaterialItem> materials = provider.studentMaterials;
+    int? selectedMaterialId;
+  }
   @override
   Widget build(BuildContext context) {
     if (!_controller.value.isInitialized) {
