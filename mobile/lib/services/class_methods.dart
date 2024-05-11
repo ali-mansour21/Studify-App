@@ -34,4 +34,33 @@ class ClassOperations {
       return {'status': 'error', 'message': 'Exception occurred: $e'};
     }
   }
+
+  Future<Map<String, String>> enrollWithClassCode(
+      BuildContext context, String code) async {
+    String token = Provider.of<UserData>(context, listen: false).jwtToken;
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/join_class'),
+        body: json.encode({'class_code': code}),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = json.decode(response.body);
+        print(data);
+        return {'status': data['status'], 'message': data['message']};
+      } else {
+        return {
+          'status': 'error',
+          'message': 'Failed to enroll: ${response.statusCode}'
+        };
+      }
+    } catch (e) {
+      print(e);
+      return {'status': 'error', 'message': 'Exception occurred: $e'};
+    }
+  }
 }
