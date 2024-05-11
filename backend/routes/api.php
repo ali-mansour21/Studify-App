@@ -29,6 +29,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::middleware('student')->group(function () {
         Route::post('categories/select', [CategoryController::class, 'storeSelectedCategory']);
         Route::get('resources', [HomeController::class, 'index']);
+        Route::get('notifications',[HomeController::class,'getNotifications']);
         Route::get('studentClasses', [StudentResources::class, 'studentEnrolledClasses']);
         Route::get('studentNotes', [StudentResources::class, 'studentCreatedNotes']);
         Route::post('resources', [HomeController::class, 'store']);

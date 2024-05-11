@@ -5,6 +5,7 @@ namespace App\Http\Controllers\student;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\NoteDescription;
+use App\Models\Notification;
 use App\Models\StudentNote;
 use App\Models\StudyClass;
 use App\Notifications\AccountActivated;
@@ -25,6 +26,12 @@ class HomeController extends Controller
             'recommended_notes' => $student_notes,
             'recommended_classes' => $classes
         ]]);
+    }
+    public function getNotifications()
+    {
+        $user_id = auth()->id();
+        $notifications = Notification::where('receiver_id', $user_id)->get();
+        return response()->json(['status' => 'success', 'data' => $notifications]);
     }
 
     public function store(Request $request)
