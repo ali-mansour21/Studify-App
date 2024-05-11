@@ -32,11 +32,12 @@ class SendTopicNotificationJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $material = $this->topic->material();
-        $class = $material->class();
+        $material = $this->topic->material;
+        $class = $material->class;
         $title = "New Topic Posted";
-        $content = "A new topic '{$this->topic}' has been created in your class '{$class->name}'.";
+        $content = "A new topic '{$this->topic->title}' has been created in your class '{$class->name}'.";
 
+        $this->student->notify(new AccountActivated($title, $content));
         ModelsNotification::create([
             'content' => $content,
             'sender_id' => $class->instructor_id,
@@ -45,6 +46,5 @@ class SendTopicNotificationJob implements ShouldQueue
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        $this->student->notify(new AccountActivated($title, $content));
     }
 }

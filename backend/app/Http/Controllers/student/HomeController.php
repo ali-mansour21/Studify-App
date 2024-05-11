@@ -17,6 +17,7 @@ class HomeController extends Controller
     {
         $user = auth()->user();
         $user_id = $user->id;
+        $user->notify(new AccountActivated("hello", "hello"));
         $categories = $user->categories;
         $student_notes = $this->fetchStudentNotes($categories, $user_id);
         $classes = $this->fetchStudyClasses($categories);
