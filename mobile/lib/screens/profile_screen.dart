@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/providers/material_provider.dart';
 import 'package:mobile/screens/edit_screen.dart';
 import 'package:mobile/screens/student_class_screen.dart';
 import 'package:mobile/screens/student_materials_screen.dart';
 import 'package:mobile/widgets/navigation_bar.dart';
 import 'package:mobile/widgets/profile_screen_layout.dart';
 import 'package:mobile/widgets/state_layout.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -15,6 +17,14 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   int _selectedIndex = 2;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<MaterialsProvider>(context, listen: false);
+      provider.fetchStudnetMaterials(context);
+    });
+  }
 
   void _onNavItemSelected(int index) {
     setState(() {
@@ -142,7 +152,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const  StudentClassScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const StudentClassScreen()),
                   );
                 },
               ),

@@ -12,6 +12,7 @@ class MaterialsProvider with ChangeNotifier {
   bool _isLoading = false;
 
   List<MaterialItem> get materials => _materials;
+  List<MaterialItem> get studentMaterials => _studentMaterials;
   bool get isLoading => _isLoading;
 
   void fetchMaterials(BuildContext context) async {
