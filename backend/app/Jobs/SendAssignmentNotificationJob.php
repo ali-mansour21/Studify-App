@@ -29,8 +29,8 @@ class SendAssignmentNotificationJob implements ShouldQueue
 
     public function handle()
     {
-        $material = $this->assignment->material();
-        $class = $material->class();
+        $material = $this->assignment->material;
+        $class = $material->class;
         $title = "New Assignment Posted";
         $content = "An assignment '{$this->assignment->title}' has been created in your class '{$class->name}'";
 
