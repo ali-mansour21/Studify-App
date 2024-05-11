@@ -147,6 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   var materials =
                       Provider.of<MaterialsProvider>(context, listen: false)
                           .studentMaterials;
+                  print(materials);
                   Navigator.of(context).push(
                     MaterialPageRoute(
                         builder: (context) => StudentMaterialScreen(
@@ -163,7 +164,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   var studentClasses =
                       Provider.of<StudyClassProvider>(context, listen: false)
                           .studentStudyClass;
-                  print(studentClasses);
                   Navigator.of(context).push(
                     MaterialPageRoute(
                         builder: (context) => StudentClassScreen(

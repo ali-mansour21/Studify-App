@@ -29,10 +29,10 @@ Route::middleware('jwt.auth')->group(function () {
     Route::middleware('student')->group(function () {
         Route::post('categories/select', [CategoryController::class, 'storeSelectedCategory']);
         Route::get('resources', [HomeController::class, 'index']);
+        Route::post('resources', [HomeController::class, 'store']);
         Route::get('notifications',[HomeController::class,'getNotifications']);
         Route::get('studentClasses', [StudentResources::class, 'studentEnrolledClasses']);
         Route::get('studentNotes', [StudentResources::class, 'studentCreatedNotes']);
-        Route::post('resources', [HomeController::class, 'store']);
         Route::post('join_class', [ClassRequestController::class, 'enrollWithCode']);
         Route::post('request_join_class', [ClassRequestController::class, 'requestJoin']);
         Route::post('submit_assignment', [AssignmentSubmissionController::class, 'submitSolution']);

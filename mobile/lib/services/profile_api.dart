@@ -19,11 +19,12 @@ class ProfileApiService {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if (data['status'] == 'success' && data['data'] != null) {
-          List<dynamic> notesJson = data['data']['recommended_notes'];
+          List<dynamic> notesJson = data['data'];
           List<MaterialItem> studentNotes = notesJson
               .map((dynamic item) => MaterialItem.fromJson(item))
               .cast<MaterialItem>()
               .toList();
+          print(studentNotes);
           return studentNotes;
         } else {
           throw Exception("No notes data found or failed status");

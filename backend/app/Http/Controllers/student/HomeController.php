@@ -36,6 +36,7 @@ class HomeController extends Controller
 
     public function store(Request $request)
     {
+        $student_id = auth()->id();
         $data = $request->validate([
             'material_id' => ['sometimes', 'integer', 'exists:materials,id'],
             'material_title' => ['required_without:material_id', 'string', 'min:3', 'max:255'],
@@ -45,25 +46,26 @@ class HomeController extends Controller
         ]);
 
         if (isset($data['material_id'])) {
-            $material = StudentNote::find($data['material_id']);
+            $material = StudentNote::findOrFail($data['material_id']);
             $topic = new NoteDescription([
                 'title' => $data['topic_title'],
-                'description' => $data['topic_description']
+                'content' => $data['topic_description']
             ]);
-            $material->topics()->save($topic);
+            $material->noteDescriptions()->save($topic);
             $message = 'Topic added to existing material successfully.';
         } else {
             $material = new StudentNote([
                 'title' => $data['material_title'],
-                'category_id' => $data['category_id']
+                'category_id' => $data['category_id'],
+                'student_id' => $student_id
             ]);
             $material->save();
 
             $topic = new NoteDescription([
                 'title' => $data['topic_title'],
-                'description' => $data['topic_description']
+                'content' => $data['topic_description']
             ]);
-            $material->topics()->save($topic);
+            $material->noteDescriptions()->save($topic);
             $message = 'New material and topic created successfully.';
         }
 

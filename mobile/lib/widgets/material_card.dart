@@ -13,8 +13,7 @@ class MaterialCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  StudentTopicScreen(material: materialItem)),
+              builder: (context) => StudentTopicScreen(material: materialItem)),
         );
       },
       child: Card(
@@ -32,17 +31,19 @@ class MaterialCard extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: Image.asset(
-                    'assets/Studify-logo.png',
+                    'assets/student_image.png',
                     fit: BoxFit.cover,
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(8.0),
-                  color: Colors.grey[200],
+                  color: Color(0xFF3786A8).withOpacity(0.55),
                   child: Text(
                     materialItem.title,
                     style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                 ),
               ],
