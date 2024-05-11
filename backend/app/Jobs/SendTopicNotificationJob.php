@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Notification as ModelsNotification;
 use App\Models\Topic;
 use App\Models\User;
+use App\Notifications\AccountActivated;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -31,11 +32,10 @@ class SendTopicNotificationJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $messaging = app('firebase.messaging');
-        $content = "A topic '{$this->topic->title}' has been posted in your class.";
         $material = $this->topic->material();
         $class = $material->class();
-        $token = $this->student->firebase_token;
+        $title = "New Topic Posted";
+        $content = "A new topic '{$this->topic}' has been created in your class '{$class->name}'.";
 
         ModelsNotification::create([
             'content' => $content,
@@ -45,14 +45,6 @@ class SendTopicNotificationJob implements ShouldQueue
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
-        if ($token) {
-            $message = CloudMessage::withTarget('token', $token)
-                ->withNotification(Notification::fromArray([
-                    'title' => 'New Topic Created',
-                    'body' => $content
-                ]));
-            $messaging->send($message);
-        }
+        $this->student->notify(new AccountActivated($title, $content));
     }
 }
