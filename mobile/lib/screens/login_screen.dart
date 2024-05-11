@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 20),
             MainButton(
                 buttonColor: const Color(0xFF3786A8),
-                buttonText: "Log in",
+                buttonText: "Login",
                 onPressed: _login),
             const SizedBox(height: 20),
             GestureDetector(

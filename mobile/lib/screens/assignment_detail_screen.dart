@@ -33,25 +33,34 @@ class AssignmentDetailScreen extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () async {
-                  FilePickerResult? result =
-                      await FilePicker.platform.pickFiles();
-                  if (result != null) {
-                    PlatformFile file = result.files.first;
-                    print(file.name);
-                  }
+                  // File picker logic
                 },
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  //  submission logic here
-                },
-                style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                    backgroundColor: const Color(0xFF3786A8)),
-                child: const Text(
-                  "Submit",
-                  style: TextStyle(color: Colors.white),
+              Expanded(
+                child: SizedBox(
+                  height: 50, // Adjustable based on the content to be displayed
+                  child: Center(
+                    child:
+                        Text("AI response or other details will be shown here"),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Align(
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // submission logic here
+                  },
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50),
+                      backgroundColor: const Color(0xFF3786A8)),
+                  child: const Text(
+                    "Submit",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
             ],
@@ -64,6 +73,7 @@ class AssignmentDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -114,14 +124,14 @@ class AssignmentDetailScreen extends StatelessWidget {
         onTap: () => _showBottomSheet(context),
         child: Container(
           width: double.infinity,
-          color: Colors.black26,
+          color: Colors.grey[200],
           height: 70,
           child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(Icons.keyboard_arrow_up, color: Colors.white, size: 24),
+              Icon(Icons.keyboard_arrow_up, color: Color(0xFF3786A8), size: 24),
               Text('Add your work',
-                  style: TextStyle(color: Colors.white, fontSize: 16)),
+                  style: TextStyle(color: Color(0xFF3786A8), fontSize: 16)),
             ],
           ),
         ),

@@ -71,7 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SizedBox(height: 20),
             MainButton(
               buttonColor: const Color(0xFF3786A8),
-              buttonText: "Sign up",
+              buttonText: "Sign Up",
               onPressed: _register,
             ),
             const SizedBox(height: 20),

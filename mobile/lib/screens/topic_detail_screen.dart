@@ -50,6 +50,7 @@ class TopicDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -78,6 +79,7 @@ class TopicDetailScreen extends StatelessWidget {
         ),
       ),
       body: Container(
+        width: double.infinity,
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(

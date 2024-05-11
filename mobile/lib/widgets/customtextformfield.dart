@@ -32,7 +32,10 @@ class CustomTextFormField extends StatelessWidget {
               borderSide: const BorderSide(color: Colors.black45, width: 2.0),
               borderRadius: BorderRadius.circular(10.0),
             ),
-            prefixIcon: Icon(iconData),
+            prefixIcon: Icon(
+              iconData,
+              color: const Color(0x000000).withOpacity(0.45),
+            ),
           ),
           keyboardType: keyboardType,
           obscureText: obscureText,
