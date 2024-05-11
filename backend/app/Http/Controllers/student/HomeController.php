@@ -36,29 +36,36 @@ class HomeController extends Controller
 
     public function store(Request $request)
     {
-        $user_id = auth()->id();
         $data = $request->validate([
-            'title' => ['required', 'string', 'min:3', 'max:255'],
-            'category_id' => ['sometimes', 'integer', Rule::exists('categories', 'id')],
-            'category_name' => ['sometimes', 'string', 'min:3', 'max:255'],
-            'note_title' => ['required', 'string', 'min:3', 'max:255'],
-            'note_content' => ['required', 'string']
+            'material_id' => ['sometimes', 'integer', 'exists:materials,id'],
+            'material_title' => ['required_without:material_id', 'string', 'min:3', 'max:255'],
+            'category_id' => ['required_without:material_id', 'integer', 'exists:categories,id'],
+            'topic_title' => ['required', 'string', 'min:3', 'max:255'],
+            'topic_description' => ['required', 'string', 'min:3']
         ]);
-        $category_id = $this->resolveCategory($data);
-        if (is_null($category_id)) {
-            return response()->json(['status' => 'error', 'message' => 'Category is required']);
+
+        if (isset($data['material_id'])) {
+            $material = StudentNote::find($data['material_id']);
+            $topic = new NoteDescription([
+                'title' => $data['topic_title'],
+                'description' => $data['topic_description']
+            ]);
+            $material->topics()->save($topic);
+            $message = 'Topic added to existing material successfully.';
+        } else {
+            $material = new StudentNote([
+                'title' => $data['material_title'],
+                'category_id' => $data['category_id']
+            ]);
+            $material->save();
+
+            $topic = new NoteDescription([
+                'title' => $data['topic_title'],
+                'description' => $data['topic_description']
+            ]);
+            $material->topics()->save($topic);
+            $message = 'New material and topic created successfully.';
         }
-
-        $noteResult = $this->manageStudentNote($data, $user_id, $category_id);
-        $student_note = $noteResult['note'];
-        $message = $noteResult['message'];
-
-        $note_description = new NoteDescription([
-            'title' => $data['note_title'],
-            'content' => $data['note_content'],
-            'note_id' => $student_note->id,
-        ]);
-        $note_description->save();
 
         return response()->json(['status' => 'success', 'message' => $message]);
     }
@@ -93,24 +100,6 @@ class HomeController extends Controller
             return $category->id;
         } else {
             return null;
-        }
-    }
-    protected function manageStudentNote($data, $user_id, $category_id)
-    {
-        $student_note = StudentNote::where('title', $data['title'])
-            ->where('student_id', $user_id)
-            ->first();
-
-        if ($student_note) {
-            return ['note' => $student_note, 'message' => 'Added new note description to existing student note.'];
-        } else {
-            $student_note = new StudentNote([
-                'title' => $data['title'],
-                'category_id' => $category_id,
-                'student_id' => $user_id,
-            ]);
-            $student_note->save();
-            return ['note' => $student_note, 'message' => 'Successfully created a new student note.'];
         }
     }
     private function getEnrolledClassIds($user)
