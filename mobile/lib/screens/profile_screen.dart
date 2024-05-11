@@ -140,9 +140,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 title: const Text('Material'),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
+                  var materials =
+                      Provider.of<MaterialsProvider>(context, listen: false)
+                          .studentMaterials;
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => const StudentMaterialScreen()),
+                        builder: (context) => StudentMaterialScreen(
+                              materials: materials,
+                            )),
                   );
                 },
               ),
