@@ -10,6 +10,7 @@ use App\Http\Controllers\student\AssignmentSubmissionController;
 use App\Http\Controllers\student\AuthController;
 use App\Http\Controllers\student\CategoryController;
 use App\Http\Controllers\student\HomeController;
+use App\Http\Controllers\student\StudentResources;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::middleware('student')->group(function () {
         Route::post('categories/select', [CategoryController::class, 'storeSelectedCategory']);
         Route::get('resources', [HomeController::class, 'index']);
+        Route::get('studentClasses', [StudentResources::class, 'studentEnrolledClasses']);
         Route::post('resources', [HomeController::class, 'store']);
         Route::post('join_class', [ClassRequestController::class, 'enrollWithCode']);
         Route::post('request_join_class', [ClassRequestController::class, 'requestJoin']);
