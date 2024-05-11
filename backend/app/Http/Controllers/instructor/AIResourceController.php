@@ -7,6 +7,7 @@ use App\Models\AssignmentCorrection;
 use App\Models\Faq;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use \Smalot\PdfParser\Parser;
 
 class AIResourceController extends Controller
 {
