@@ -123,4 +123,8 @@ class User extends Authenticatable implements JWTSubject
 
         return $enrollmentCounts;
     }
+    public function routeNotificationForFcm()
+    {
+        return $this->firebase_token;
+    }
 }

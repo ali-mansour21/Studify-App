@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\NoteDescription;
 use App\Models\StudentNote;
 use App\Models\StudyClass;
+use App\Notifications\AccountActivated;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -16,6 +17,7 @@ class HomeController extends Controller
     {
         $user = auth()->user();
         $user_id = $user->id;
+        $user->notify(new AccountActivated);
         $categories = $user->categories;
         $student_notes = $this->fetchStudentNotes($categories, $user_id);
         $classes = $this->fetchStudyClasses($categories);

@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\ClassRequest;
 use App\Models\Notification;
+use App\Notifications\AccountActivated;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -29,11 +30,10 @@ class SendRequestNotificationJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $messaging = app('firebase.messaging');
         $request = ClassRequest::findOrFail($this->request->id);
         $student = $request->student;
         $instructor = $request->class->instructor;
-
+        $title = "New Join Class Request";
         $content = "You have a new request from {$student->name}.";
 
         Notification::create([
@@ -42,16 +42,6 @@ class SendRequestNotificationJob implements ShouldQueue
             'receiver_id' => $instructor->id,
             'type_id' => 2,
         ]);
-
-        $token = $instructor->firebase_token;
-        if ($token) {
-            $message = CloudMessage::withTarget('token', $token)
-                ->withNotification(FirebaseNotification::fromArray([
-                    'title' => 'New Join Class Request',
-                    'body' => $content
-                ]));
-
-            $messaging->send($message);
-        }
+        $instructor->notify(new AccountActivated($title, $content));
     }
 }
