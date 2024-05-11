@@ -16,17 +16,17 @@ class StateWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Icon(icon, color: Colors.grey),
+        Icon(icon, color: Colors.black),
         const SizedBox(height: 3),
         Text(
           count,
           style: const TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
+              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
         ),
         const SizedBox(height: 3),
         Text(
           label,
-          style: const TextStyle(fontSize: 16, color: Colors.grey),
+          style: const TextStyle(fontSize: 16, color: Colors.black),
         ),
       ],
     );

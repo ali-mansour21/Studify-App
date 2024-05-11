@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:mobile/models/topic_material.dart';
 
-class AssignmentDetailScreen extends StatelessWidget {
+class AssignmentDetailScreen extends StatefulWidget {
   final Topic assignment;
-  const AssignmentDetailScreen({super.key, required this.assignment});
-  void _showBottomSheet(BuildContext context) async {
+  const AssignmentDetailScreen({Key? key, required this.assignment})
+      : super(key: key);
+
+  @override
+  _AssignmentDetailScreenState createState() => _AssignmentDetailScreenState();
+}
+
+class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
+  String _fileName = "";
+
+  void _showBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -21,25 +30,44 @@ class AssignmentDetailScreen extends StatelessWidget {
               Text("Upload Your Work",
                   style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 20),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3786A8)),
-                icon: const Icon(
-                  Icons.file_upload,
-                  color: Colors.white,
-                ),
-                label: const Text(
-                  "Select File",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () async {
-                  // File picker logic
-                },
+              Row(
+                children: [
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF3786A8),
+                    ),
+                    icon: const Icon(Icons.file_upload, color: Colors.white),
+                    label: Text(
+                      _fileName.isEmpty ? "Select File" : "Change File",
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      FilePickerResult? result =
+                          await FilePicker.platform.pickFiles();
+                      if (result != null) {
+                        PlatformFile file = result.files.first;
+                        setState(() {
+                          _fileName =
+                              file.name; // Update the file name in the state
+                        });
+                      }
+                    },
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      _fileName,
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 16),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
-              Expanded(
+              const Expanded(
                 child: SizedBox(
-                  height: 50, // Adjustable based on the content to be displayed
+                  height: 50,
                   child: Center(
                     child:
                         Text("AI response or other details will be shown here"),
@@ -81,13 +109,10 @@ class AssignmentDetailScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
-            Icons.arrow_back,
-            size: 24,
-          ),
+          icon: const Icon(Icons.arrow_back, size: 24),
         ),
         title: Text(
-          assignment.title,
+          widget.assignment.title,
           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
       ),
@@ -107,7 +132,7 @@ class AssignmentDetailScreen extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                 child: Text(
-                  assignment.content,
+                  widget.assignment.content,
                   style: const TextStyle(fontSize: 16, color: Colors.black),
                 ),
               ),
