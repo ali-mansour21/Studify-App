@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/api/firebase_api.dart';
 import 'package:mobile/models/users/user_data.dart';
 import 'package:mobile/services/notification_service.dart';
 import 'package:mobile/widgets/auth_layout.dart';
@@ -19,15 +20,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthApiService _apiService = AuthApiService();
-  final NotificationService _notificationService = NotificationService();
+  final FirebaseApi _getToken = FirebaseApi();
 
   void _register() async {
     final name = _nameController.text;
     final email = _emailController.text;
     final password = _passwordController.text;
-    String? firebaseAccess = await _notificationService.getFirebaseToken();
+    String? firebaseAccess = await _getToken.getFcmToken();
 
     try {
+      print(firebaseAccess);
       final result =
           await _apiService.register(name, email, password, firebaseAccess);
       String jwtToken = result['authorization']['token'];

@@ -22,6 +22,6 @@ class SendRequestNotification
      */
     public function handle(RequestSent $event): void
     {
-        SendRequestNotificationJob::dispatch($event->request->id);
+        SendRequestNotificationJob::dispatch($event->request);
     }
 }

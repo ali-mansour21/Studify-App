@@ -15,13 +15,13 @@ use Kreait\Firebase\Messaging\Notification as FirebaseNotification;
 class SendRequestNotificationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $request_id;
+    protected $request;
     /**
      * Create a new job instance.
      */
-    public function __construct($requestId)
+    public function __construct($request)
     {
-        $this->request_id = $requestId;
+        $this->request = $request;
     }
 
     /**
@@ -30,7 +30,7 @@ class SendRequestNotificationJob implements ShouldQueue
     public function handle(): void
     {
         $messaging = app('firebase.messaging');
-        $request = ClassRequest::findOrFail($this->request_id);
+        $request = ClassRequest::findOrFail($this->request->id);
         $student = $request->student;
         $instructor = $request->class->instructor;
 
