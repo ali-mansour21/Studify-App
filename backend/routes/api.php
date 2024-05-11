@@ -10,6 +10,7 @@ use App\Http\Controllers\student\AssignmentSubmissionController;
 use App\Http\Controllers\student\AuthController;
 use App\Http\Controllers\student\CategoryController;
 use App\Http\Controllers\student\HomeController;
+use App\Http\Controllers\student\StudentFAQControlller;
 use App\Http\Controllers\student\StudentResources;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,7 +31,7 @@ Route::middleware('jwt.auth')->group(function () {
         Route::post('categories/select', [CategoryController::class, 'storeSelectedCategory']);
         Route::get('resources', [HomeController::class, 'index']);
         Route::post('resources', [HomeController::class, 'store']);
-        Route::get('notifications',[HomeController::class,'getNotifications']);
+        Route::get('notifications', [HomeController::class, 'getNotifications']);
         Route::get('studentClasses', [StudentResources::class, 'studentEnrolledClasses']);
         Route::get('studentNotes', [StudentResources::class, 'studentCreatedNotes']);
         Route::post('join_class', [ClassRequestController::class, 'enrollWithCode']);
@@ -59,3 +60,4 @@ Route::middleware('guest')->group(function () {
     Route::post('instructor_register', [InstructorAuthController::class, 'register']);
     Route::post('instructor_login', [InstructorAuthController::class, 'login']);
 });
+Route::post('student_faq', [StudentFAQControlller::class, 'askQuestion']);

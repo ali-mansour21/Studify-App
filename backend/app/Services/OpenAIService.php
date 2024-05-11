@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use OpenAI\Laravel\Facades\OpenAI;
 
 class OpenAIService
 {
@@ -25,20 +26,13 @@ class OpenAIService
     public function generateAnswer($context, $question)
     {
         $prompt = $context . "\n\nQuestion: " . $question;
-        $response = $this->client->post('https://api.openai.com/v1/completions', [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->apiKey,
-                'Content-Type' => 'application/json',
+        $response = OpenAI::chat()->create([
+            'model' => 'gpt-3.5-turbo',
+            'messages' => [
+                ['role' => 'user', 'content' => $prompt],
             ],
-            'json' => [
-                'model' => 'text-davinci-002', // Use an appropriate model like "text-davinci-002"
-                'prompt' => $prompt,
-                'max_tokens' => 200,
-                'temperature' => 0.7
-            ]
         ]);
 
-        $body = json_decode($response->getBody()->getContents(), true);
-        return $body['choices'][0]['text'];
+        return $response->choices[0]->message->content;
     }
 }
