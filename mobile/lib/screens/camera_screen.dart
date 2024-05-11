@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/services/auth_api_service.dart';
 import 'package:mobile/widgets/mainbutton.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -11,6 +12,9 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
+  List<dynamic> categoryData = [];
+  bool isLoading = true;
+  final AuthApiService _apiService = AuthApiService();
   late CameraController _controller;
   @override
   void initState() {
@@ -21,6 +25,7 @@ class _CameraScreenState extends State<CameraScreen> {
         return;
       }
       setState(() {});
+      fetchCategories();
     });
   }
 
@@ -28,6 +33,21 @@ class _CameraScreenState extends State<CameraScreen> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> fetchCategories() async {
+    try {
+      final List<dynamic> categories = await _apiService.getAllCategories();
+      print(categories);
+      setState(() {
+        categoryData = categories;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() => isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load categories: $e')));
+    }
   }
 
   Future<void> _takePicture() async {
@@ -38,73 +58,42 @@ class _CameraScreenState extends State<CameraScreen> {
 
     try {
       final XFile image = await _controller.takePicture();
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return GestureDetector(
-              onTap: () {
-                FocusScopeNode currentFocus = FocusScope.of(context);
-                currentFocus.unfocus();
-              },
-              child: AlertDialog(
-                title: const Text(
-                  "Create a new material",
-                  style: TextStyle(fontSize: 18),
-                ),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 300,
-                        height: 45,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Material',
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                width: 10,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: 300,
-                        height: 45,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Topic',
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                width: 10,
-                              ),
-                              borderRadius: BorderRadius.circular(10), //
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      SizedBox(
-                        width: 300,
-                        height: 45,
-                        child: MainButton(
-                            buttonColor: const Color(0xFF3786A8),
-                            buttonText: "Create",
-                            onPressed: () {}),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
-          });
+      _showCaptureOptions();
     } catch (e) {
       print(e);
     }
   }
 
+  void _showCaptureOptions() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  title: const Text('Add New Material'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _showNewMaterialForm();
+                  },
+                ),
+                ListTile(
+                  title: const Text('Add to Existing Material'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _showExistingMaterialForm();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  void _showNewMaterialForm() {}
+  void _showExistingMaterialForm() {}
   @override
   Widget build(BuildContext context) {
     if (!_controller.value.isInitialized) {
