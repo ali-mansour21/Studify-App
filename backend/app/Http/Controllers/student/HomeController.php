@@ -36,7 +36,7 @@ class HomeController extends Controller
         $keyword = $data['keyWord'];
         $classes = StudyClass::where('name', 'LIKE', "%{$keyword}%")
             ->whereDoesntHave('students', function ($query) use ($student_id) {
-                $query->where('students.id', $student_id);
+                $query->where('users.id', $student_id);
             })
             ->get();
         $studyNotes = StudentNote::where('title', 'LIKE', "%{$keyword}%")

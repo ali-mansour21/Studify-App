@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/models/material_model.dart';
+import 'package:mobile/models/users/user_data.dart';
 import 'package:mobile/providers/class_provider.dart';
 import 'package:mobile/providers/material_provider.dart';
 import 'package:mobile/providers/notification_provider.dart';
@@ -7,6 +10,8 @@ import 'package:mobile/screens/class_detail_screen.dart';
 import 'package:mobile/screens/material_screen.dart';
 import 'package:mobile/widgets/navigation_bar.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,7 +20,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final String baseUrl = "http://192.168.0.104:8001/api";
+
+  final TextEditingController _controller = TextEditingController();
+  Timer? _debounce;
   int _selectedIndex = 0;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _debounce?.cancel();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -28,6 +45,32 @@ class _HomeScreenState extends State<HomeScreen> {
       final notificationProvider =
           Provider.of<NotificationProvider>(context, listen: false);
       notificationProvider.getNotifications(context);
+    });
+  }
+
+  void _onSearchChanged(String query) async {
+    String token = Provider.of<UserData>(context, listen: false).jwtToken;
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () async {
+      final response = await http.post(
+        Uri.parse('$baseUrl/dataSearch'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode({'keyWord': query}),
+      );
+
+      if (response.statusCode == 200) {
+        var responseData = jsonDecode(response.body);
+        if (responseData['status'] == 'success') {
+          _updateProvidersWithSearchResults(responseData);
+        } else {
+          print('Search failed: ${responseData['message']}');
+        }
+      } else {
+        print('Error: ${response.statusCode}');
+      }
     });
   }
 
@@ -231,6 +274,8 @@ class _HomeScreenState extends State<HomeScreen> {
         width: double.infinity,
         height: 50,
         child: TextField(
+          controller: _controller,
+          onChanged: _onSearchChanged,
           decoration: InputDecoration(
             hintText: "Search",
             prefixIcon: const Icon(Icons.search),
