@@ -73,8 +73,8 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                               ),
                             );
                           }
+
                           final message = provider.messages[index];
-                          // User's question aligned to the right
                           Widget questionWidget = Align(
                             alignment: Alignment.centerRight,
                             child: Container(
@@ -102,37 +102,40 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                             ),
                           );
 
-                          // Bot's answer aligned to the left
-                          Widget answerWidget = Align(
-                            alignment: Alignment.centerLeft,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 16),
-                              margin: const EdgeInsets.symmetric(vertical: 4),
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 3),
+                          if (message.answer.isNotEmpty) {
+                            Widget answerWidget = Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 16),
+                                margin: const EdgeInsets.symmetric(vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: Text(
+                                  message.answer,
+                                  style: const TextStyle(
+                                    color: Colors.white,
                                   ),
-                                ],
-                              ),
-                              child: Text(
-                                message.answer,
-                                style: const TextStyle(
-                                  color: Colors.white,
                                 ),
                               ),
-                            ),
-                          );
+                            );
 
-                          return Column(
-                            children: [questionWidget, answerWidget],
-                          );
+                            return Column(
+                              children: [questionWidget, answerWidget],
+                            );
+                          } else {
+                            return questionWidget;
+                          }
                         },
                       );
                     },
