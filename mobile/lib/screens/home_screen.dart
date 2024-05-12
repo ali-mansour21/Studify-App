@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final classProvider =
         Provider.of<StudyClassProvider>(context, listen: false);
 
-    materialProvider.fetchMaterials(context);
+    materialProvider.loadMaterials(context);
     classProvider.loadClasses(context);
   }
 

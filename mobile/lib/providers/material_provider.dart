@@ -27,6 +27,16 @@ class MaterialsProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+  void loadMaterials(BuildContext context) async {
+    notifyListeners();
+    try {
+      _materials = await _apiService.getNotesData(context);
+    } catch (e) {
+      print("Failed to fetch materials: $e");
+    } finally {
+      notifyListeners();
+    }
+  }
 
   void updateMaterials(List<MaterialItem> newMaterials) {
     _materials = newMaterials;
