@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/models/classes/class_data.dart';
 import 'package:mobile/models/material_model.dart';
 import 'package:mobile/models/users/user_data.dart';
 import 'package:mobile/providers/class_provider.dart';
@@ -72,6 +73,23 @@ class _HomeScreenState extends State<HomeScreen> {
         print('Error: ${response.statusCode}');
       }
     });
+  }
+
+  void _updateProvidersWithSearchResults(Map<String, dynamic> responseData) {
+    final materialProvider =
+        Provider.of<MaterialsProvider>(context, listen: false);
+    final classProvider =
+        Provider.of<StudyClassProvider>(context, listen: false);
+
+    List<MaterialItem> materials = (responseData['data']['studyNotes'] as List)
+        .map((data) => MaterialItem.fromJson(data))
+        .toList();
+    List<ClassData> classes = (responseData['data']['classes'] as List)
+        .map((data) => ClassData.fromJson(data))
+        .toList();
+
+    materialProvider.updateMaterials(materials);
+    classProvider.updateClasses(classes);
   }
 
   void _onNavItemSelected(int index) {
