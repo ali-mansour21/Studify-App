@@ -4,6 +4,7 @@ namespace App\Http\Controllers\student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assignment;
+use App\Models\AssignmentCorrection;
 use App\Models\AssignmentSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -31,10 +32,13 @@ class AssignmentSubmissionController extends Controller
         $submission = new AssignmentSubmission([
             'student_id' => $user->id,
             'assignment_id' => $request->assignment_id,
-            'file_path' => $path,
+            'solution' => $path,
         ]);
         $submission->save();
-
+        $correction_file = AssignmentCorrection::where('assignment_id', $request->assignment_id)->first();
+        if($correction_file){
+            $content = $correction_file->file_text;
+        }
         return response()->json(['message' => 'Assignment submitted successfully!']);
     }
 }

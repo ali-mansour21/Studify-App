@@ -33,6 +33,7 @@ class StudentFAQControlller extends Controller
         $faqAnswer->student_id = $student_id;
         $faqAnswer->material_id = $data['material_id'];
         $faqAnswer->save();
-        return response()->json(['status' => 'success', 'data' => $faqAnswer]);
+        $studentFaqs = Faq::where('student_id', $student_id)->get();
+        return response()->json(['status' => 'success', 'data' => $studentFaqs]);
     }
 }

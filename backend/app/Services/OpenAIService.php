@@ -35,4 +35,17 @@ class OpenAIService
 
         return $response->choices[0]->message->content;
     }
+    public function generateFeedback($context, $answers)
+    {
+        $prompt = $context . "\nAnswers: " . $answers;
+        $response = OpenAI::chat()->create([
+            'model' => 'gpt-3.5-turbo',
+            'messages' => [
+                ['role' => 'system', 'content' => $context],
+                ['role' => 'user', 'content' => $answers]
+            ],
+        ]);
+
+        return $response->choices[0]->message->content;
+    }
 }
