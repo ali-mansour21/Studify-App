@@ -25,11 +25,11 @@ class OpenAIService
      */
     public function generateAnswer($context, $question)
     {
-        $prompt = $context . "\n\nQuestion: " . $question;
         $response = OpenAI::chat()->create([
-            'model' => 'gpt-3.5-turbo',
+            'model' => 'gpt-4',
             'messages' => [
-                ['role' => 'user', 'content' => $prompt],
+                ['role' => 'system', 'content' => $context],
+                ['role' => 'user', 'content' => $question]
             ],
         ]);
 
