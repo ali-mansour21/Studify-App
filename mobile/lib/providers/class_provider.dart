@@ -22,6 +22,11 @@ class StudyClassProvider with ChangeNotifier {
     }
   }
 
+  void updateClasses(List<ClassData> newClasses) {
+    _studyClasses = newClasses;
+    notifyListeners();
+  }
+
   Future<void> loadStudentClasses(BuildContext context) async {
     try {
       _studentStudyClasses =
