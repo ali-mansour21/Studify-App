@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'package:mobile/models/classes/class_data.dart';
 import 'package:mobile/models/users/user_data.dart';
@@ -27,13 +27,6 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
   PlatformFile? _selectedFile;
   bool _isUploading = false;
   String _response = "";
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() => Provider.of<AssignmentsModel>(context, listen: false)
-        .getAssignmentModel(widget.assignment.id)
-        .loadFeedback(widget.assignment.id));
-  }
 
   Future<void> _uploadFile(BuildContext context) async {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
@@ -179,13 +172,23 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(8.0),
                   constraints: const BoxConstraints(
-                    minHeight: 50,
+                    minHeight: 370,
+                    maxHeight: 370,
                   ),
-                  child: Text(
-                    assignmentModel.feedback.isNotEmpty
-                        ? assignmentModel.feedback
-                        : "No Feedback",
-                    textAlign: TextAlign.left,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Text(
+                            assignmentModel.feedback.isNotEmpty
+                                ? assignmentModel.feedback
+                                : "",
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -193,12 +196,17 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
               Align(
                 alignment: Alignment.center,
                 child: ElevatedButton(
-                  onPressed: () {
-                    _uploadFile(context);
-                  },
+                  onPressed: assignmentModel.isSubmitted
+                      ? null
+                      : () {
+                          _uploadFile(context);
+                        },
                   style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(50),
-                      backgroundColor: const Color(0xFF3786A8)),
+                    minimumSize: const Size.fromHeight(50),
+                    backgroundColor: assignmentModel.isSubmitted
+                        ? Colors.grey
+                        : const Color(0xFF3786A8),
+                  ),
                   child: const Text(
                     "Submit",
                     style: TextStyle(
