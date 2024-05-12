@@ -141,33 +141,40 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.send, color: Color(0xFF3786A8)),
-                        onPressed: () {
-                          if (_controller.text.isNotEmpty) {
-                            final provider = Provider.of<ChatProvider>(context,
-                                listen: false);
-                            provider.sendQuestionAndGetResponse(
-                                widget.material.id, _controller.text, context);
-                            _controller.clear();
-                          }
-                        },
+                SizedBox(
+                  height: 70,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: _controller,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon:
+                              const Icon(Icons.send, color: Color(0xFF3786A8)),
+                          onPressed: () {
+                            if (_controller.text.isNotEmpty) {
+                              final provider = Provider.of<ChatProvider>(
+                                  context,
+                                  listen: false);
+                              provider.sendQuestionAndGetResponse(
+                                  widget.material.id,
+                                  _controller.text,
+                                  context);
+                              _controller.clear();
+                            }
+                          },
+                        ),
+                        hintText: "Type your question here",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
                       ),
-                      hintText: "Type your question here",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ),
