@@ -23,7 +23,7 @@ class AssignmentSubmissionController extends Controller
     {
         $request->validate([
             'assignment_id' => ['required', Rule::exists('assignments', 'id')],
-            'solution' => 'required|file|mimes:pdf,doc,docx|max:10240',
+            'solution' => 'required|file|mimes:pdf,doc,docx',
         ]);
 
         $assignment = Assignment::findOrFail(intval($request->assignment_id));

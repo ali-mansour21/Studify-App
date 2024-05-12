@@ -8,6 +8,7 @@ import 'package:mobile/models/topic_material.dart';
 import 'package:mobile/models/users/user_data.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AssignmentDetailScreen extends StatefulWidget {
   final Assignment assignment;
@@ -29,9 +30,14 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
 
     if (_selectedFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Please select a file first."),
-      ));
+      Fluttertoast.showToast(
+          msg: 'Select a file to upload',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
       return;
     }
 
@@ -45,24 +51,51 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
       ))
       ..headers.addAll({
         'Authorization': 'Bearer $token',
-        'Content-Type': 'multipart/form-data',
+        // 'Content-Type': 'multipart/form-data', // Removed this as it's not necessary
       });
 
     setState(() {
       _isUploading = true;
     });
 
-    var response = await request.send();
-
-    if (response.statusCode == 200) {
-      _response = 'File successfully uploaded';
-    } else {
-      _response = 'Failed to upload file';
+    try {
+      var response = await request.send();
+      var responseBody = await response.stream.bytesToString();
+      if (response.statusCode == 200) {
+        var decodedResponse = json.decode(responseBody);
+        if (decodedResponse['status'] == 'success') {
+          Fluttertoast.showToast(
+              msg: 'Assignment Submitted Successfully',
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 5,
+              backgroundColor: const Color(0xFF3786A8),
+              textColor: Colors.white,
+              fontSize: 16.0);
+          String feedback = decodedResponse['date']['feedback'];
+          setState(() {
+            _response = '\n\nFeedback:\n$feedback';
+          });
+        } else {
+          setState(() {
+            _response = 'File upload failed: ${decodedResponse['message']}';
+          });
+        }
+      } else {
+        setState(() {
+          _response =
+              'Failed to upload file: Server responded with status code ${response.statusCode}';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _response = 'Error during file upload: $e';
+      });
+    } finally {
+      setState(() {
+        _isUploading = false;
+      });
     }
-
-    setState(() {
-      _isUploading = false;
-    });
   }
 
   void _showBottomSheet(BuildContext context) {
@@ -99,7 +132,11 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                         PlatformFile file = result.files.first;
                         setState(() {
                           _fileName = file.name;
+                          _selectedFile = file;
                         });
+                        print(_selectedFile);
+                      } else {
+                        print("No file selected"); // Useful for debugging
                       }
                     },
                   ),
