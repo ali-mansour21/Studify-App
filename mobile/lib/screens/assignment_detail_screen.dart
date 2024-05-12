@@ -6,6 +6,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:mobile/models/classes/class_data.dart';
 import 'package:mobile/models/topic_material.dart';
 import 'package:mobile/models/users/user_data.dart';
+import 'package:mobile/providers/assignment_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -26,6 +28,14 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
   PlatformFile? _selectedFile;
   bool _isUploading = false;
   String _response = "";
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<AssignmentsModel>(context, listen: false)
+        .getAssignmentModel(widget.assignment.id)
+        .loadFeedback(widget.assignment.id);
+  }
+
   Future<void> _uploadFile(BuildContext context) async {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
 
@@ -187,6 +197,8 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var assignmentModel = Provider.of<AssignmentsModel>(context, listen: false)
+        .getAssignmentModel(widget.assignment.id);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

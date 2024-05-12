@@ -7,7 +7,6 @@ class AssignmentsModel with ChangeNotifier {
     if (!_assignments.containsKey(id)) {
       _assignments[id] = AssignmentModel();
     }
-    return _assignments[id];
+    return _assignments[id]!;
   }
-
 }
