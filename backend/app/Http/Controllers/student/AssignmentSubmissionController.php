@@ -27,10 +27,11 @@ class AssignmentSubmissionController extends Controller
         ]);
 
         $assignment = Assignment::findOrFail(intval($request->assignment_id));
-        $class_id = $assignment->class_id;
+        $material = $assignment->material;
+        $class_id = $material->class_id;
 
         $user = auth()->user();
-        if (!$user->studentClasses()->where('id', $class_id)->exists()) {
+        if (!$user->studentClasses()->where('study_class_id', $class_id)->exists()) {
             return response()->json(['message' => 'You are not enrolled in the class for this assignment.'], 403);
         }
 
@@ -53,7 +54,8 @@ class AssignmentSubmissionController extends Controller
             $submission_feedback->feedback = $feedback;
             $submission_feedback->assignment_id = $request->assignment_id;
             $submission_feedback->save();
+            return response()->json(['status' => 'success', 'message' => 'Assignment submitted successfully!', 'date' => $submission_feedback]);
         }
-        return response()->json(['status' => 'success', 'message' => 'Assignment submitted successfully!', 'date' => $submission_feedback]);
+        return response()->json(['status' => 'failed', 'message' => 'No feedback was created'], 402);
     }
 }

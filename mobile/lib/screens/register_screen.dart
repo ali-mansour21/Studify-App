@@ -28,7 +28,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String? firebaseAccess = await _getToken.getFcmToken();
 
     try {
-      print(firebaseAccess);
       final result =
           await _apiService.register(name, email, password, firebaseAccess);
       String jwtToken = result['authorization']['token'];

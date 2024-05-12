@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
     var request = http.MultipartRequest('POST', uri)
       ..fields['assignment_id'] = widget.assignment.id.toString()
       ..files.add(await http.MultipartFile.fromPath(
-        'file',
+        'solution',
         _selectedFile!.path!,
         filename: basename(_selectedFile!.name),
       ))
@@ -114,12 +115,11 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              const Expanded(
+              Expanded(
                 child: SizedBox(
                   height: 50,
                   child: Center(
-                    child:
-                        Text("AI response or other details will be shown here"),
+                    child: Text(_response),
                   ),
                 ),
               ),
@@ -127,7 +127,9 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
               Align(
                 alignment: Alignment.center,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _uploadFile(context);
+                  },
                   style: ElevatedButton.styleFrom(
                       minimumSize: const Size.fromHeight(50),
                       backgroundColor: const Color(0xFF3786A8)),
