@@ -35,10 +35,17 @@ class HomeController extends Controller
         ]);
         $keyword = $data['keyWord'];
         $classes = StudyClass::where('name', 'LIKE', "%{$keyword}%")
-                    ->whereDoesntHave('students', function($query) use ($student_id) {
-                        $query->where('students.id', $student_id);
-                    })
-                    ->get();
+            ->whereDoesntHave('students', function ($query) use ($student_id) {
+                $query->where('students.id', $student_id);
+            })
+            ->get();
+        $studyNotes = StudentNote::where('title', 'LIKE', "%{$keyword}%")
+            ->where('student_id', '!=', $student_id)
+            ->get();
+        return response()->json(['status' => 'success', 'data' => [
+            'studyNotes' => $studyNotes,
+            'classes' => $classes
+        ]]);
     }
     public function getNotifications()
     {
