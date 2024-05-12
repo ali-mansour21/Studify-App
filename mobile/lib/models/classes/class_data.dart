@@ -39,12 +39,16 @@ class Assignment implements Topic {
 }
 
 class Material {
+  final int id;
   final String title;
   final List<ClassTopic> topics;
   final List<Assignment> assignments;
 
   Material(
-      {required this.title, required this.topics, required this.assignments});
+      {required this.id,
+      required this.title,
+      required this.topics,
+      required this.assignments});
   factory Material.fromJson(Map<String, dynamic> json) {
     List<ClassTopic> topicsList = [];
     if (json['topics'] != null) {
@@ -62,6 +66,7 @@ class Material {
     }
 
     return Material(
+      id: json['id'],
       title: json['name'],
       topics: topicsList,
       assignments: assignmentsList,

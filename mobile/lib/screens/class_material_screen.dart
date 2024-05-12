@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart' as model;
 import 'package:mobile/models/messages/chat_model.dart';
+import 'package:mobile/providers/chat_message_provider.dart';
 import 'package:mobile/screens/assignment_detail_screen.dart';
 import 'package:mobile/screens/topic_detail_screen.dart';
 import 'package:mobile/widgets/segmented_control.dart';
+import 'package:provider/provider.dart';
 
 class ClassMaterialDetailScreen extends StatefulWidget {
   final model.Material material;
@@ -16,9 +18,9 @@ class ClassMaterialDetailScreen extends StatefulWidget {
 
 class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
   int _selectedIndex = 0;
+
   void showChatDialog(BuildContext context) {
     TextEditingController _controller = TextEditingController();
-    List<ChatMessage> messages = [];
     ScrollController _scrollController = ScrollController();
 
     showDialog(
@@ -35,33 +37,19 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Expanded(
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    padding: const EdgeInsets.all(10),
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final message = messages[index];
-                      return Align(
-                        alignment: message.isUser
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.symmetric(vertical: 5),
-                          decoration: BoxDecoration(
-                            color: message.isUser
-                                ? Colors.white
-                                : Colors.green[300],
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            message.text,
-                            style: TextStyle(
-                              color:
-                                  message.isUser ? Colors.black : Colors.white,
-                            ),
-                          ),
-                        ),
+                  child: Consumer<ChatProvider>(
+                    builder: (context, provider, child) {
+                      return ListView.builder(
+                        controller: _scrollController,
+                        padding: const EdgeInsets.all(10),
+                        itemCount: provider.messages.length,
+                        itemBuilder: (context, index) {
+                          final message = provider.messages[index];
+                          return ListTile(
+                            title: Text(message.question),
+                            subtitle: Text(message.answer),
+                          );
+                        },
                       );
                     },
                   ),
@@ -75,34 +63,20 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                         icon: const Icon(Icons.send, color: Color(0xFF3786A8)),
                         onPressed: () {
                           if (_controller.text.isNotEmpty) {
-                            // Adding user message
-                            messages.add(ChatMessage(
-                                text: _controller.text, isUser: true));
+                            Provider.of<ChatProvider>(context, listen: false)
+                                .sendQuestionAndGetResponse(widget.material.id,
+                                    _controller.text, context);
                             _controller.clear();
-                            // Simulate an AI response
-                            Future.delayed(const Duration(seconds: 1), () {
-                              messages.add(ChatMessage(
-                                  text:
-                                      "AI Response to '${messages.last.text}'",
-                                  isUser: false));
-                              _scrollController.animateTo(
-                                _scrollController.position.maxScrollExtent +
-                                    100,
-                                duration: const Duration(milliseconds: 200),
-                                curve: Curves.easeOut,
-                              );
-                              (context as Element).markNeedsBuild();
-                            });
-                            _scrollController.animateTo(
-                              _scrollController.position.maxScrollExtent + 100,
-                              duration: const Duration(milliseconds: 200),
-                              curve: Curves.easeOut,
-                            );
-                            (context as Element).markNeedsBuild();
+                            Future.microtask(() => _scrollController.animateTo(
+                                  _scrollController.position.maxScrollExtent +
+                                      100,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeOut,
+                                ));
                           }
                         },
                       ),
-                      hintText: "Type your message here",
+                      hintText: "Type your question here",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none,
@@ -249,25 +223,4 @@ Widget _buildAssignmentList(List<model.Assignment> assignments) {
       );
     },
   );
-}
-
-Future<void> sendQuestionAndGetResponse(String question, int materialId,
-    List<ChatMessage> messages, ScrollController scrollController ,BuildContext context) async {
-      
-  await Future.delayed(const Duration(seconds: 1));
-  messages.add(ChatMessage(text: question, isUser: true)); // User's question
-  // Simulate receiving an answer from the server
-  messages.add(ChatMessage(
-      text: "AI Response to '$question'", isUser: false)); // AI's answer
-
-  // Ensuring we update the UI on the main thread
-  if (scrollController.hasClients) {
-    scrollController.animateTo(
-      scrollController.position.maxScrollExtent + 100,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
-    );
-  }
-  (context as Element)
-      .markNeedsBuild(); // This ensures the UI rebuilds to display the new messages
 }

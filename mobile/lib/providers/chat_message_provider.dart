@@ -36,7 +36,9 @@ class ChatProvider with ChangeNotifier {
       var data = json.decode(response.body);
       if (data['status'] == 'success' && data['data'] != null) {
         ChatMessage newMessage = ChatMessage(
-            id: data['id'], question: data['question'], answer: data['answer']);
+            id: data['id'],
+            question: data['question'],
+            answer: data['bot_answer']);
         updateMessages([...messages, newMessage]);
       }
     }
