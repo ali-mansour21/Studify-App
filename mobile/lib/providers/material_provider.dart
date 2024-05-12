@@ -28,6 +28,11 @@ class MaterialsProvider with ChangeNotifier {
     }
   }
 
+  void updateMaterials(List<MaterialItem> newMaterials) {
+    _materials = newMaterials;
+    notifyListeners();
+  }
+
   void fetchStudnetMaterials(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
