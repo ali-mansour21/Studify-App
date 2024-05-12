@@ -42,7 +42,7 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                         if (_scrollController.hasClients) {
                           _scrollController.animateTo(
                             _scrollController.position.maxScrollExtent,
-                            duration: Duration(milliseconds: 200),
+                            duration: const Duration(milliseconds: 200),
                             curve: Curves.easeOut,
                           );
                         }
@@ -51,8 +51,29 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                       return ListView.builder(
                         controller: _scrollController,
                         padding: const EdgeInsets.all(10),
-                        itemCount: provider.messages.length,
+                        itemCount: provider.messages.length +
+                            (provider.isLoading ? 1 : 0),
                         itemBuilder: (context, index) {
+                          if (index >= provider.messages.length) {
+                            // Show loading indicator at the end of the list
+                            return Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CircularProgressIndicator(
+                                        color: Colors.green),
+                                    SizedBox(width: 10),
+                                    Text("Loading...",
+                                        style: TextStyle(color: Colors.green)),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
                           final message = provider.messages[index];
                           // User's question aligned to the right
                           Widget questionWidget = Align(
@@ -69,13 +90,13 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 1,
                                     blurRadius: 5,
-                                    offset: Offset(0, 3),
+                                    offset: const Offset(0, 3),
                                   ),
                                 ],
                               ),
                               child: Text(
                                 message.question,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                 ),
                               ),
@@ -97,13 +118,13 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 1,
                                     blurRadius: 5,
-                                    offset: Offset(0, 3),
+                                    offset: const Offset(0, 3),
                                   ),
                                 ],
                               ),
                               child: Text(
                                 message.answer,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                 ),
                               ),
@@ -127,9 +148,10 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                         icon: const Icon(Icons.send, color: Color(0xFF3786A8)),
                         onPressed: () {
                           if (_controller.text.isNotEmpty) {
-                            Provider.of<ChatProvider>(context, listen: false)
-                                .sendQuestionAndGetResponse(widget.material.id,
-                                    _controller.text, context);
+                            final provider = Provider.of<ChatProvider>(context,
+                                listen: false);
+                            provider.sendQuestionAndGetResponse(
+                                widget.material.id, _controller.text, context);
                             _controller.clear();
                           }
                         },

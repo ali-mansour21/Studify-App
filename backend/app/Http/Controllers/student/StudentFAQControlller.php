@@ -24,7 +24,7 @@ class StudentFAQControlller extends Controller
             'question' => ['required', 'string']
         ]);
         $faq = Faq::where('material_id', $data['material_id'])->first();
-        $context = $faq->file_text;
+        $context = $faq->file_text ?? "";
         $question = $data['question'];
         $bot_answer = $this->openAIService->generateAnswer($context, $question);
         $faqAnswer =  new FaqAnswer();
