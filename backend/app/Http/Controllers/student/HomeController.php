@@ -27,6 +27,19 @@ class HomeController extends Controller
             'recommended_classes' => $classes
         ]]);
     }
+    public function searchData(Request $request)
+    {
+        $student_id = auth()->id();
+        $data = $request->validate([
+            'keyWord' => ['required', 'string']
+        ]);
+        $keyword = $data['keyWord'];
+        $classes = StudyClass::where('name', 'LIKE', "%{$keyword}%")
+                    ->whereDoesntHave('students', function($query) use ($student_id) {
+                        $query->where('students.id', $student_id);
+                    })
+                    ->get();
+    }
     public function getNotifications()
     {
         $user_id = auth()->id();
