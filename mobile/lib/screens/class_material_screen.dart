@@ -250,3 +250,24 @@ Widget _buildAssignmentList(List<model.Assignment> assignments) {
     },
   );
 }
+
+Future<void> sendQuestionAndGetResponse(String question, int materialId,
+    List<ChatMessage> messages, ScrollController scrollController ,BuildContext context) async {
+      
+  await Future.delayed(const Duration(seconds: 1));
+  messages.add(ChatMessage(text: question, isUser: true)); // User's question
+  // Simulate receiving an answer from the server
+  messages.add(ChatMessage(
+      text: "AI Response to '$question'", isUser: false)); // AI's answer
+
+  // Ensuring we update the UI on the main thread
+  if (scrollController.hasClients) {
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent + 100,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
+  (context as Element)
+      .markNeedsBuild(); // This ensures the UI rebuilds to display the new messages
+}

@@ -1,6 +1,7 @@
 class ChatMessage {
-  String text;
-  bool isUser;
+  int id;
+  String question;
+  String answer;
 
-  ChatMessage({required this.text, required this.isUser});
+  ChatMessage({required this.id, required this.question, required this.answer});
 }
