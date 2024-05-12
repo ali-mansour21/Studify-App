@@ -53,26 +53,40 @@ class _HomeScreenState extends State<HomeScreen> {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () async {
-      final response = await http.post(
-        Uri.parse('$baseUrl/dataSearch'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: json.encode({'keyWord': query}),
-      );
-
-      if (response.statusCode == 200) {
-        var responseData = jsonDecode(response.body);
-        if (responseData['status'] == 'success') {
-          _updateProvidersWithSearchResults(responseData);
-        } else {
-          print('Search failed: ${responseData['message']}');
-        }
+      if (query.isEmpty) {
+        _fetchInitialData();
       } else {
-        print('Error: ${response.statusCode}');
+        final response = await http.post(
+          Uri.parse('$baseUrl/dataSearch'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: json.encode({'keyWord': query}),
+        );
+
+        if (response.statusCode == 200) {
+          var responseData = jsonDecode(response.body);
+          if (responseData['status'] == 'success') {
+            _updateProvidersWithSearchResults(responseData);
+          } else {
+            print('Search failed: ${responseData['message']}');
+          }
+        } else {
+          print('Error: ${response.statusCode}');
+        }
       }
     });
+  }
+
+  void _fetchInitialData() {
+    final materialProvider =
+        Provider.of<MaterialsProvider>(context, listen: false);
+    final classProvider =
+        Provider.of<StudyClassProvider>(context, listen: false);
+
+    materialProvider.fetchMaterials(context);
+    classProvider.loadClasses(context);
   }
 
   void _updateProvidersWithSearchResults(Map<String, dynamic> responseData) {
