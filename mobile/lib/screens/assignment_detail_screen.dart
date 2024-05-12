@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:mobile/models/classes/class_data.dart';
-import 'package:mobile/models/topic_material.dart';
 import 'package:mobile/models/users/user_data.dart';
 import 'package:mobile/providers/assignment_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,9 +30,9 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<AssignmentsModel>(context, listen: false)
+    Future.microtask(() => Provider.of<AssignmentsModel>(context, listen: false)
         .getAssignmentModel(widget.assignment.id)
-        .loadFeedback(widget.assignment.id);
+        .loadFeedback(widget.assignment.id));
   }
 
   Future<void> _uploadFile(BuildContext context) async {
@@ -61,7 +60,6 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
       ))
       ..headers.addAll({
         'Authorization': 'Bearer $token',
-        // 'Content-Type': 'multipart/form-data', // Removed this as it's not necessary
       });
 
     setState(() {
@@ -84,6 +82,12 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
               fontSize: 16.0);
           String feedback = decodedResponse['date']['feedback'];
           SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('feedback_${widget.assignment.id}', feedback);
+
+          // Update the assignment model
+          Provider.of<AssignmentsModel>(context, listen: false)
+              .getAssignmentModel(widget.assignment.id)
+              .submitAssignment(widget.assignment.id, feedback);
           setState(() {
             _response = '\n\nFeedback:\n$feedback';
           });
@@ -110,6 +114,8 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
   }
 
   void _showBottomSheet(BuildContext context) {
+    var assignmentModel = Provider.of<AssignmentsModel>(context, listen: false)
+        .getAssignmentModel(widget.assignment.id);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -129,27 +135,33 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                 children: [
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF3786A8),
+                      backgroundColor: assignmentModel.isSubmitted
+                          ? Colors.grey
+                          : const Color(0xFF3786A8),
                     ),
                     icon: const Icon(Icons.file_upload, color: Colors.white),
                     label: Text(
-                      _fileName.isEmpty ? "Select File" : "Change File",
+                      assignmentModel.isSubmitted
+                          ? "File Submitted"
+                          : (_fileName.isEmpty ? "Select File" : "Change File"),
                       style: const TextStyle(color: Colors.white),
                     ),
-                    onPressed: () async {
-                      FilePickerResult? result =
-                          await FilePicker.platform.pickFiles();
-                      if (result != null) {
-                        PlatformFile file = result.files.first;
-                        setState(() {
-                          _fileName = file.name;
-                          _selectedFile = file;
-                        });
-                        print(_selectedFile);
-                      } else {
-                        print("No file selected"); // Useful for debugging
-                      }
-                    },
+                    onPressed: assignmentModel.isSubmitted
+                        ? null
+                        : () async {
+                            FilePickerResult? result =
+                                await FilePicker.platform.pickFiles();
+                            if (result != null) {
+                              PlatformFile file = result.files.first;
+                              setState(() {
+                                _fileName = file.name;
+                                _selectedFile = file;
+                              });
+                              print(_selectedFile);
+                            } else {
+                              print("No file selected");
+                            }
+                          },
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -163,11 +175,17 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              Expanded(
-                child: SizedBox(
-                  height: 50,
-                  child: Center(
-                    child: Text(_response),
+              SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  constraints: const BoxConstraints(
+                    minHeight: 50,
+                  ),
+                  child: Text(
+                    assignmentModel.feedback.isNotEmpty
+                        ? assignmentModel.feedback
+                        : "No Feedback",
+                    textAlign: TextAlign.left,
                   ),
                 ),
               ),
@@ -197,8 +215,6 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var assignmentModel = Provider.of<AssignmentsModel>(context, listen: false)
-        .getAssignmentModel(widget.assignment.id);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mobile/api/firebase_api.dart';
 import 'package:mobile/models/users/user_data.dart';
+import 'package:mobile/providers/assignment_provider.dart';
 import 'package:mobile/providers/chat_message_provider.dart';
 import 'package:mobile/providers/class_provider.dart';
 import 'package:mobile/providers/notification_provider.dart';
@@ -33,6 +34,7 @@ void main() async {
       ChangeNotifierProvider(create: (context) => StudyClassProvider()),
       ChangeNotifierProvider(create: (context) => NotificationProvider()),
       ChangeNotifierProvider(create: (context) => ChatProvider()),
+      ChangeNotifierProvider(create: (context) => AssignmentsModel()),
     ],
     child: const MyApp(),
   ));
