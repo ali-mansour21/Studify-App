@@ -38,15 +38,80 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                 Expanded(
                   child: Consumer<ChatProvider>(
                     builder: (context, provider, child) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (_scrollController.hasClients) {
+                          _scrollController.animateTo(
+                            _scrollController.position.maxScrollExtent,
+                            duration: Duration(milliseconds: 200),
+                            curve: Curves.easeOut,
+                          );
+                        }
+                      });
+
                       return ListView.builder(
                         controller: _scrollController,
                         padding: const EdgeInsets.all(10),
                         itemCount: provider.messages.length,
                         itemBuilder: (context, index) {
                           final message = provider.messages[index];
-                          return ListTile(
-                            title: Text(message.question),
-                            subtitle: Text(message.answer),
+                          // User's question aligned to the right
+                          Widget questionWidget = Align(
+                            alignment: Alignment.centerRight,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 16),
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Text(
+                                message.question,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          );
+
+                          // Bot's answer aligned to the left
+                          Widget answerWidget = Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 16),
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Text(
+                                message.answer,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          );
+
+                          return Column(
+                            children: [questionWidget, answerWidget],
                           );
                         },
                       );
@@ -66,12 +131,6 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                                 .sendQuestionAndGetResponse(widget.material.id,
                                     _controller.text, context);
                             _controller.clear();
-                            Future.microtask(() => _scrollController.animateTo(
-                                  _scrollController.position.maxScrollExtent +
-                                      100,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeOut,
-                                ));
                           }
                         },
                       ),
