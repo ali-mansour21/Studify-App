@@ -37,12 +37,14 @@ class OpenAIService
     }
     public function generateFeedback($context, $answers)
     {
-        $prompt = $context . "\nAnswers: " . $answers;
+        $instructions = "Below is the assignment text with the correct answers. Please provide detailed feedback directly to the student using 'you' to address them about any mistakes made in their answers listed after the assignment.";
+
+        $prompt = $context . "\n\n" . $instructions . "\nYour Answers:\n" . $answers;
+
         $response = OpenAI::chat()->create([
-            'model' => 'gpt-3.5-turbo',
+            'model' => 'gpt-4',
             'messages' => [
-                ['role' => 'system', 'content' => $context],
-                ['role' => 'user', 'content' => $answers]
+                ['role' => 'system', 'content' => $prompt]
             ],
         ]);
 
