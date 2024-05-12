@@ -12,10 +12,15 @@ class ChatProvider with ChangeNotifier {
 
   List<ChatMessage> messages = [];
 
-  void updateMessages(List<ChatMessage> newMessages) {
-    if (messages.length != newMessages.length ||
-        !listEquals(messages, newMessages)) {
-      messages = newMessages;
+  void addMessages(List<ChatMessage> newMessages) {
+    var isUpdated = false;
+    for (var message in newMessages) {
+      if (!messages.any((m) => m.id == message.id)) {
+        messages.add(message);
+        isUpdated = true;
+      }
+    }
+    if (isUpdated) {
       notifyListeners();
     }
   }
@@ -34,12 +39,16 @@ class ChatProvider with ChangeNotifier {
         });
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
+      print(data);
       if (data['status'] == 'success' && data['data'] != null) {
-        ChatMessage newMessage = ChatMessage(
-            id: data['id'],
-            question: data['question'],
-            answer: data['bot_answer']);
-        updateMessages([...messages, newMessage]);
+        List<ChatMessage> newMessages = (data['data'] as List).map((item) {
+          return ChatMessage(
+            id: item['id'],
+            question: item['question'],
+            answer: item['bot_answer'],
+          );
+        }).toList();
+        addMessages(newMessages);
       }
     }
   }

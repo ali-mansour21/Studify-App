@@ -24,7 +24,7 @@ class StudentFAQControlller extends Controller
             'question' => ['required', 'string']
         ]);
         $faq = Faq::where('material_id', $data['material_id'])->first();
-        $context = $faq->file_text;
+        $context = "act like a assistant ailer";
         $question = $data['question'];
         $bot_answer = $this->openAIService->generateAnswer($context, $question);
         $faqAnswer =  new FaqAnswer();
@@ -33,7 +33,7 @@ class StudentFAQControlller extends Controller
         $faqAnswer->student_id = $student_id;
         $faqAnswer->material_id = $data['material_id'];
         $faqAnswer->save();
-        $studentFaqs = Faq::where('student_id', $student_id)->get();
+        $studentFaqs = FaqAnswer::where('student_id', $student_id)->get();
         return response()->json(['status' => 'success', 'data' => $studentFaqs]);
     }
 }

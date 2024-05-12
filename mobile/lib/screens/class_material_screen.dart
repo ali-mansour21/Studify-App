@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/classes/class_data.dart' as model;
-import 'package:mobile/models/messages/chat_model.dart';
 import 'package:mobile/providers/chat_message_provider.dart';
 import 'package:mobile/screens/assignment_detail_screen.dart';
 import 'package:mobile/screens/topic_detail_screen.dart';
