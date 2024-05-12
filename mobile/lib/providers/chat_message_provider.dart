@@ -30,22 +30,35 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void addMessage(ChatMessage message) {
+    messages.add(message);
+    notifyListeners();
+  }
+
   Future<void> sendQuestionAndGetResponse(
       int materialID, String question, BuildContext context) async {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
+
+    addMessage(ChatMessage(
+        id: DateTime.now().millisecondsSinceEpoch,
+        question: question,
+        answer: ""));
+
+    setLoading(true);
     try {
-      setLoading(true);
-      await Future.delayed(const Duration(seconds: 1));
-      final response = await http.post(Uri.parse('$baseUrl/student_faq'),
-          body: json.encode({'material_id': materialID, 'question': question}),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer $token'
-          });
+      final response = await http.post(
+        Uri.parse('$baseUrl/student_faq'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode({'material_id': materialID, 'question': question}),
+      );
+
+      setLoading(false);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        print(data);
         if (data['status'] == 'success' && data['data'] != null) {
           List<ChatMessage> newMessages = (data['data'] as List).map((item) {
             return ChatMessage(
@@ -54,14 +67,14 @@ class ChatProvider with ChangeNotifier {
               answer: item['bot_answer'],
             );
           }).toList();
+          // Replace the last message (user's question) with full detail including the answer
+          messages.removeLast();
           addMessages(newMessages);
         }
       }
     } catch (e) {
       setLoading(false);
       print('Error sending question and getting response: $e');
-    } finally {
-      setLoading(false);
     }
   }
 }

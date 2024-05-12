@@ -55,7 +55,6 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                             (provider.isLoading ? 1 : 0),
                         itemBuilder: (context, index) {
                           if (index >= provider.messages.length) {
-                            // Show loading indicator at the end of the list
                             return Align(
                               alignment: Alignment.centerLeft,
                               child: Container(
