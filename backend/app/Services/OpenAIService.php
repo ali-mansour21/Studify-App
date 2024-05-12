@@ -25,12 +25,16 @@ class OpenAIService
      */
     public function generateAnswer($context, $question)
     {
+        $messages = [];
+        if (!empty($context)) {
+            $messages[] = ['role' => 'system', 'content' => $context];
+        }
+
+        $messages[] = ['role' => 'user', 'content' => $question];
+
         $response = OpenAI::chat()->create([
             'model' => 'gpt-4',
-            'messages' => [
-                ['role' => 'system', 'content' => $context],
-                ['role' => 'user', 'content' => $question]
-            ],
+            'messages' => $messages,
         ]);
 
         return $response->choices[0]->message->content;
