@@ -73,6 +73,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
               textColor: Colors.white,
               fontSize: 16.0);
           String feedback = decodedResponse['date']['feedback'];
+          SharedPreferences prefs = await SharedPreferences.getInstance();
           setState(() {
             _response = '\n\nFeedback:\n$feedback';
           });
