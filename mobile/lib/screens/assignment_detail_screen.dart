@@ -1,9 +1,15 @@
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:mobile/models/classes/class_data.dart';
 import 'package:mobile/models/topic_material.dart';
+import 'package:mobile/models/users/user_data.dart';
+import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 
 class AssignmentDetailScreen extends StatefulWidget {
-  final Topic assignment;
+  final Assignment assignment;
   const AssignmentDetailScreen({Key? key, required this.assignment})
       : super(key: key);
 
@@ -12,7 +18,51 @@ class AssignmentDetailScreen extends StatefulWidget {
 }
 
 class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
+  final String baseUrl = "http://192.168.0.104:8001/api";
+
   String _fileName = "";
+  PlatformFile? _selectedFile;
+  bool _isUploading = false;
+  String _response = "";
+  Future<void> _uploadFile(BuildContext context) async {
+    String token = Provider.of<UserData>(context, listen: false).jwtToken;
+
+    if (_selectedFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Please select a file first."),
+      ));
+      return;
+    }
+
+    var uri = Uri.parse('$baseUrl/submit_assignment');
+    var request = http.MultipartRequest('POST', uri)
+      ..fields['assignment_id'] = widget.assignment.id.toString()
+      ..files.add(await http.MultipartFile.fromPath(
+        'file',
+        _selectedFile!.path!,
+        filename: basename(_selectedFile!.name),
+      ))
+      ..headers.addAll({
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'multipart/form-data',
+      });
+
+    setState(() {
+      _isUploading = true;
+    });
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      _response = 'File successfully uploaded';
+    } else {
+      _response = 'Failed to upload file';
+    }
+
+    setState(() {
+      _isUploading = false;
+    });
+  }
 
   void _showBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -47,8 +97,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                       if (result != null) {
                         PlatformFile file = result.files.first;
                         setState(() {
-                          _fileName =
-                              file.name; // Update the file name in the state
+                          _fileName = file.name;
                         });
                       }
                     },
@@ -78,9 +127,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
               Align(
                 alignment: Alignment.center,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // submission logic here
-                  },
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                       minimumSize: const Size.fromHeight(50),
                       backgroundColor: const Color(0xFF3786A8)),

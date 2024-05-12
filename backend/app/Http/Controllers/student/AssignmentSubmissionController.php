@@ -26,7 +26,7 @@ class AssignmentSubmissionController extends Controller
             'solution' => 'required|file|mimes:pdf,doc,docx|max:10240',
         ]);
 
-        $assignment = Assignment::findOrFail($request->assignment_id);
+        $assignment = Assignment::findOrFail(intval($request->assignment_id));
         $class_id = $assignment->class_id;
 
         $user = auth()->user();

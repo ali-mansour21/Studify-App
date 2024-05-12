@@ -24,14 +24,16 @@ class Person {
 }
 
 class Assignment implements Topic {
+  final int id;
   @override
   final String title;
   @override
   final String content;
 
-  Assignment({required this.title, required this.content});
+  Assignment({required this.title, required this.content, required this.id});
   factory Assignment.fromJson(Map<String, dynamic> json) {
     return Assignment(
+      id: json['id'],
       title: json['title'],
       content: json['content'],
     );
