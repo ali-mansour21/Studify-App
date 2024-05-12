@@ -6,11 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\Assignment;
 use App\Models\AssignmentCorrection;
 use App\Models\AssignmentSubmission;
+use App\Models\SubmissionFeedback;
+use App\Services\OpenAIService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use \Smalot\PdfParser\Parser;
 
 class AssignmentSubmissionController extends Controller
 {
+    protected $openAIService;
+    public function __construct(OpenAIService $openAIService)
+    {
+        $this->openAIService = $openAIService;
+    }
     public function submitSolution(Request $request)
     {
         $request->validate([
@@ -28,7 +36,9 @@ class AssignmentSubmissionController extends Controller
 
         $file = $request->file('solution');
         $path = $file->store('submissions', 'public');
-
+        $parser = new Parser();
+        $pdf = $parser->parseFile($request->solution);
+        $answers = $pdf->getText();
         $submission = new AssignmentSubmission([
             'student_id' => $user->id,
             'assignment_id' => $request->assignment_id,
@@ -36,9 +46,14 @@ class AssignmentSubmissionController extends Controller
         ]);
         $submission->save();
         $correction_file = AssignmentCorrection::where('assignment_id', $request->assignment_id)->first();
-        if($correction_file){
+        if ($correction_file) {
             $content = $correction_file->file_text;
+            $feedback = $this->openAIService->generateFeedback($content, $answers);
+            $submission_feedback = new SubmissionFeedback();
+            $submission_feedback->feedback = $feedback;
+            $submission_feedback->assignment_id = $request->assignment_id;
+            $submission_feedback->save();
         }
-        return response()->json(['message' => 'Assignment submitted successfully!']);
+        return response()->json(['status' => 'success', 'message' => 'Assignment submitted successfully!', 'date' => $submission_feedback]);
     }
 }
