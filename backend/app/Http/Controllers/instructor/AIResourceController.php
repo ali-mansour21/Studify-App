@@ -15,7 +15,7 @@ class AIResourceController extends Controller
     {
         $data = $request->validate([
             'material_id' => ['required', 'integer', Rule::exists('materials', 'id')],
-            'faq_file' => ['required', 'file', 'mimes:pdf,doc,docx', 'max:10240'],
+            'faq_file' => ['required', 'file', 'mimes:pdf,doc,docx'],
         ]);
         if ($request->has('faq_file')) {
             $file = $request->file('faq_file');
@@ -39,7 +39,7 @@ class AIResourceController extends Controller
     {
         $data = $request->validate([
             'assignment_id' => ['required', 'integer', Rule::exists('assignments', 'id')],
-            'correction_file' => ['required', 'file', 'mimes:pdf,doc,docx', 'max:10240'],
+            'correction_file' => ['required', 'file', 'mimes:pdf,doc,docx'],
         ]);
         if ($request->has('correction_file')) {
             $file = $request->file('correction_file');
