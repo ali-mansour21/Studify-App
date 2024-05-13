@@ -250,6 +250,33 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
     }
   }
 
+  Future<bool> _showConfirmationDialog(BuildContext context) async {
+    return await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Preview PDF'),
+              content: const Text('Would you like to preview the PDF?'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('No'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                TextButton(
+                  child: const Text('Yes'),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            );
+          },
+        ) ??
+        false; // Handle the case where the user dismisses the dialog by tapping outside it
+  }
+
   Future<void> downloadAndSaveFile(
       BuildContext context, String url, String suggestedName) async {
     try {
