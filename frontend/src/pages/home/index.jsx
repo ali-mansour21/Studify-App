@@ -15,6 +15,9 @@ const Home = () => {
     nbOfStudents: 0,
     submissionRate: 0,
   });
+  const [enrolledStudentData, setEnrolledStudentData] = useState({});
+  const [classRequestData, setClassRequestData] = useState({});
+  const [sharedMaterialData, setSharedMaterialData] = useState({});
   const getHomeData = async () => {
     sendAuthRequest(requestMethods.GET, "home/state").then((response) => {
       console.log(response.data.data);
@@ -24,6 +27,16 @@ const Home = () => {
           nbOfStudents: response.data.data.nbOfStudents,
           submissionRate: response.data.data.submissionRate,
         });
+      }
+    });
+  };
+  const getChartData = async () => {
+    sendAuthRequest(requestMethods.GET, "home/data").then((response) => {
+      if (response.status === 200) {
+        console.log(response.data.data);
+        setEnrolledStudentData(response.data.data.nbStudentPerMonth);
+        setClassRequestData(response.data.data.classRequestsPerStatus);
+        setSharedMaterialData(response.data.data.materialsPerMonth);
       }
     });
   };
@@ -41,6 +54,7 @@ const Home = () => {
   };
   useEffect(() => {
     getHomeData();
+    getChartData();
   }, []);
   return (
     <div className="page d-flex">

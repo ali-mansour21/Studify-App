@@ -27,6 +27,7 @@ a {
 .sidebar ul li a {
   margin-bottom: 5px;
   transition: 0.3;
+  cursor: pointer;
   -webkit-transition: 0.3;
   -moz-transition: 0.3;
   -ms-transition: 0.3;
