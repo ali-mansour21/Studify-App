@@ -5,9 +5,9 @@
 <!-- project philosophy -->
 <img src="./readme/title2.svg"/>
 
-> A mobile app designed to enhance student learning by providing a platform to upload study materials and summaries, complete with tag-based organization for efficient retrieval.
+> Studify: A mobile app designed to improve student learning by making it easy to share and access study materials. Our goal is to help students and teachers connect and learn better through technology.
 >
-> Studify aims to boost student learning by offering a user-friendly platform for sharing and downloading study materials and summaries, raise collaboration among students, and providing interactive lectures and sessions.
+> Studify helps students learn more by providing a simple way for teachers to upload study materials, including PDFs with questions and answers. Students can find and use these materials, ask questions, and get answers based on the content. The app encourages students to share materials. Using technology like OpenAI and Firebase, Studify makes communication fast and learning more effective for everyone.
 
 ### User Stories
 
@@ -107,7 +107,7 @@
 <!-- How to run -->
 <img src="./readme/title10.svg"/>
 
-> To set up Coffee Express locally, follow these steps:
+> To set up Studify locally, follow these steps:
 
 ### Prerequisites
 
