@@ -27,10 +27,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
   PlatformFile? _selectedFile;
   bool _isUploading = false;
   String _response = "";
-
   Future<void> _uploadFile(BuildContext context) async {
-    String token = Provider.of<UserData>(context, listen: false).jwtToken;
-
     if (_selectedFile == null) {
       Fluttertoast.showToast(
           msg: 'Select a file to upload',
@@ -43,6 +40,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
       return;
     }
 
+    String token = Provider.of<UserData>(context, listen: false).jwtToken;
     var uri = Uri.parse('$baseUrl/submit_assignment');
     var request = http.MultipartRequest('POST', uri)
       ..fields['assignment_id'] = widget.assignment.id.toString()
@@ -51,17 +49,14 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
         _selectedFile!.path!,
         filename: basename(_selectedFile!.name),
       ))
-      ..headers.addAll({
-        'Authorization': 'Bearer $token',
-      });
+      ..headers.addAll({'Authorization': 'Bearer $token'});
 
-    setState(() {
-      _isUploading = true;
-    });
+    setState(() => _isUploading = true);
 
     try {
       var response = await request.send();
       var responseBody = await response.stream.bytesToString();
+
       if (response.statusCode == 200) {
         var decodedResponse = json.decode(responseBody);
         if (decodedResponse['status'] == 'success') {
@@ -77,10 +72,10 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('feedback_${widget.assignment.id}', feedback);
 
-          // Update the assignment model
           Provider.of<AssignmentsModel>(context, listen: false)
               .getAssignmentModel(widget.assignment.id)
               .submitAssignment(widget.assignment.id, feedback);
+
           setState(() {
             _response = '\n\nFeedback:\n$feedback';
           });
@@ -103,6 +98,19 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
       setState(() {
         _isUploading = false;
       });
+    }
+  }
+
+  void _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      setState(() {
+        _fileName = file.name;
+        _selectedFile = file;
+      });
+    } else {
+      print("No file selected");
     }
   }
 

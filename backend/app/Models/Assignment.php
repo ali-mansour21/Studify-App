@@ -12,7 +12,7 @@ class Assignment extends Model
     {
         return $this->belongsTo(Material::class);
     }
-    public function submission(){
+    public function submissions(){
         return $this->belongsTo(AssignmentSubmission::class);
     }
 }

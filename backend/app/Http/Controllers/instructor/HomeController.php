@@ -43,7 +43,9 @@ class HomeController extends Controller
             foreach ($class->materials as $material) {
                 foreach ($material->assignments as $assignment) {
                     $totalAssignments++;
-                    $totalSubmissions += $assignment->submissions->count();
+                    if (!is_null($assignment->submissions) && is_countable($assignment->submissions)) {
+                        $totalSubmissions += $assignment->submissions->count();
+                    }
                 }
             }
         }
