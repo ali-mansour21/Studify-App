@@ -7,10 +7,7 @@ const ClassRequestsChart = ({ data }) => {
       options={{
         responsive: true,
         maintainAspectRatio: false,
-        cutoutPercentage: 50, // This defines the thickness of the donut ring
-        legend: {
-          position: "top",
-        },
+        cutoutPercentage: 50,
         title: {
           display: true,
           text: "Materials Shared by Month",

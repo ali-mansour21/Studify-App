@@ -7,6 +7,7 @@ import sendAuthRequest from "../../core/tools/authRequest";
 import { requestMethods } from "../../core/requests/requestMethods";
 import EnrolledStudentsChart from "./components/EnrolledStudentsChart";
 import ClassRequestsChart from "./components/ClassRequestsChart";
+import MaterialSharedChart from "./components/MaterialSharedChart";
 
 const Home = () => {
   const [homeData, setHomeData] = useState({
@@ -69,7 +70,9 @@ const Home = () => {
             <div className="content-sub">
               <ClassRequestsChart data={data} />
             </div>
-            <div className="content-sub">content</div>
+            <div className="content-sub">
+              <MaterialSharedChart data={data} />
+            </div>
           </div>
         </div>
       </div>

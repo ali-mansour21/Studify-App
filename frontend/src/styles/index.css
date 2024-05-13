@@ -171,7 +171,14 @@ a {
 .content-sub {
   background-color: #ffffff;
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 10px;
+}
+.content-sub .chart-line {
+  width: 90% !important;
+  height: 200px !important;
 }
 .classes-page {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
