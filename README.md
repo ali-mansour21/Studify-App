@@ -124,7 +124,7 @@ _Below is an example of how you can instruct your audience on installing and set
 
 1. Obtain a free API Key by registering at [Firebase](https://firebase.google.com/)
 2. Clone the repo
-   git clone [github](https://github.com/your_username_/Project-Name.git)
+   git clone [github](https://github.com/ali-mansour21/Studify-App)
 3. Install NPM packages
    ```sh
    cd frontend
@@ -136,7 +136,9 @@ _Below is an example of how you can instruct your audience on installing and set
    flutter pub get
    ```
 5. Enter your Firebase API key in the configuration file for the mobile app
+   ```sh
    const FIREBASE_API_KEY = "ENTER YOUR FIREBASE API";
+   ```
 6. Enter your API in `config.js`
    ```js
    const API_KEY = "ENTER YOUR FIREBASE API";
