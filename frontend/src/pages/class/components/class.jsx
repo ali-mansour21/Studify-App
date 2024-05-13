@@ -2,15 +2,14 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
-const Class = () => {
+const ClassData = ({data}) => {
   return (
     <div className="class  bg-white rad-6 p-relative">
       <img className="cover" src="./Images/course.jpeg" alt="" />
       <div className="p-20">
-        <h4 className="m-0">Mastering Web Design</h4>
+        <h4 className="m-0">{data?.name}</h4>
         <p className="description c-gray mt-15 fs-14">
-          Master the Art Of Web Designing And Mocking, Prototying And Creating
-          Web Design Architecture
+         {data.discription}
         </p>
       </div>
       <div className="info p-15 p-relative between-flex">
@@ -24,4 +23,4 @@ const Class = () => {
   );
 };
 
-export default Class;
+export default ClassData;

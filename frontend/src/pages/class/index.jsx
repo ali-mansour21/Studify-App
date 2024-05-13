@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SideBar from "../../components/sidebar";
 import "../../styles/utilities.css";
 import "../../styles/index.css";
 import Header from "../../components/header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector, useDispatch } from "react-redux";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import Class from "./components/class";
 import PopUp from "../components/PopUp";
 import sendAuthRequest from "../../core/tools/authRequest";
 import { requestMethods } from "../../core/requests/requestMethods";
 import { toast } from "react-toastify";
+import { loadClasses } from "../../redux/boarderSlice";
+import { BeatLoader } from "react-spinners";
+import ClassData from "./components/class";
+
 const Home = () => {
+  const dispatch = useDispatch();
+  const classes = useSelector((state) => state.classes?.classes);
   const [showPopup, setShowPopup] = useState(false);
   const [classData, setClassData] = useState({
     name: "",
@@ -54,6 +60,17 @@ const Home = () => {
       }
     );
   };
+  const fetchClasses = () => {
+    sendAuthRequest(requestMethods.GET, "classes").then((response) => {
+      if (response.status === 200) {
+        console.log(response.data);
+        dispatch(loadClasses(response.data.classes));
+      }
+    });
+  };
+  useEffect(() => {
+    fetchClasses();
+  }, []);
   return (
     <div className="page d-flex">
       <SideBar />
@@ -74,7 +91,9 @@ const Home = () => {
           </div>
         </div>
         <div className="classes-page d-grid gap-20 m-20">
-          <Class />
+          {classes?.map((cls) => (
+            <ClassData key={cls.id} data={cls} />
+          ))}
         </div>
       </div>
       {showPopup && (
