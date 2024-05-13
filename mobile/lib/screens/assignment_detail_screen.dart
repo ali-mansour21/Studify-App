@@ -248,25 +248,21 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
     }
   }
 
-  Future<void> downloadAndSaveFile(
+ Future<void> downloadAndSaveFile(
       BuildContext context, String url, String filename) async {
     try {
       var status = await Permission.storage.request();
       if (status.isGranted) {
         final response = await http.get(Uri.parse(url));
         if (response.statusCode == 200) {
-          final directory = await getExternalStorageDirectory();
-          final file = File('${directory?.path}/$filename');
+          final directory =
+              await getApplicationDocumentsDirectory(); // using path_provider
+          final filePath = '${directory.path}/$filename';
+          final file = File(filePath);
           await file.writeAsBytes(response.bodyBytes);
-          Fluttertoast.showToast(
-              msg: 'File successfully downloaded',
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 5,
-              backgroundColor: const Color(0xFF3786A8),
-              textColor: Colors.white,
-              fontSize: 16.0);
-          _launchURL(file.uri);
+
+          // Open the PDF
+          openPDF(context, filePath);
         } else {
           throw Exception('Failed to download file from server');
         }
@@ -285,7 +281,11 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
           SnackBar(content: Text('Failed to download the file: $e')));
     }
   }
-
+void openPDF(BuildContext context, String filePath) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => PDFViewPage(filePath)),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
