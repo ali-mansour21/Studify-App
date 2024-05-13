@@ -1,4 +1,5 @@
 import 'package:mobile/models/topic_material.dart';
+import 'package:mobile/utilities/configure.dart';
 
 class ClassTopic implements Topic {
   @override
@@ -11,12 +12,13 @@ class ClassTopic implements Topic {
   ClassTopic({required this.title, required this.content, this.attachmentUrl});
   factory ClassTopic.fromJson(Map<String, dynamic> json) {
     String? attachmentPath = json['attachment'];
-    const String baseUrl = "http://192.168.0.104:8001/storage/";
+    const String imageBaseUrl = IMAGE_BASE_URL;
 
     return ClassTopic(
       title: json['title'],
       content: json['content'],
-      attachmentUrl: attachmentPath != null ? baseUrl + attachmentPath : null,
+      attachmentUrl:
+          attachmentPath != null ? imageBaseUrl + attachmentPath : null,
     );
   }
 }
@@ -45,13 +47,14 @@ class Assignment implements Topic {
       this.attachmentUrl});
   factory Assignment.fromJson(Map<String, dynamic> json) {
     String? attachmentPath = json['attachment'];
-    const String baseUrl = "http://192.168.0.104:8001/storage/";
+    const String imageBaseUrl = IMAGE_BASE_URL;
     print(attachmentPath);
     return Assignment(
       id: json['id'],
       title: json['title'],
       content: json['content'],
-      attachmentUrl: attachmentPath != null ? baseUrl + attachmentPath : null,
+      attachmentUrl:
+          attachmentPath != null ? imageBaseUrl + attachmentPath : null,
     );
   }
 }

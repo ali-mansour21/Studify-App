@@ -14,7 +14,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import '../utilities/configure.dart';
 class AssignmentDetailScreen extends StatefulWidget {
   final Assignment assignment;
   const AssignmentDetailScreen({Key? key, required this.assignment})
@@ -25,7 +25,7 @@ class AssignmentDetailScreen extends StatefulWidget {
 }
 
 class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
-  final String baseUrl = "http://192.168.0.104:8001/api";
+  final String baseUrl = API_BASE_URL;
 
   String _fileName = "";
   PlatformFile? _selectedFile;

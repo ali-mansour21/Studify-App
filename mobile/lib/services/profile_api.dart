@@ -5,9 +5,10 @@ import 'package:mobile/models/classes/class_data.dart';
 import 'package:mobile/models/users/user_data.dart';
 import 'package:mobile/models/material_model.dart';
 import 'package:provider/provider.dart';
+import '../utilities/configure.dart';
 
 class ProfileApiService {
-  final String baseUrl = "http://192.168.0.104:8001/api";
+  final String baseUrl = API_BASE_URL;
 
   Future<List<MaterialItem>> getStudentNotesData(BuildContext context) async {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;

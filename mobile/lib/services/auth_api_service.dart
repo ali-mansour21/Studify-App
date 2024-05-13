@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile/models/users/user_data.dart';
 import 'package:provider/provider.dart';
+import '../utilities/configure.dart';
 
 class AuthApiService {
-  final String baseUrl = "http://192.168.0.104:8001/api";
+  final String baseUrl = API_BASE_URL;
   Future<dynamic> login(String email, String password) async {
     try {
       final response = await http.post(Uri.parse('$baseUrl/student_login'),

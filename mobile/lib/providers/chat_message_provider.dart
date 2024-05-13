@@ -5,10 +5,11 @@ import 'package:flutter/widgets.dart';
 import 'package:mobile/models/messages/chat_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile/models/users/user_data.dart';
+import 'package:mobile/utilities/configure.dart';
 import 'package:provider/provider.dart';
 
 class ChatProvider with ChangeNotifier {
-  final String baseUrl = "http://192.168.0.104:8001/api";
+  final String baseUrl = API_BASE_URL;
 
   List<ChatMessage> messages = [];
   bool isLoading = false;

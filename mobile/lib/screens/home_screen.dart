@@ -9,6 +9,7 @@ import 'package:mobile/providers/material_provider.dart';
 import 'package:mobile/providers/notification_provider.dart';
 import 'package:mobile/screens/class_detail_screen.dart';
 import 'package:mobile/screens/material_screen.dart';
+import 'package:mobile/utilities/configure.dart';
 import 'package:mobile/widgets/navigation_bar.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
@@ -21,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final String baseUrl = "http://192.168.0.104:8001/api";
+  final String baseUrl = API_BASE_URL;
 
   final TextEditingController _controller = TextEditingController();
   Timer? _debounce;

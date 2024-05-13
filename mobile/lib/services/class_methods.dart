@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/users/user_data.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-
+import '../utilities/configure.dart';
 class ClassOperations {
-  final String baseUrl = "http://192.168.0.104:8001/api";
+  final String baseUrl = API_BASE_URL;
   Future<Map<String, String>> requestJoinClass(
       BuildContext context, int id) async {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
