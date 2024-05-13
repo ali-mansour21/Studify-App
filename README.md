@@ -26,10 +26,9 @@
 ### Studify is built using the following technologies:
 
 - This project uses the [Flutter app development framework](https://flutter.dev/). Flutter is a cross-platform hybrid app development platform which allows us to use a single codebase for apps on mobile, desktop, and the web.
-- For persistent storage (database), the app uses the [Hive](https://hivedb.dev/) package which allows the app to create a custom storage schema and save it to a local database.
-- To send local push notifications, the app uses the [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications) package which supports Android, iOS, and macOS.
-  - 🚨 Currently, notifications aren't working on macOS. This is a known issue that we are working to resolve!
-- The app uses the font ["Work Sans"](https://fonts.google.com/specimen/Work+Sans) as its main font, and the design of the app adheres to the material design guidelines.
+-The backend database uses [PostgreSQL](https://www.postgresql.org/), a powerful, open-source object-relational database system known for its robustness, performance, and standards compliance.
+- Notifications within the app are managed through [Firebase](https://firebase.google.com/), specifically Firebase Cloud Messaging. This service allows for reliable and scalable delivery of notifications to devices across platforms.
+- 🚨 Currently, notifications aren't working on macOS.
 
 <br><br>
 
@@ -123,16 +122,24 @@ This is an example of how to list things you need to use the software and how to
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
-1. Get a free API Key at [example](https://example.com)
+1. Obtain a free API Key by registering at [Firebase](https://firebase.google.com/)
 2. Clone the repo
    git clone [github](https://github.com/your_username_/Project-Name.git)
 3. Install NPM packages
    ```sh
+   cd frontend
    npm install
    ```
-4. Enter your API in `config.js`
+4. Install Flutter dependencies for the mobile application
+   ```sh
+   cd mobile
+   flutter pub get
+   ```
+5. Enter your Firebase API key in the configuration file for the mobile app
+   const FIREBASE_API_KEY = "ENTER YOUR FIREBASE API";
+6. Enter your API in `config.js`
    ```js
-   const API_KEY = "ENTER YOUR API";
+   const API_KEY = "ENTER YOUR FIREBASE API";
    ```
 
-Now, you should be able to run Coffee Express locally and explore its features.
+With these steps, you should be able to run Studify on both mobile and web platforms locally and explore its features.
