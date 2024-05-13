@@ -5,14 +5,18 @@ class ClassTopic implements Topic {
   final String title;
   @override
   final String content;
+  @override
   final String? attachmentUrl;
 
   ClassTopic({required this.title, required this.content, this.attachmentUrl});
   factory ClassTopic.fromJson(Map<String, dynamic> json) {
+    String? attachmentPath = json['attachment'];
+    const String baseUrl = "http://192.168.0.104:8001/storage/";
+
     return ClassTopic(
       title: json['title'],
       content: json['content'],
-      attachmentUrl: json['attachment'],
+      attachmentUrl: attachmentPath != null ? baseUrl + attachmentPath : null,
     );
   }
 }
@@ -31,6 +35,7 @@ class Assignment implements Topic {
   final String title;
   @override
   final String content;
+  @override
   final String? attachmentUrl;
 
   Assignment(
@@ -39,11 +44,14 @@ class Assignment implements Topic {
       required this.id,
       this.attachmentUrl});
   factory Assignment.fromJson(Map<String, dynamic> json) {
+    String? attachmentPath = json['attachment'];
+    const String baseUrl = "http://192.168.0.104:8001/storage/";
+    print(attachmentPath);
     return Assignment(
       id: json['id'],
       title: json['title'],
       content: json['content'],
-      attachmentUrl: json['attachment'],
+      attachmentUrl: attachmentPath != null ? baseUrl + attachmentPath : null,
     );
   }
 }

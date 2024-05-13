@@ -5,14 +5,13 @@ import 'package:http/http.dart' as http;
 import 'package:mobile/models/topic_material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 class TopicDetailScreen extends StatelessWidget {
   final Topic topic;
   final bool isStudent;
 
   const TopicDetailScreen(
       {super.key, required this.topic, this.isStudent = false});
-
   Future<void> downloadAndSaveFile(
       BuildContext context, String url, String filename) async {
     try {
@@ -49,14 +48,22 @@ class TopicDetailScreen extends StatelessWidget {
           SnackBar(content: Text('Failed to download the file: $e')));
     }
   }
-
+  void _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            print(topic);
+          },
         ),
         title: Text(topic.title, style: const TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
