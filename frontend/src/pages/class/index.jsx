@@ -18,6 +18,12 @@ const Home = () => {
   const dispatch = useDispatch();
   const classes = useSelector((state) => state.classes?.classes);
   const [showPopup, setShowPopup] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [student_email, setStudentEmail] = useState({
+    student_email: "",
+    class_id: 0,
+  });
+  const [showInvitePopup, setShowInvitePopup] = useState(false);
   const [classData, setClassData] = useState({
     name: "",
     description: "",
@@ -29,6 +35,13 @@ const Home = () => {
   };
   const openPopup = () => {
     setShowPopup(true);
+  };
+  const openInivtePopUp = (id) => {
+    setShowInvitePopup(true);
+    console.log(id);
+  };
+  const closeInvitePopup = () => {
+    setShowInvitePopup(false);
   };
   const uploadImage = async (e) => {
     const file = e.target.files[0];
@@ -54,6 +67,7 @@ const Home = () => {
       (response) => {
         if (response.status === 200) {
           toast.success(response.data.message);
+          fetchClasses();
           closePopup();
         }
       }
@@ -63,8 +77,13 @@ const Home = () => {
     sendAuthRequest(requestMethods.GET, "classes").then((response) => {
       if (response.status === 200) {
         dispatch(loadClasses(response.data.data.classes));
+        setLoading(false);
       }
+      setLoading(false);
     });
+  };
+  const handleInviteStudent = () => {
+    console.log(student_email);
   };
   useEffect(() => {
     fetchClasses();
@@ -88,11 +107,24 @@ const Home = () => {
             <p>Add</p>
           </div>
         </div>
-        <div className="classes-page d-grid gap-20 m-20">
-          {classes?.map((cls) => (
-            <ClassData key={cls.id} data={cls} />
-          ))}
-        </div>
+        {loading ? (
+          <BeatLoader
+            className="loader"
+            color={"#3786a8"}
+            loading={loading}
+            size={50}
+          />
+        ) : (
+          <div className="classes-page d-grid gap-20 m-20">
+            {classes?.map((cls) => (
+              <ClassData
+                key={cls.id}
+                data={cls}
+                inviteStudent={openInivtePopUp}
+              />
+            ))}
+          </div>
+        )}
       </div>
       {showPopup && (
         <PopUp
@@ -164,6 +196,33 @@ const Home = () => {
               <option value="6">History</option>
               <option value="7">Science</option>
             </select>
+          </div>
+        </PopUp>
+      )}
+      {showInvitePopup && (
+        <PopUp
+          formTitle={"Invite A Student"}
+          buttonText={"Invite"}
+          isOpen={showInvitePopup}
+          closePopUp={closeInvitePopup}
+          handleSubmit={(e) => {
+            e.preventDefault();
+            handleInviteStudent();
+          }}
+        >
+          <div>
+            <label htmlFor="email">Student Email</label>
+            <input
+              type="text"
+              onChange={(e) => {
+                setClassData({
+                  ...classData,
+                  name: e.target.value,
+                });
+              }}
+              id="email"
+              name="email"
+            />
           </div>
         </PopUp>
       )}

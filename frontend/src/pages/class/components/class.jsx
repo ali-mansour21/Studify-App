@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { IMAGE_URL } from "../../../../utilities/config";
 
-const ClassData = ({ data }) => {
+const ClassData = ({ data, inviteStudent }) => {
   console.log(data);
   return (
     <div className="class  bg-white rad-6 p-relative">
@@ -21,7 +21,15 @@ const ClassData = ({ data }) => {
           <FontAwesomeIcon icon={faUser} />
           {data?.student_count}
         </span>
-        <span className="title bg-blue c-white btn-shape">Invite</span>
+        <span
+          onClick={(e) => {
+            e.preventDefault();
+            inviteStudent(data?.id);
+          }}
+          className="title bg-blue c-white btn-shape"
+        >
+          Invite
+        </span>
       </div>
     </div>
   );
