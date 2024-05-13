@@ -27,7 +27,7 @@ class TopicListWidget extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => TopicDetailScreen(
                   topic: topic,
-                  showDownloadButton: true,
+                  isStudent: true,
                 ),
               ),
             );
