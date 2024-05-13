@@ -1,10 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import boardsSlice from "./boarderSlice";
+import boardsSlice from "./boarderSlice.js";
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     classes: boardsSlice.reducer,
   },
 });
-
-export default store;

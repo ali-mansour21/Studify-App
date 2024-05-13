@@ -7,13 +7,11 @@ const boardsSlice = createSlice({
   reducers: {
     loadClasses: (state, action) => {
       const { payload } = action;
-
-      state.classes = payload.map((classData) => {
-        state.classes.push(classData);
-      });
+      console.log("the action", payload);
+      state.classes = payload;
     },
   },
 });
 
-export default boardsSlice.reducer;
+export default boardsSlice;
 export const { loadClasses } = boardsSlice.actions;
