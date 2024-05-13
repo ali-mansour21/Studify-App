@@ -274,44 +274,42 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
             );
           },
         ) ??
-        false; // Handle the case where the user dismisses the dialog by tapping outside it
+        false;
   }
 
-  Future<void> downloadAndSaveFile(
-      BuildContext context, String url, String suggestedName) async {
+  Future<String> downloadAndSaveFile(
+      BuildContext context, String url, String filename) async {
+    String filePath = '';
     try {
       var status = await Permission.storage.request();
-      if (!status.isGranted) {
+      if (status.isGranted) {
+        final response = await http.get(Uri.parse(url));
+        if (response.statusCode == 200) {
+          final directory =
+              await getApplicationDocumentsDirectory();
+          filePath = '${directory.path}/$filename';
+          final file = File(filePath);
+          await file.writeAsBytes(response.bodyBytes);
+
+          Fluttertoast.showToast(
+              msg: 'File downloaded successfully',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0);
+        } else {
+          throw Exception('Failed to download file from server');
+        }
+      } else {
         Fluttertoast.showToast(
-            msg: 'Storage permission is required to save files',
+            msg: 'Permission needed to download and save the file',
             toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            backgroundColor: Colors.red,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: const Color(0xFF3786A8),
             textColor: Colors.white,
             fontSize: 16.0);
-        return;
       }
-
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode != 200) {
-        throw Exception('Failed to download file');
-      }
-
-      final bytes = response.bodyBytes;
-      final directory = await getApplicationDocumentsDirectory();
-      final filePath = '${directory.path}/$suggestedName';
-      final file = File(filePath);
-      await file.writeAsBytes(bytes);
-
-      openPDF(context, filePath);
-
-      Fluttertoast.showToast(
-          msg: 'File downloaded successfully',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0);
     } catch (e) {
       Fluttertoast.showToast(
           msg: 'Error downloading the file: $e',
@@ -321,6 +319,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
           textColor: Colors.white,
           fontSize: 16.0);
     }
+    return filePath;
   }
 
   void openPDF(BuildContext context, String filePath) {
@@ -372,12 +371,17 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
               child: ElevatedButton.icon(
                 icon: const Icon(Icons.file_present),
                 label: const Text("View Attachment"),
-                onPressed: () {
+                onPressed: () async {
                   if (widget.assignment.attachmentUrl != null) {
-                    downloadAndSaveFile(
+                    final String filePath = await downloadAndSaveFile(
                         context,
                         widget.assignment.attachmentUrl!,
                         "${widget.assignment.title.replaceAll(' ', '_')}.pdf");
+
+                    bool shouldPreview = await _showConfirmationDialog(context);
+                    if (shouldPreview) {
+                      openPDF(context, filePath);
+                    }
                   } else {
                     Fluttertoast.showToast(
                         msg: "No attachment available",
