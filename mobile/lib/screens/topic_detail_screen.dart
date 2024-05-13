@@ -30,7 +30,7 @@ class TopicDetailScreen extends StatelessWidget {
             fontSize: 16.0);
         return filePath;
       }
-       void openPDF(BuildContext context, String filePath) {
+      void openPDF(BuildContext context, String filePath) {
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => PDFViewPage(filePath)),
         );
@@ -63,11 +63,13 @@ class TopicDetailScreen extends StatelessWidget {
     }
     return filePath;
   }
-void openPDF(BuildContext context, String filePath) {
+
+  void openPDF(BuildContext context, String filePath) {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => PDFViewPage(filePath)),
     );
   }
+
   void _launchURL(Uri uri) async {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
@@ -82,7 +84,8 @@ void openPDF(BuildContext context, String filePath) {
           fontSize: 16.0);
     }
   }
-Future<bool> _showConfirmationDialog(BuildContext context) async {
+
+  Future<bool> _showConfirmationDialog(BuildContext context) async {
     return await showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -104,6 +107,24 @@ Future<bool> _showConfirmationDialog(BuildContext context) async {
         ) ??
         false;
   }
+
+  Future<void> downloadContent(
+      BuildContext context, String content, String fileName) async {
+    final status = await Permission.storage.request();
+
+    if (status.isGranted) {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/$fileName');
+      await file.writeAsString(content);
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Downloaded $fileName')));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Storage permission is required to download files.')));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,7 +140,7 @@ Future<bool> _showConfirmationDialog(BuildContext context) async {
           if (isStudent)
             IconButton(
               icon: const Icon(Icons.file_download, color: Colors.black),
-              onPressed: () => downloadAndSaveFile(
+              onPressed: () => downloadContent(
                   context,
                   'data:text/plain;charset=utf-8,${Uri.encodeComponent(topic.content)}',
                   "${topic.title.replaceAll(' ', '_')}.txt"),
@@ -132,7 +153,7 @@ Future<bool> _showConfirmationDialog(BuildContext context) async {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(topic.content, style: const TextStyle(fontSize: 16)),
-           if (isStudent && topic.attachmentUrl != null)
+            if (!isStudent && topic.attachmentUrl != null)
               Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 16),
