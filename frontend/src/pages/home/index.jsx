@@ -8,13 +8,14 @@ import { requestMethods } from "../../core/requests/requestMethods";
 import EnrolledStudentsChart from "./components/EnrolledStudentsChart";
 import ClassRequestsChart from "./components/ClassRequestsChart";
 import MaterialSharedChart from "./components/MaterialSharedChart";
-
+import { BeatLoader } from "react-spinners";
 const Home = () => {
   const [homeData, setHomeData] = useState({
     nbOfClasses: 0,
     nbOfStudents: 0,
     submissionRate: 0,
   });
+  const [loading, setLoading] = useState(true);
   const [enrolledStudentData, setEnrolledStudentData] = useState({
     labels: [],
     datasets: [],
@@ -87,6 +88,7 @@ const Home = () => {
         setEnrolledStudentData(enrolledStudentChartData);
         setClassRequestData(classRequestChartData);
         setSharedMaterialData(materialSharedChartData);
+        setLoading(false);
       }
     });
   };
@@ -101,33 +103,44 @@ const Home = () => {
       <div className="content w-full">
         <Header />
         <h1 className="p-relative">Dashboard</h1>
-        <div className="dashboard-page d-grid gap-20 m-20">
-          <div className="box bg-white rad-6 p-relative">
-            <h2>Number of classes</h2>
-            <p>{homeData?.nbOfClasses}</p>
-          </div>
-          <div className="box bg-white rad-6 p-relative">
-            <h2>Number of students</h2>
-            <p>{homeData?.nbOfStudents}</p>
-          </div>
-          <div className="box bg-white rad-6 p-relative">
-            <h2>Assignment submission rate</h2>
-            <p>{homeData?.submissionRate}</p>
-          </div>
-        </div>
-        <div className="content-flex-container m-20">
-          <div className="content-main">
-            <EnrolledStudentsChart data={enrolledStudentData} />
-          </div>
-          <div className="content-sub-container">
-            <div className="content-sub">
-              <ClassRequestsChart data={classRequestData} />
+        {loading ? (
+          <BeatLoader
+            className="loader"
+            color={"#3786a8"}
+            loading={loading}
+            size={50}
+          />
+        ) : (
+          <>
+            <div className="dashboard-page d-grid gap-20 m-20">
+              <div className="box bg-white rad-6 p-relative">
+                <h2>Number of classes</h2>
+                <p>{homeData?.nbOfClasses}</p>
+              </div>
+              <div className="box bg-white rad-6 p-relative">
+                <h2>Number of students</h2>
+                <p>{homeData?.nbOfStudents}</p>
+              </div>
+              <div className="box bg-white rad-6 p-relative">
+                <h2>Assignment submission rate</h2>
+                <p>{homeData?.submissionRate}</p>
+              </div>
             </div>
-            <div className="content-sub">
-              <MaterialSharedChart data={sharedMaterialData} />
+            <div className="content-flex-container m-20">
+              <div className="content-main">
+                <EnrolledStudentsChart data={enrolledStudentData} />
+              </div>
+              <div className="content-sub-container">
+                <div className="content-sub">
+                  <ClassRequestsChart data={classRequestData} />
+                </div>
+                <div className="content-sub">
+                  <MaterialSharedChart data={sharedMaterialData} />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
     </div>
   );

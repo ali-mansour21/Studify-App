@@ -313,3 +313,9 @@
   }
 }
 /* Styles in Mobile  */
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+}
