@@ -113,12 +113,13 @@ class TopicDetailScreen extends StatelessWidget {
     final status = await Permission.storage.request();
 
     if (status.isGranted) {
-      final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/$fileName');
+      final directory = await getExternalStorageDirectory();
+      final file =  File('${directory?.path}/$fileName');
       await file.writeAsString(content);
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Downloaded $fileName')));
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Downloaded $fileName to ${file.path}')));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Storage permission is required to download files.')));
