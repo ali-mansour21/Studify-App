@@ -4,7 +4,6 @@ import React from "react";
 import { IMAGE_URL } from "../../../../utilities/config";
 
 const ClassData = ({ data, inviteStudent }) => {
-  console.log(data);
   return (
     <div className="class  bg-white rad-6 p-relative">
       <img

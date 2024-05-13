@@ -19,9 +19,9 @@ const Home = () => {
   const classes = useSelector((state) => state.classes?.classes);
   const [showPopup, setShowPopup] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [student_email, setStudentEmail] = useState({
-    student_email: "",
+  const [studentInviteData, setStudentEmail] = useState({
     class_id: 0,
+    student_email: "",
   });
   const [showInvitePopup, setShowInvitePopup] = useState(false);
   const [classData, setClassData] = useState({
@@ -38,7 +38,10 @@ const Home = () => {
   };
   const openInivtePopUp = (id) => {
     setShowInvitePopup(true);
-    console.log(id);
+    setStudentEmail({
+      ...studentInviteData,
+      class_id: id,
+    });
   };
   const closeInvitePopup = () => {
     setShowInvitePopup(false);
@@ -83,7 +86,18 @@ const Home = () => {
     });
   };
   const handleInviteStudent = () => {
-    console.log(student_email);
+    console.log(studentInviteData);
+    sendAuthRequest(
+      requestMethods.POST,
+      "classes/invite",
+      studentInviteData
+    ).then((response) => {
+      if (response.status === 201) {
+        console.log(response);
+        toast.success(response.data.message);
+        closeInvitePopup();
+      }
+    });
   };
   useEffect(() => {
     fetchClasses();
@@ -215,9 +229,9 @@ const Home = () => {
             <input
               type="text"
               onChange={(e) => {
-                setClassData({
-                  ...classData,
-                  name: e.target.value,
+                setStudentEmail({
+                  ...studentInviteData,
+                  student_email: e.target.value,
                 });
               }}
               id="email"
