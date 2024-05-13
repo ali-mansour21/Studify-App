@@ -7,7 +7,6 @@ const boardsSlice = createSlice({
   reducers: {
     loadClasses: (state, action) => {
       const { payload } = action;
-      console.log("the action", payload);
       state.classes = payload;
     },
   },

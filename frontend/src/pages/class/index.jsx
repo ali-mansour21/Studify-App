@@ -17,7 +17,6 @@ import ClassData from "./components/class";
 const Home = () => {
   const dispatch = useDispatch();
   const classes = useSelector((state) => state.classes?.classes);
-  console.log(classes);
   const [showPopup, setShowPopup] = useState(false);
   const [classData, setClassData] = useState({
     name: "",
@@ -51,7 +50,6 @@ const Home = () => {
     });
   };
   const handleCreateClass = () => {
-    console.log(classData.category_id);
     sendAuthRequest(requestMethods.POST, "classes", classData).then(
       (response) => {
         if (response.status === 200) {
@@ -64,7 +62,6 @@ const Home = () => {
   const fetchClasses = () => {
     sendAuthRequest(requestMethods.GET, "classes").then((response) => {
       if (response.status === 200) {
-        console.log(response.data.data.classes);
         dispatch(loadClasses(response.data.data.classes));
       }
     });

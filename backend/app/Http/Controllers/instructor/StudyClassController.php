@@ -21,6 +21,8 @@ class StudyClassController extends Controller
                 'id' => $class->id,
                 'name' => $class->name,
                 'materials' => $class->materials,
+                'description' => $class->description,
+                'class_image'=>$class->class_image,
                 'student_count' => $class->students->count(),
             ];
         });

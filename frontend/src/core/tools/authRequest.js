@@ -1,8 +1,9 @@
 import axios from "axios";
+import { API_URL } from "../../../utilities/config";
 
 const sendAuthRequest = async (method, route, body) => {
   try {
-    axios.defaults.baseURL = "http://192.168.0.104:8001/api/";
+    axios.defaults.baseURL = API_URL;
 
     const response = await axios.request({
       method: method,
