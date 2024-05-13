@@ -183,6 +183,7 @@ a {
 }
 .classes-page {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  margin-top: 40px;
 }
 @media (max-width: 767px) {
   .classes-page {
@@ -197,6 +198,8 @@ a {
 }
 .classes-page .class .cover {
   max-width: 100%;
+  width: 405px;
+  height: 300px;
 }
 .classes-page .class .description {
   line-height: 1.6;
@@ -207,4 +210,6 @@ a {
 }
 .classes-page .class .info span {
   align-content: center;
+  padding: 10px;
+  cursor: pointer;
 }
