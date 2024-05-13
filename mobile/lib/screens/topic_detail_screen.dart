@@ -82,7 +82,28 @@ void openPDF(BuildContext context, String filePath) {
           fontSize: 16.0);
     }
   }
-
+Future<bool> _showConfirmationDialog(BuildContext context) async {
+    return await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Preview File'),
+              content: const Text('Would you like to preview the file now?'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('No'),
+                  onPressed: () => Navigator.of(context).pop(false),
+                ),
+                TextButton(
+                  child: const Text('Yes'),
+                  onPressed: () => Navigator.of(context).pop(true),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,17 +132,24 @@ void openPDF(BuildContext context, String filePath) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(topic.content, style: const TextStyle(fontSize: 16)),
-            if (!isStudent && topic.attachmentUrl != null)
+           if (isStudent && topic.attachmentUrl != null)
               Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: ElevatedButton.icon(
-                  onPressed: () => downloadAndSaveFile(
-                      context,
-                      topic.attachmentUrl!,
-                      "Attachment_${topic.title.replaceAll(' ', '_')}.pdf"),
                   icon: const Icon(Icons.file_download),
-                  label: const Text("Download and Open Attachment"),
+                  label: const Text("Download and Optionally View Attachment"),
+                  onPressed: () async {
+                    final String filePath = await downloadAndSaveFile(
+                        context,
+                        topic.attachmentUrl!,
+                        "Attachment_${topic.title.replaceAll(' ', '_')}.pdf");
+
+                    bool shouldPreview = await _showConfirmationDialog(context);
+                    if (shouldPreview) {
+                      openPDF(context, filePath);
+                    }
+                  },
                 ),
               ),
           ],
