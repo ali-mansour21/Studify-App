@@ -5,6 +5,7 @@ import SideBar from "../../components/sidebar";
 import Header from "../../components/header";
 import sendAuthRequest from "../../core/tools/authRequest";
 import { requestMethods } from "../../core/requests/requestMethods";
+import EnrolledStudentsChart from "./components/EnrolledStudentsChart";
 
 const Home = () => {
   const [homeData, setHomeData] = useState({
@@ -23,6 +24,18 @@ const Home = () => {
         });
       }
     });
+  };
+  const data = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    datasets: [
+      {
+        label: "Materials Shared",
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: ["rgba(255, 99, 132, 0.2)"],
+        borderColor: ["rgba(255, 99, 132, 1)"],
+        borderWidth: 1,
+      },
+    ],
   };
   useEffect(() => {
     getHomeData();
@@ -49,7 +62,7 @@ const Home = () => {
         </div>
         <div className="content-flex-container m-20">
           <div className="content-main">
-            <div>content</div>
+            <EnrolledStudentsChart data={data}  />
           </div>
           <div className="content-sub-container">
             <div className="content-sub">content</div>

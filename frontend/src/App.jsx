@@ -6,12 +6,15 @@ import Home from "./pages/home/index.jsx";
 import ClassHome from "./pages/class/index.jsx";
 import { useEffect } from "react";
 import { generateToken } from "../src/firebase.js";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   useEffect(() => {
     generateToken();
   }, []);
   return (
     <>
+      <ToastContainer />
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
