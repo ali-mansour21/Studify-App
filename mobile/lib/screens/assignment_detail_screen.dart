@@ -285,8 +285,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
       if (status.isGranted) {
         final response = await http.get(Uri.parse(url));
         if (response.statusCode == 200) {
-          final directory =
-              await getApplicationDocumentsDirectory();
+          final directory = await getApplicationDocumentsDirectory();
           filePath = '${directory.path}/$filename';
           final file = File(filePath);
           await file.writeAsBytes(response.bodyBytes);
@@ -365,35 +364,37 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                 style: const TextStyle(fontSize: 16, color: Colors.black),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.only(top: 20),
-              alignment: Alignment.center,
-              child: ElevatedButton.icon(
-                icon: const Icon(Icons.file_present),
-                label: const Text("View Attachment"),
-                onPressed: () async {
-                  if (widget.assignment.attachmentUrl != null) {
-                    final String filePath = await downloadAndSaveFile(
-                        context,
-                        widget.assignment.attachmentUrl!,
-                        "${widget.assignment.title.replaceAll(' ', '_')}.pdf");
+            if (widget.assignment.attachmentUrl != null)
+              Container(
+                padding: const EdgeInsets.only(top: 20),
+                alignment: Alignment.center,
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.file_present),
+                  label: const Text("View Attachment"),
+                  onPressed: () async {
+                    if (widget.assignment.attachmentUrl != null) {
+                      final String filePath = await downloadAndSaveFile(
+                          context,
+                          widget.assignment.attachmentUrl!,
+                          "${widget.assignment.title.replaceAll(' ', '_')}.pdf");
 
-                    bool shouldPreview = await _showConfirmationDialog(context);
-                    if (shouldPreview) {
-                      openPDF(context, filePath);
+                      bool shouldPreview =
+                          await _showConfirmationDialog(context);
+                      if (shouldPreview) {
+                        openPDF(context, filePath);
+                      }
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "No attachment available",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
                     }
-                  } else {
-                    Fluttertoast.showToast(
-                        msg: "No attachment available",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                  }
-                },
+                  },
+                ),
               ),
-            ),
           ],
         ),
       ),
