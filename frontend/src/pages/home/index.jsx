@@ -14,12 +14,12 @@ const Home = () => {
   });
   const getHomeData = async () => {
     sendAuthRequest(requestMethods.GET, "home/state").then((response) => {
-      console.log(response);
+      console.log(response.data.data);
       if (response.status === 200) {
         setHomeData({
-          nbOfClasses: response.data.nbOfClasses,
-          nbOfStudents: response.data.nbOfStudents,
-          submissionRate: response.data.submissionRate,
+          nbOfClasses: response.data.data.nbOfClasses,
+          nbOfStudents: response.data.data.nbOfStudents,
+          submissionRate: response.data.data.submissionRate,
         });
       }
     });
@@ -36,19 +36,15 @@ const Home = () => {
         <div className="dasboard-page d-grid gap-20 m-20">
           <div className="box  bg-white rad-6 p-relative">
             <h2>Number of classes</h2>
-            <p>20</p>
+            <p>{homeData?.nbOfClasses}</p>
           </div>
           <div className="box  bg-white rad-6 p-relative">
-            <h2>Number of classes</h2>
-            <p>20</p>
+            <h2>Number of students</h2>
+            <p>{homeData?.nbOfStudents}</p>
           </div>
           <div className="box  bg-white rad-6 p-relative">
-            <h2>Number of classes</h2>
-            <p>20</p>
-          </div>
-          <div className="box  bg-white rad-6 p-relative">
-            <h2>Number of classes</h2>
-            <p>20</p>
+            <h2>Assignment submission rate</h2>
+            <p>{homeData?.submissionRate}</p>
           </div>
         </div>
       </div>
