@@ -15,9 +15,18 @@ const Home = () => {
     nbOfStudents: 0,
     submissionRate: 0,
   });
-  const [enrolledStudentData, setEnrolledStudentData] = useState({});
-  const [classRequestData, setClassRequestData] = useState({});
-  const [sharedMaterialData, setSharedMaterialData] = useState({});
+  const [enrolledStudentData, setEnrolledStudentData] = useState({
+    labels: [],
+    datasets: [],
+  });
+  const [classRequestData, setClassRequestData] = useState({
+    labels: [],
+    datasets: [],
+  });
+  const [sharedMaterialData, setSharedMaterialData] = useState({
+    labels: [],
+    datasets: [],
+  });
   const getHomeData = async () => {
     sendAuthRequest(requestMethods.GET, "home/state").then((response) => {
       console.log(response.data.data);
@@ -34,24 +43,54 @@ const Home = () => {
     sendAuthRequest(requestMethods.GET, "home/data").then((response) => {
       if (response.status === 200) {
         console.log(response.data.data);
-        setEnrolledStudentData(response.data.data.nbStudentPerMonth);
-        setClassRequestData(response.data.data.classRequestsPerStatus);
-        setSharedMaterialData(response.data.data.materialsPerMonth);
+
+        const enrolledStudentChartData = {
+          labels: Object.keys(response?.data.data.nbStudentPerMonth),
+          datasets: [
+            {
+              label: "Number of Enrolled Students",
+              data: Object.values(response?.data.data.nbStudentPerMonth),
+              backgroundColor: "rgba(54, 162, 235, 0.2)",
+              borderColor: "rgba(54, 162, 235, 1)",
+              borderWidth: 1,
+            },
+          ],
+        };
+
+        // Prepare data for the Class Requests Chart
+        const classRequestChartData = {
+          labels: Object.keys(response?.data.data.classRequestsPerStatus),
+          datasets: [
+            {
+              label: "Class Requests by Status",
+              data: Object.values(response?.data.data.classRequestsPerStatus),
+              backgroundColor: "rgba(255, 206, 86, 0.2)",
+              borderColor: "rgba(255, 206, 86, 1)",
+              borderWidth: 1,
+            },
+          ],
+        };
+
+        const materialSharedChartData = {
+          labels: Object.keys(response?.data.data.materialsPerMonth),
+          datasets: [
+            {
+              label: "Materials Shared per Month",
+              data: Object.values(response?.data.data.materialsPerMonth),
+              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              borderColor: "rgba(75, 192, 192, 1)",
+              borderWidth: 1,
+            },
+          ],
+        };
+
+        setEnrolledStudentData(enrolledStudentChartData);
+        setClassRequestData(classRequestChartData);
+        setSharedMaterialData(materialSharedChartData);
       }
     });
   };
-  const data = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-    datasets: [
-      {
-        label: "Materials Shared",
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: ["rgba(255, 99, 132, 0.2)"],
-        borderColor: ["rgba(255, 99, 132, 1)"],
-        borderWidth: 1,
-      },
-    ],
-  };
+
   useEffect(() => {
     getHomeData();
     getChartData();
@@ -78,14 +117,14 @@ const Home = () => {
         </div>
         <div className="content-flex-container m-20">
           <div className="content-main">
-            <EnrolledStudentsChart data={data} />
+            <EnrolledStudentsChart data={enrolledStudentData} />
           </div>
           <div className="content-sub-container">
             <div className="content-sub">
-              <ClassRequestsChart data={data} />
+              <ClassRequestsChart data={classRequestData} />
             </div>
             <div className="content-sub">
-              <MaterialSharedChart data={data} />
+              <MaterialSharedChart data={sharedMaterialData} />
             </div>
           </div>
         </div>
