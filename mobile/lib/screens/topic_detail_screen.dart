@@ -2,16 +2,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:mobile/models/topic_material.dart';
+import 'package:mobile/models/topic_material.dart'; // Make sure this path is correct
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 class TopicDetailScreen extends StatelessWidget {
   final Topic topic;
   final bool isStudent;
 
   const TopicDetailScreen(
       {super.key, required this.topic, this.isStudent = false});
+
   Future<void> downloadAndSaveFile(
       BuildContext context, String url, String filename) async {
     try {
@@ -30,6 +32,8 @@ class TopicDetailScreen extends StatelessWidget {
               backgroundColor: const Color(0xFF3786A8),
               textColor: Colors.white,
               fontSize: 16.0);
+          // Launch the file after download
+          _launchURL(file.uri);
         } else {
           throw Exception('Failed to download file from server');
         }
@@ -48,22 +52,29 @@ class TopicDetailScreen extends StatelessWidget {
           SnackBar(content: Text('Failed to download the file: $e')));
     }
   }
-  void _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+
+  void _launchURL(Uri uri) async {
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
-      throw 'Could not launch $url';
+      Fluttertoast.showToast(
+          msg: 'Could not open the file',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            print(topic);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         title: Text(topic.title, style: const TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
@@ -95,7 +106,7 @@ class TopicDetailScreen extends StatelessWidget {
                       topic.attachmentUrl!,
                       "Attachment_${topic.title.replaceAll(' ', '_')}.pdf"),
                   icon: const Icon(Icons.file_download),
-                  label: const Text("Download Attachment"),
+                  label: const Text("Download and Open Attachment"),
                 ),
               ),
           ],
