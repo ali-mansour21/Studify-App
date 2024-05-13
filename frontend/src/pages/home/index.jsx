@@ -6,6 +6,7 @@ import Header from "../../components/header";
 import sendAuthRequest from "../../core/tools/authRequest";
 import { requestMethods } from "../../core/requests/requestMethods";
 import EnrolledStudentsChart from "./components/EnrolledStudentsChart";
+import ClassRequestsChart from "./components/ClassRequestsChart";
 
 const Home = () => {
   const [homeData, setHomeData] = useState({
@@ -62,10 +63,12 @@ const Home = () => {
         </div>
         <div className="content-flex-container m-20">
           <div className="content-main">
-            <EnrolledStudentsChart data={data}  />
+            <EnrolledStudentsChart data={data} />
           </div>
           <div className="content-sub-container">
-            <div className="content-sub">content</div>
+            <div className="content-sub">
+              <ClassRequestsChart data={data} />
+            </div>
             <div className="content-sub">content</div>
           </div>
         </div>

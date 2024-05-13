@@ -154,11 +154,15 @@ a {
 
 .content-main {
   background-color: #ffffff;
-  width: 50%; /* First div takes up half of the screen */
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
 
 .content-sub-container {
-  width: 46%; /* Container for the other two divs takes the remaining space */
+  width: 46%;
   display: flex;
   gap: 10px;
   flex-direction: column;
