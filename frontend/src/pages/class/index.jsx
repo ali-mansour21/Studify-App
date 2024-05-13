@@ -86,14 +86,12 @@ const Home = () => {
     });
   };
   const handleInviteStudent = () => {
-    console.log(studentInviteData);
     sendAuthRequest(
       requestMethods.POST,
       "classes/invite",
       studentInviteData
     ).then((response) => {
       if (response.status === 201) {
-        console.log(response);
         toast.success(response.data.message);
         closeInvitePopup();
       }

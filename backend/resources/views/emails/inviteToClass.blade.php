@@ -14,6 +14,10 @@
             padding: 0;
         }
 
+        a {
+            color: #fff;
+        }
+
         .container {
             max-width: 600px;
             margin: auto;
@@ -33,13 +37,9 @@
             margin: 10px;
             padding: 10px;
             border-radius: 5px;
-            background-color: #007bff;
+            background-color: #fff;
             color: white;
             text-decoration: none;
-        }
-
-        .app-link.apple {
-            background-color: #000000;
         }
     </style>
 </head>

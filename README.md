@@ -9,19 +9,21 @@
 >
 > Studify aims to boost student learning by offering a user-friendly platform for sharing and downloading study materials and summaries, raise collaboration among students, and providing interactive lectures and sessions.
 
-
 ### User Stories
 
-- As a user, I want to share my study materials and summaries , so other students can benefit.
-- As a user, I want to browse others study materials and summaries, so I can enhance my learning experience.
-- As a instructor, I want to host online sessions, so I can engage with my students in real-time and provide interactive lectures.
+- As a student, I want to share my study materials and summaries , so other students can benefit.
+- As a student, I want to be able to search for and access materials related to my courses so that I can study and prepare for exams more effectively.
+-As a student, I want to receive notifications about new materials and assignments so that I can keep up-to-date with my course requirements.
+-As a student, I want to ask questions related to the PDF materials and receive instant answers so that I can clarify doubts without waiting.
+-As an instructor, I want to view statistics on material usage and student engagement so that I can adjust my teaching strategies accordingly.
+-As an instructor, I want to be able to create topics within a material so that I can organize course content in a structured manner.
 
 <br><br>
 
 <!-- Tech stack -->
 <img src="./readme/title3.svg"/>
 
-### Coffee Express is built using the following technologies:
+### Studify is built using the following technologies:
 
 - This project uses the [Flutter app development framework](https://flutter.dev/). Flutter is a cross-platform hybrid app development platform which allows us to use a single codebase for apps on mobile, desktop, and the web.
 - For persistent storage (database), the app uses the [Hive](https://hivedb.dev/) package which allows the app to create a custom storage schema and save it to a local database.
@@ -34,9 +36,9 @@
 <!-- UI UX -->
 <img src="./readme/title4.svg"/>
 
-> We designed Coffee Express using wireframes and mockups, iterating on the design until we reached the ideal layout for easy navigation and a seamless user experience.
+> We designed Studify using wireframes and mockups, iterating on the design until we reached the ideal layout for easy navigation and a seamless user experience.
 
-- Project Figma design [figma](https://www.figma.com/file/LsuOx5Wnh5YTGSEtrgvz4l/Purrfect-Pals?type=design&node-id=257%3A79&mode=design&t=adzbABt5hbb91ucZ-1)
+- Project Figma design [figma](https://www.figma.com/file/gY2RkjNNiUb3fWZdRxAb3B/Final-Project?type=design&node-id=0%3A1&mode=design&t=H9cFcGzmbFVlpID6-1)
 
 ### Mockups
 
