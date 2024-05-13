@@ -10,6 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AssignmentDetailScreen extends StatefulWidget {
   final Assignment assignment;
@@ -27,6 +30,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
   PlatformFile? _selectedFile;
   bool _isUploading = false;
   String _response = "";
+
   Future<void> _uploadFile(BuildContext context) async {
     if (_selectedFile == null) {
       Fluttertoast.showToast(
@@ -229,6 +233,59 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
     );
   }
 
+  void _launchURL(Uri uri) async {
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Could not open the file',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  Future<void> downloadAndSaveFile(
+      BuildContext context, String url, String filename) async {
+    try {
+      var status = await Permission.storage.request();
+      if (status.isGranted) {
+        final response = await http.get(Uri.parse(url));
+        if (response.statusCode == 200) {
+          final directory = await getExternalStorageDirectory();
+          final file = File('${directory?.path}/$filename');
+          await file.writeAsBytes(response.bodyBytes);
+          Fluttertoast.showToast(
+              msg: 'File successfully downloaded',
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 5,
+              backgroundColor: const Color(0xFF3786A8),
+              textColor: Colors.white,
+              fontSize: 16.0);
+          _launchURL(file.uri);
+        } else {
+          throw Exception('Failed to download file from server');
+        }
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Permission needed to download and save the file',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: const Color(0xFF3786A8),
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to download the file: $e')));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -266,6 +323,18 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                   widget.assignment.content,
                   style: const TextStyle(fontSize: 16, color: Colors.black),
                 ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(top: 20),
+              alignment: Alignment.center,
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.file_present),
+                label: const Text("View Attachment"),
+                onPressed: () => downloadAndSaveFile(
+                    context,
+                    'data:text/plain;charset=utf-8,${Uri.encodeComponent(widget.assignment.content)}',
+                    "${widget.assignment.title.replaceAll(' ', '_')}.txt"),
               ),
             ),
           ],

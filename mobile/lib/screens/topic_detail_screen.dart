@@ -32,7 +32,6 @@ class TopicDetailScreen extends StatelessWidget {
               backgroundColor: const Color(0xFF3786A8),
               textColor: Colors.white,
               fontSize: 16.0);
-          // Launch the file after download
           _launchURL(file.uri);
         } else {
           throw Exception('Failed to download file from server');
