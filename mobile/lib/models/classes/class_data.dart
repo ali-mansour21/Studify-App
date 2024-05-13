@@ -5,12 +5,14 @@ class ClassTopic implements Topic {
   final String title;
   @override
   final String content;
+  final String? attachmentUrl;
 
-  ClassTopic({required this.title, required this.content});
+  ClassTopic({required this.title, required this.content, this.attachmentUrl});
   factory ClassTopic.fromJson(Map<String, dynamic> json) {
     return ClassTopic(
       title: json['title'],
       content: json['content'],
+      attachmentUrl: json['attachment'],
     );
   }
 }
@@ -29,13 +31,19 @@ class Assignment implements Topic {
   final String title;
   @override
   final String content;
+  final String? attachmentUrl;
 
-  Assignment({required this.title, required this.content, required this.id});
+  Assignment(
+      {required this.title,
+      required this.content,
+      required this.id,
+      this.attachmentUrl});
   factory Assignment.fromJson(Map<String, dynamic> json) {
     return Assignment(
       id: json['id'],
       title: json['title'],
       content: json['content'],
+      attachmentUrl: json['attachment'],
     );
   }
 }

@@ -50,7 +50,7 @@ class MaterialController extends Controller
             $path = null;
         }
 
-        if ($data['type'] == 0) {
+        if (intval($data['type']) == 0) {
             $topic = new Topic();
             $topic->title = $data['title'];
             $topic->content = $data['content'];
@@ -58,7 +58,7 @@ class MaterialController extends Controller
             $topic->save();
             event(new TopicCreated($topic));
             return response()->json(['message' => 'Topic created successfully', 'file_path' => $path], 201);
-        } elseif ($data['type'] == 1) {
+        } elseif (intval($data['type']) == 1) {
             $assignment = new Assignment();
             $assignment->title = $data['title'];
             $assignment->content = $data['content'];
