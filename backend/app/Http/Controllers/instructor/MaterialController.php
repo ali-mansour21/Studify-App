@@ -33,7 +33,7 @@ class MaterialController extends Controller
             'material_id' => ['required', 'integer', Rule::exists('materials', 'id')],
             'title' => ['required', 'string', 'min:3', 'max:30'],
             'content' => ['required', 'string', 'min:10'],
-            'attachment' => ['nullable', 'file', 'mimes:pdf,doc,docx'],
+            'attachment' => ['file', 'mimes:pdf,doc,docx'],
             'type' => ['required', 'integer']
         ]);
 
@@ -44,8 +44,10 @@ class MaterialController extends Controller
         $data = $validator->validated();
 
         if ($request->hasFile('attachment')) {
-            $filename = $request->file('attachment')->getClientOriginalName();
-            $path = $request->file('attachment')->storeAs('class_attachments', $filename);
+            $file = $request->file('attachment');
+            $filename = $this->generateFileName($file);
+            $path = $file->storeAs('class_attachments', $filename, 'public');
+
         } else {
             $path = null;
         }
@@ -55,19 +57,27 @@ class MaterialController extends Controller
             $topic->title = $data['title'];
             $topic->content = $data['content'];
             $topic->material_id = $data['material_id'];
+            $topic->attachment = $path;
             $topic->save();
             event(new TopicCreated($topic));
-            return response()->json(['message' => 'Topic created successfully', 'file_path' => $path], 201);
+            return response()->json(['status' => 'sucess', 'message' => 'Topic created successfully'], 200);
         } elseif (intval($data['type']) == 1) {
             $assignment = new Assignment();
             $assignment->title = $data['title'];
             $assignment->content = $data['content'];
             $assignment->material_id = $data['material_id'];
+            $assignment->attachment = $path;
             $assignment->save();
             event(new AssignmentCreated($assignment));
-            return response()->json(['message' => 'Assignment created successfully', 'file_path' => $path], 201);
+            return response()->json(['status' => 'success', 'message' => 'Assignment created successfully'], 200);
         } else {
             return response()->json(['status' => 'error', 'message' => 'Invalid type provided'], 400);
         }
+    }
+    private function generateFileName($file)
+    {
+        $timestamp = time();
+        $randomStr = bin2hex(random_bytes(5));
+        return $timestamp . '_' . $randomStr . '.' . $file->getClientOriginalExtension();
     }
 }
