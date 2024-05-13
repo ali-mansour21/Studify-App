@@ -14,42 +14,48 @@ class TopicDetailScreen extends StatelessWidget {
   const TopicDetailScreen(
       {super.key, required this.topic, this.isStudent = false});
 
-  Future<void> downloadAndSaveFile(
+  Future<String> downloadAndSaveFile(
       BuildContext context, String url, String filename) async {
+    String filePath = '';
     try {
       var status = await Permission.storage.request();
-      if (status.isGranted) {
-        final response = await http.get(Uri.parse(url));
-        if (response.statusCode == 200) {
-          final directory = await getExternalStorageDirectory();
-          final file = File('${directory?.path}/$filename');
-          await file.writeAsBytes(response.bodyBytes);
-          Fluttertoast.showToast(
-              msg: 'File successfully downloaded',
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 5,
-              backgroundColor: const Color(0xFF3786A8),
-              textColor: Colors.white,
-              fontSize: 16.0);
-          _launchURL(file.uri);
-        } else {
-          throw Exception('Failed to download file from server');
-        }
-      } else {
+      if (!status.isGranted) {
         Fluttertoast.showToast(
-            msg: 'Permission needed to download and save the file',
+            msg: 'Storage permission is required to save files',
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 5,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        return filePath;
+      }
+
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final directory = await getExternalStorageDirectory();
+        filePath = '${directory?.path}/$filename';
+        final file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+        Fluttertoast.showToast(
+            msg: 'File successfully downloaded',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
             backgroundColor: const Color(0xFF3786A8),
             textColor: Colors.white,
             fontSize: 16.0);
+      } else {
+        throw Exception('Failed to download file from server');
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to download the file: $e')));
+      Fluttertoast.showToast(
+          msg: 'Error downloading the file: $e',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
+    return filePath;
   }
 
   void _launchURL(Uri uri) async {

@@ -370,7 +370,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                 alignment: Alignment.center,
                 child: ElevatedButton.icon(
                   icon: const Icon(Icons.file_present),
-                  label: const Text("View Attachment"),
+                  label: const Text("Download Attachment"),
                   onPressed: () async {
                     if (widget.assignment.attachmentUrl != null) {
                       final String filePath = await downloadAndSaveFile(
