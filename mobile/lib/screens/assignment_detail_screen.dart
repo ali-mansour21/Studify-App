@@ -251,36 +251,48 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
   }
 
   Future<void> downloadAndSaveFile(
-      BuildContext context, String url, String filename) async {
+      BuildContext context, String url, String suggestedName) async {
     try {
       var status = await Permission.storage.request();
-      if (status.isGranted) {
-        final response = await http.get(Uri.parse(url));
-        if (response.statusCode == 200) {
-          final directory =
-              await getApplicationDocumentsDirectory(); // using path_provider
-          final filePath = '${directory.path}/$filename';
-          final file = File(filePath);
-          await file.writeAsBytes(response.bodyBytes);
-
-          // Open the PDF
-          openPDF(context, filePath);
-        } else {
-          throw Exception('Failed to download file from server');
-        }
-      } else {
+      if (!status.isGranted) {
         Fluttertoast.showToast(
-            msg: 'Permission needed to download and save the file',
+            msg: 'Storage permission is required to save files',
             toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 5,
-            backgroundColor: const Color(0xFF3786A8),
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.red,
             textColor: Colors.white,
             fontSize: 16.0);
+        return;
       }
+
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode != 200) {
+        throw Exception('Failed to download file');
+      }
+
+      final bytes = response.bodyBytes;
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/$suggestedName';
+      final file = File(filePath);
+      await file.writeAsBytes(bytes);
+
+      openPDF(context, filePath);
+
+      Fluttertoast.showToast(
+          msg: 'File downloaded successfully',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to download the file: $e')));
+      Fluttertoast.showToast(
+          msg: 'Error downloading the file: $e',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 
