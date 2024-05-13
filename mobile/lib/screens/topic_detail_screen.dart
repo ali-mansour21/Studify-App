@@ -114,15 +114,24 @@ class TopicDetailScreen extends StatelessWidget {
 
     if (status.isGranted) {
       final directory = await getExternalStorageDirectory();
-      final file =  File('${directory?.path}/$fileName');
+      final file = File('${directory?.path}/$fileName');
       await file.writeAsString(content);
-
-
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Downloaded $fileName to ${file.path}')));
+      Fluttertoast.showToast(
+          msg: 'Downloaded File Successfully',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: const Color(0xFF3786A8),
+          textColor: Colors.white,
+          fontSize: 16.0);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Storage permission is required to download files.')));
+      Fluttertoast.showToast(
+          msg: 'Storage permission is required to save files',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 
