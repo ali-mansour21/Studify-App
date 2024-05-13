@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'package:mobile/models/classes/class_data.dart';
 import 'package:mobile/models/users/user_data.dart';
 import 'package:mobile/providers/assignment_provider.dart';
+import 'package:mobile/screens/pdf_view_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
@@ -248,7 +250,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
     }
   }
 
- Future<void> downloadAndSaveFile(
+  Future<void> downloadAndSaveFile(
       BuildContext context, String url, String filename) async {
     try {
       var status = await Permission.storage.request();
@@ -281,11 +283,13 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
           SnackBar(content: Text('Failed to download the file: $e')));
     }
   }
-void openPDF(BuildContext context, String filePath) {
+
+  void openPDF(BuildContext context, String filePath) {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => PDFViewPage(filePath)),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -317,12 +321,10 @@ void openPDF(BuildContext context, String filePath) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 8),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Text(
-                  widget.assignment.content,
-                  style: const TextStyle(fontSize: 16, color: Colors.black),
-                ),
+            SingleChildScrollView(
+              child: Text(
+                widget.assignment.content,
+                style: const TextStyle(fontSize: 16, color: Colors.black),
               ),
             ),
             Container(
@@ -331,10 +333,22 @@ void openPDF(BuildContext context, String filePath) {
               child: ElevatedButton.icon(
                 icon: const Icon(Icons.file_present),
                 label: const Text("View Attachment"),
-                onPressed: () => downloadAndSaveFile(
-                    context,
-                    'data:text/plain;charset=utf-8,${Uri.encodeComponent(widget.assignment.content)}',
-                    "${widget.assignment.title.replaceAll(' ', '_')}.txt"),
+                onPressed: () {
+                  if (widget.assignment.attachmentUrl != null) {
+                    downloadAndSaveFile(
+                        context,
+                        widget.assignment.attachmentUrl!,
+                        "${widget.assignment.title.replaceAll(' ', '_')}.pdf");
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "No attachment available",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
+                },
               ),
             ),
           ],
