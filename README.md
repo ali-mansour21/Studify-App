@@ -13,10 +13,10 @@
 
 - As a student, I want to share my study materials and summaries , so other students can benefit.
 - As a student, I want to be able to search for and access materials related to my courses so that I can study and prepare for exams more effectively.
--As a student, I want to receive notifications about new materials and assignments so that I can keep up-to-date with my course requirements.
--As a student, I want to ask questions related to the PDF materials and receive instant answers so that I can clarify doubts without waiting.
--As an instructor, I want to view statistics on material usage and student engagement so that I can adjust my teaching strategies accordingly.
--As an instructor, I want to be able to create topics within a material so that I can organize course content in a structured manner.
+- As a student, I want to receive notifications about new materials and assignments so that I can keep up-to-date with my course requirements.
+- As a student, I want to ask questions related to the PDF materials and receive instant answers so that I can clarify doubts without waiting.
+- As an instructor, I want to view statistics on material usage and student engagement so that I can adjust my teaching strategies accordingly.
+- As an instructor, I want to be able to create topics within a material so that I can organize course content in a structured manner.
 
 <br><br>
 
@@ -26,7 +26,7 @@
 ### Studify is built using the following technologies:
 
 - This project uses the [Flutter app development framework](https://flutter.dev/). Flutter is a cross-platform hybrid app development platform which allows us to use a single codebase for apps on mobile, desktop, and the web.
--The backend database uses [PostgreSQL](https://www.postgresql.org/), a powerful, open-source object-relational database system known for its robustness, performance, and standards compliance.
+- The backend database uses [PostgreSQL](https://www.postgresql.org/), a powerful, open-source object-relational database system known for its robustness, performance, and standards compliance.
 - Notifications within the app are managed through [Firebase](https://firebase.google.com/), specifically Firebase Cloud Messaging. This service allows for reliable and scalable delivery of notifications to devices across platforms.
 - 🚨 Currently, notifications aren't working on macOS.
 
