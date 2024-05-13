@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\instructor;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClassRequest;
 use App\Models\StudyClass;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class HomeController extends Controller
     public function chartData()
     {
         $instructor = auth()->user();
-        $nbStudentPerMonth = $instructor->getEnrollmentCountsByMonth;
+        $nbStudentPerMonth = $instructor->getEnrollmentCountsByMonth();
         $classRequestsPerStatus = $this->getClassRequestsByStatus($instructor->id);
         return response()->json(['status' => 'success', 'data' => [
             'nbStudentPerMonth' => $nbStudentPerMonth,
@@ -54,25 +55,23 @@ class HomeController extends Controller
     }
     public function getClassRequestsByStatus($instructorId)
     {
-        $instructor = User::with(['instructorClasses.classRequests' => function ($query) {
-            $query->select('status', DB::raw('count(*) as total'))
-                ->groupBy('status');
-        }])->find($instructorId);
+        $instructor = User::with(['instructorClasses'])->find($instructorId);
 
-        if ($instructor) {
-            $classRequestsStatus = [];
-            foreach ($instructor->instructorClasses as $class) {
-                foreach ($class->classRequests as $request) {
-                    $status = $request->status;
-                    if (!isset($classRequestsStatus[$status])) {
-                        $classRequestsStatus[$status] = 0;
-                    }
-                    $classRequestsStatus[$status] += $request->total;
-                }
+        $statusCounts = [];
+
+        if ($instructor && !empty($instructor->instructorClasses)) {
+            $classIds = $instructor->instructorClasses->pluck('id');
+
+            $aggregates = ClassRequest::select('status', DB::raw('count(*) as total'))
+            ->whereIn('class_id', $classIds)
+                ->groupBy('status')
+                ->get();
+
+            foreach ($aggregates as $aggregate) {
+                $statusCounts[$aggregate->status] = $aggregate->total;
             }
-            return $classRequestsStatus;
         }
 
-        return null;
+        return $statusCounts;
     }
 }

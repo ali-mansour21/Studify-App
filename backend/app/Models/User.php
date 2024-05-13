@@ -112,10 +112,10 @@ class User extends Authenticatable implements JWTSubject
             $endDate = now()->setYear($currentYear)->setMonth($month)->endOfMonth();
 
             $count = $this->instructorClasses()
-                ->join('class_enrollments', 'study_classes.id', '=', 'class_enrollment.study_class_id')
-                ->whereBetween('class_enrollment.created_at', [$startDate, $endDate])
+                ->join('class_enrollments', 'study_classes.id', '=', 'class_enrollments.study_class_id')
+                ->whereBetween('class_enrollments.created_at', [$startDate, $endDate])
                 ->distinct()
-                ->count('class_enrollment.student_id');
+                ->count('class_enrollments.student_id');
 
             $monthName = $startDate->format('M');
             $enrollmentCounts[$monthName] = $count;

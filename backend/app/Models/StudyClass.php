@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class StudyClass extends Model
 {
     use HasFactory;
-    protected $table = 'study_classes'; 
+    protected $table = 'study_classes';
     protected $fillable = ['name', 'class_image', 'description', 'class_code', 'category_id'];
     public function instructor()
     {
@@ -30,6 +30,6 @@ class StudyClass extends Model
     }
     public function classRequests()
     {
-        return $this->hasMany(ClassRequest::class);
+        return $this->hasMany(ClassRequest::class, 'class_id');
     }
 }
