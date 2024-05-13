@@ -6,6 +6,7 @@ import 'package:mobile/models/topic_material.dart'; // Make sure this path is co
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:mobile/screens/pdf_view_screen.dart';
 
 class TopicDetailScreen extends StatelessWidget {
   final Topic topic;
@@ -28,6 +29,11 @@ class TopicDetailScreen extends StatelessWidget {
             textColor: Colors.white,
             fontSize: 16.0);
         return filePath;
+      }
+       void openPDF(BuildContext context, String filePath) {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => PDFViewPage(filePath)),
+        );
       }
 
       final response = await http.get(Uri.parse(url));
@@ -57,7 +63,11 @@ class TopicDetailScreen extends StatelessWidget {
     }
     return filePath;
   }
-
+void openPDF(BuildContext context, String filePath) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => PDFViewPage(filePath)),
+    );
+  }
   void _launchURL(Uri uri) async {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
