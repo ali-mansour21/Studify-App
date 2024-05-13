@@ -13,13 +13,20 @@ class StudyClassController extends Controller
     public function index()
     {
         $instructor = auth()->user();
-        $classes = $instructor->instructorClasses()->with(['materials.topics', 'materials.assignments'])
-            ->get();
-        $studyClasses = $instructor->instructorClasses()->with('students')->get();
-        $studentCount = $this->getClassesWithStudentCounts($studyClasses);
+
+        $classes = $instructor->instructorClasses()->with(['materials.topics', 'materials.assignments', 'students'])->get();
+
+        $classes = $classes->map(function ($class) {
+            return [
+                'id' => $class->id,
+                'name' => $class->name,
+                'materials' => $class->materials,
+                'student_count' => $class->students->count(),
+            ];
+        });
+
         return response()->json(['status' => 'success', 'data' => [
-            'studentCount' => $studentCount,
-            'clases' => $classes
+            'classes' => $classes
         ]]);
     }
     public function store(Request $request)
