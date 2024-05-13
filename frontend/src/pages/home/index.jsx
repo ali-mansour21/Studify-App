@@ -30,21 +30,30 @@ const Home = () => {
   return (
     <div className="page d-flex">
       <SideBar />
-      <div className="content  w-full">
+      <div className="content w-full">
         <Header />
         <h1 className="p-relative">Dashboard</h1>
-        <div className="dasboard-page d-grid gap-20 m-20">
-          <div className="box  bg-white rad-6 p-relative">
+        <div className="dashboard-page d-grid gap-20 m-20">
+          <div className="box bg-white rad-6 p-relative">
             <h2>Number of classes</h2>
             <p>{homeData?.nbOfClasses}</p>
           </div>
-          <div className="box  bg-white rad-6 p-relative">
+          <div className="box bg-white rad-6 p-relative">
             <h2>Number of students</h2>
             <p>{homeData?.nbOfStudents}</p>
           </div>
-          <div className="box  bg-white rad-6 p-relative">
+          <div className="box bg-white rad-6 p-relative">
             <h2>Assignment submission rate</h2>
             <p>{homeData?.submissionRate}</p>
+          </div>
+        </div>
+        <div className="content-flex-container m-20">
+          <div className="content-main">
+            <div>content</div>
+          </div>
+          <div className="content-sub-container">
+            <div className="content-sub">content</div>
+            <div className="content-sub">content</div>
           </div>
         </div>
       </div>

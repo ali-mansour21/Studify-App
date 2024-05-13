@@ -98,25 +98,25 @@ a {
     gap: 10px;
   }
 }
-.dasboard-page {
+.dashboard-page {
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 }
 @media (max-width: 767px) {
-  .dasboard-page {
+  .dashboard-page {
     grid-template-columns: minmax(200px, 1fr);
     margin-left: 10px;
     margin-right: 10px;
     gap: 10px;
   }
 }
-.dasboard-page .box {
+.dashboard-page .box {
   overflow: hidden;
 }
-.dasboard-page .box h2 {
+.dashboard-page .box h2 {
   text-align: center;
   font-weight: 500;
 }
-.dasboard-page .box p {
+.dashboard-page .box p {
   text-align: center;
   font-size: 30px;
   font-weight: bold;
@@ -143,6 +143,31 @@ a {
 .content .actions p {
   margin-top: 13px;
   font-size: 30px;
+}
+.content-flex-container {
+  display: flex; /* Using flexbox to align children */
+  width: 100%; /* Full width of the container */
+  height: 500px;
+  margin: 20px;
+  gap: 20px;
+}
+
+.content-main {
+  background-color: #ffffff;
+  width: 50%; /* First div takes up half of the screen */
+}
+
+.content-sub-container {
+  width: 46%; /* Container for the other two divs takes the remaining space */
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.content-sub {
+  background-color: #ffffff;
+  flex: 1;
+  border-radius: 10px;
 }
 .classes-page {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
