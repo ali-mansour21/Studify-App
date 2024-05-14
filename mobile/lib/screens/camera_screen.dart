@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/models/categories/category_model.dart';
@@ -8,7 +10,7 @@ import 'package:mobile/services/auth_api_service.dart';
 import 'package:mobile/utilities/configure.dart';
 import 'package:provider/provider.dart';
 import 'package:image/image.dart' as img;
-import 'dart:io';
+import 'dart:io' as io;
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -68,7 +70,7 @@ class _CameraScreenState extends State<CameraScreen> {
     try {
       final XFile image = await _controller.takePicture();
 
-      File imgFile = File(image.path);
+      io.File imgFile = io.File(image.path);
       img.Image? originalImage = img.decodeImage(await imgFile.readAsBytes());
       img.Image bwImage = img.grayscale(originalImage!);
 
@@ -80,7 +82,7 @@ class _CameraScreenState extends State<CameraScreen> {
     }
   }
 
-  Future<void> _addNewMaterial(File imageFile, String materialTitle,
+  Future<void> _addNewMaterial(io.File imgFile, String materialTitle,
       int categoryId, String topicTitle) async {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
 
@@ -91,7 +93,7 @@ class _CameraScreenState extends State<CameraScreen> {
         ..fields['material_title'] = materialTitle
         ..fields['category_id'] = categoryId.toString()
         ..fields['topic_title'] = topicTitle
-        ..files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+        ..files.add(await http.MultipartFile.fromPath('image', imageFile));
 
       final response = await request.send();
 
@@ -127,7 +129,7 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future<void> _addToExistingMaterial(
-      File imageFile, int materialId, String topicTitle) async {
+      io.File imgFile, int materialId, String topicTitle) async {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
 
     try {
@@ -136,7 +138,7 @@ class _CameraScreenState extends State<CameraScreen> {
         ..headers['Authorization'] = 'Bearer $token'
         ..fields['material_id'] = materialId.toString()
         ..fields['topic_title'] = topicTitle
-        ..files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+        ..files.add(await http.MultipartFile.fromPath('image', imageFile));
 
       final response = await request.send();
 
@@ -170,36 +172,36 @@ class _CameraScreenState extends State<CameraScreen> {
           fontSize: 16.0);
     }
   }
-
-  void _showCaptureOptions() {
+void _showCaptureOptions(io.File imgFile) {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  title: const Text('Add New Material'),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    _showNewMaterialForm();
-                  },
-                ),
-                ListTile(
-                  title: const Text('Add to Existing Material'),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    _showExistingMaterialForm();
-                  },
-                ),
-              ],
-            ),
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                title: const Text('Add New Material'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _showNewMaterialForm(imgFile);
+                },
+              ),
+              ListTile(
+                title: const Text('Add to Existing Material'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _showExistingMaterialForm(imgFile);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
-  void _showNewMaterialForm() {
+  void _showNewMaterialForm(io.File imgFile) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -280,7 +282,7 @@ class _CameraScreenState extends State<CameraScreen> {
         });
   }
 
-  void _showExistingMaterialForm() {
+  void _showExistingMaterialForm(File imageFile) {
     var provider = Provider.of<MaterialsProvider>(context, listen: false);
     List<MaterialItem> materials = provider.studentMaterials;
     int? selectedMaterialId;
@@ -352,10 +354,14 @@ class _CameraScreenState extends State<CameraScreen> {
                 'Save',
                 style: TextStyle(color: Color(0xFF3786A8)),
               ),
-              onPressed: () {
+           onPressed: () async {
                 if (selectedMaterialId != null &&
                     topicController.text.isNotEmpty) {
-                  // Add your logic here
+                  await _addToExistingMaterial(
+                    imageFile,
+                    selectedMaterialId!,
+                    topicController.text,
+                  );
                 }
                 Navigator.of(context).pop();
               },
