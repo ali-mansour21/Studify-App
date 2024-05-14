@@ -5,7 +5,8 @@ import 'package:mobile/models/material_model.dart';
 import 'package:mobile/providers/material_provider.dart';
 import 'package:mobile/services/auth_api_service.dart';
 import 'package:provider/provider.dart';
-
+import 'package:image/image.dart' as img;
+import 'dart:io';
 class CameraScreen extends StatefulWidget {
   final CameraController cameraController;
   const CameraScreen({super.key, required this.cameraController});
@@ -53,15 +54,20 @@ class _CameraScreenState extends State<CameraScreen> {
           SnackBar(content: Text('Failed to load categories: $e')));
     }
   }
-
-  Future<void> _takePicture() async {
+Future<void> _takePicture() async {
     if (_controller.value.isTakingPicture) {
-      // A capture is already pending, do nothing.
       return;
     }
 
     try {
       final XFile image = await _controller.takePicture();
+
+      File imgFile = File(image.path);
+      img.Image? originalImage = img.decodeImage(await imgFile.readAsBytes());
+      img.Image bwImage = img.grayscale(originalImage!);
+
+      await imgFile.writeAsBytes(img.encodeJpg(bwImage));
+
       _showCaptureOptions();
     } catch (e) {
       print(e);
