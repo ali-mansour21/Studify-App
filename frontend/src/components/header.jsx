@@ -45,7 +45,7 @@ const Header = () => {
           {notifications.length > 0 ? (
             notifications.map((notification, index) => (
               <div key={index} className="notification-item">
-                {notification}
+                message
               </div>
             ))
           ) : (
