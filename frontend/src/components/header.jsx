@@ -17,6 +17,7 @@ const Header = () => {
     sendAuthRequest(requestMethods.GET, "home/notifications").then(
       (response) => {
         if (response.status === 200) {
+          console.log(response.data.data);
           setNotifications(response.data.data);
         }
       }
@@ -34,9 +35,12 @@ const Header = () => {
             e.preventDefault();
             toggleMenu();
           }}
-          className=" notification  p-relative "
+          className={`notification ${
+            notifications?.length > 0 ? "active" : ""
+          } p-relative`}
         >
           <FontAwesomeIcon icon={faBell} />
+          {notifications?.length > 0 && <span className="red-dot"></span>}
         </span>
         <img srcSet={`${IMAGE_URL}${profile}`} alt="" />
       </div>
@@ -45,7 +49,7 @@ const Header = () => {
           {notifications.length > 0 ? (
             notifications.map((notification, index) => (
               <div key={index} className="notification-item">
-                message
+                {notification.content}
               </div>
             ))
           ) : (
