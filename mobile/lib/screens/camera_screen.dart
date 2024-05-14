@@ -2,11 +2,16 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/models/categories/category_model.dart';
 import 'package:mobile/models/material_model.dart';
+import 'package:mobile/models/users/user_data.dart';
 import 'package:mobile/providers/material_provider.dart';
 import 'package:mobile/services/auth_api_service.dart';
+import 'package:mobile/utilities/configure.dart';
 import 'package:provider/provider.dart';
 import 'package:image/image.dart' as img;
 import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+
 class CameraScreen extends StatefulWidget {
   final CameraController cameraController;
   const CameraScreen({super.key, required this.cameraController});
@@ -54,7 +59,8 @@ class _CameraScreenState extends State<CameraScreen> {
           SnackBar(content: Text('Failed to load categories: $e')));
     }
   }
-Future<void> _takePicture() async {
+
+  Future<void> _takePicture() async {
     if (_controller.value.isTakingPicture) {
       return;
     }
@@ -71,6 +77,52 @@ Future<void> _takePicture() async {
       _showCaptureOptions();
     } catch (e) {
       print(e);
+    }
+  }
+
+  Future<void> _addNewMaterial(File imageFile, String materialTitle,
+      int categoryId, String topicTitle) async {
+    String token = Provider.of<UserData>(context, listen: false).jwtToken;
+
+    try {
+      final uri = Uri.parse('$API_BASE_URL/resources');
+      final request = http.MultipartRequest('POST', uri)
+        ..headers['Authorization'] = 'Bearer $token'
+        ..fields['material_title'] = materialTitle
+        ..fields['category_id'] = categoryId.toString()
+        ..fields['topic_title'] = topicTitle
+        ..files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(
+            msg: "New material added successfully!",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: const Color(0xFF3786A8),
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        Fluttertoast.showToast(
+            msg: "Failed to add new material.",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+          msg: "Error adding new material",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 
