@@ -66,7 +66,6 @@ class HomeController extends Controller
             'text_image' => ['required', 'image']
         ]);
 
-        // Send image to Flask server
         $imagePath = $request->file('text_image')->path();
         $flaskResponse = Http::attach('image', file_get_contents($imagePath), 'text_image.jpg')
         ->post('http://127.0.0.1:5000/extract-text');

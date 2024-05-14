@@ -5,6 +5,7 @@ namespace App\Http\Controllers\instructor;
 use App\Http\Controllers\Controller;
 use App\Models\ClassRequest;
 use App\Models\Material;
+use App\Models\Notification;
 use App\Models\StudyClass;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -25,6 +26,12 @@ class HomeController extends Controller
             'nbOfStudents' => $studentCount,
             'submissionRate' => $submissionRate,
         ]]);
+    }
+    public function getNotifications()
+    {
+        $user_id = auth()->id();
+        $notifications = Notification::where('receiver_id', $user_id)->get();
+        return response()->json(['status' => 'success', 'data' => $notifications]);
     }
     public function chartData()
     {
