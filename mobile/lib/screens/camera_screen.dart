@@ -131,7 +131,7 @@ Future<void> _addNewMaterial(io.File imgFile, String materialTitle,
     }
   }
 
-  Future<void> _addToExistingMaterial(
+Future<void> _addToExistingMaterial(
       io.File imgFile, int materialId, String topicTitle) async {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
 
@@ -141,38 +141,41 @@ Future<void> _addNewMaterial(io.File imgFile, String materialTitle,
         ..headers['Authorization'] = 'Bearer $token'
         ..fields['material_id'] = materialId.toString()
         ..fields['topic_title'] = topicTitle
-        ..files.add(await http.MultipartFile.fromPath('image', imageFile));
+        ..files.add(await http.MultipartFile.fromPath('image', imgFile.path));
 
       final response = await request.send();
 
       if (response.statusCode == 200) {
         Fluttertoast.showToast(
-            msg: "Material updated successfully!",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 5,
-            backgroundColor: const Color(0xFF3786A8),
-            textColor: Colors.white,
-            fontSize: 16.0);
+          msg: "Material updated successfully!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 5,
+          backgroundColor: const Color(0xFF3786A8),
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
       } else {
         Fluttertoast.showToast(
-            msg: "Failed to update material.",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 5,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      }
-    } catch (e) {
-      Fluttertoast.showToast(
-          msg: "Error updating material.",
+          msg: "Failed to update material.",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 5,
           backgroundColor: Colors.red,
           textColor: Colors.white,
-          fontSize: 16.0);
+          fontSize: 16.0,
+        );
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Error updating material.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 5,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 void _showCaptureOptions(io.File imgFile) {
