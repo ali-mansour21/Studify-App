@@ -11,8 +11,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlug, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Material from "./Material";
 import { BeatLoader } from "react-spinners";
+import PopUp from "../../components/PopUp";
 const Materials = () => {
   const dispatch = useDispatch();
+  const [showPopup, setShowPopup] = useState(false);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const classes = useSelector((state) => state.classes?.classes);
@@ -26,9 +28,13 @@ const Materials = () => {
     fetchAndLoadClasses();
   }, [dispatch]);
   const classItem = classes?.find((classItem) => classItem.id === parseInt(id));
-  console.log(classItem);
-  const openPopup = () => {};
-  const handleCardClick = (id) => {};
+  const openPopup = () => {
+    setShowPopup(true);
+  };
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+  const handleCreateMaterial = () => {};
   return (
     <div className="page d-flex">
       <SideBar />
@@ -65,6 +71,23 @@ const Materials = () => {
           </>
         )}
       </div>
+      {showPopup && (
+        <PopUp
+          formTitle={"Add New Material"}
+          buttonText={"Add"}
+          isOpen={showPopup}
+          closePopUp={closePopup}
+          handleSubmit={(e) => {
+            e.preventDefault();
+            handleCreateMaterial();
+          }}
+        >
+          <div>
+            <label htmlFor="name">Name</label>
+            <input type="text" id="name" name="name" />
+          </div>
+        </PopUp>
+      )}
     </div>
   );
 };

@@ -1,6 +1,11 @@
-import React from 'react'
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const Material = ({material}) => {
+const Material = ({ material }) => {
+  const navigate = useNavigate();
+  const handleCardClick = (id) => {
+    navigate(`/material/data/${id}`);
+  };
   return (
     <div
       onClick={(e) => {
@@ -14,6 +19,6 @@ const Material = ({material}) => {
       </div>
     </div>
   );
-}
+};
 
-export default Material
+export default Material;
