@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import SideBar from "../../../components/sidebar";
 import Header from "../../../components/header";
+import "../../../styles/utilities.css";
+import "../../../styles/index.css";
+
 import { useParams } from "react-router-dom";
 import { fetchClasses } from "../../../core/data/remote";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +14,7 @@ const Unit = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-
+  const [activeTab, setActiveTab] = useState("topics");
   const classes = useSelector((state) => state.classes?.classes);
   const fetchAndLoadClasses = async () => {
     const classData = await fetchClasses();
@@ -49,7 +52,24 @@ const Unit = () => {
         ) : (
           <>
             <h1 className="p-relative">{material?.name}</h1>
-            
+            <div className="content w-full">
+              <div className="tabs">
+                <div
+                  className={`tab topic ${activeTab === "topics" ? "active" : ""}`}
+                  onClick={() => setActiveTab("topics")}
+                >
+                  Topics
+                </div>
+                <div
+                  className={`tab assignment ${
+                    activeTab === "assignments" ? "active" : ""
+                  }`}
+                  onClick={() => setActiveTab("assignments")}
+                >
+                  Assignments
+                </div>
+              </div>
+            </div>
           </>
         )}
       </div>

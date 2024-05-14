@@ -242,3 +242,33 @@ a {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.1);
 }
+.tabs {
+  display: flex;
+  justify-content: center;
+}
+
+.tab {
+  text-align: center;
+  padding: 10px 15px;
+  cursor: pointer;
+  width: 150px;
+  border-radius: 20px 0 0 20px;
+  background-color: #d3d3d3;
+  color: black;
+}
+
+.tab:last-child {
+  border-radius: 0 20px 20px 0;
+}
+
+.tab.active {
+  background-color: #337a99;
+  color: white;
+}
+.tab.topic {
+  border-top-left-radius: 20px;
+}
+
+.tab:not(.active):hover {
+  background-color: #b0b0b0;
+}
