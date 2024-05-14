@@ -13,6 +13,9 @@ import UnitCard from "./UnitCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import PopUp from "../../components/PopUp";
+import sendAuthRequest from "../../../core/tools/authRequest";
+import { requestMethods } from "../../../core/requests/requestMethods";
+import { toast } from "react-toastify";
 
 const Unit = () => {
   const { id } = useParams();
@@ -20,6 +23,13 @@ const Unit = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("topics");
+  const [moduleData, setModuleData] = useState({
+    material_id: parseInt(id),
+    title: "",
+    content: "",
+    attachment: null,
+    type: 0,
+  });
   const classes = useSelector((state) => state.classes?.classes);
   const fetchAndLoadClasses = async () => {
     const classData = await fetchClasses();
@@ -47,7 +57,28 @@ const Unit = () => {
   const closePopup = () => {
     setShowPopup(false);
   };
-  const handleCreateModule = () => {};
+  const handleCreateModule = () => {
+    const formData = new FormData();
+    formData.append("material_id", moduleData.material_id);
+    formData.append("title", moduleData.title);
+    formData.append("content", moduleData.content);
+    if (moduleData.attachment) {
+      formData.append("attachment", moduleData.attachment);
+    }
+    formData.append("type", moduleData.type);
+    sendAuthRequest(requestMethods.POST, "classes/material/addUnit", formData)
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success(response.data.message);
+          closePopup();
+          fetchAndLoadClasses();
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        toast.error("Failed to create new module");
+      });
+  };
   const material = findMaterialInClasses(classes, parseInt(id));
   return (
     <div className="page d-flex">
@@ -96,9 +127,11 @@ const Unit = () => {
               </div>
             </div>
             <div className="unit-wrapper">
-              <UnitCard />
-              <UnitCard />
-              <UnitCard />
+              {activeTab === "topic"
+                ? material?.map((topic, i) => <UnitCard key={i} data={topic} />)
+                : material?.map((assignment, i) => (
+                    <UnitCard key={i} data={assignment} />
+                  ))}
             </div>
           </>
         )}
@@ -115,8 +148,61 @@ const Unit = () => {
           }}
         >
           <div>
-            <label htmlFor="name">Name</label>
-            <input type="text" id="name" name="name" />
+            <label htmlFor="title">Title</label>
+            <input
+              type="text"
+              onChange={(e) => {
+                setModuleData({
+                  ...moduleData,
+                  title: e.target.value,
+                });
+              }}
+              id="title"
+              name="title"
+            />
+          </div>
+          <div>
+            <label htmlFor="content">Content</label>
+            <textarea
+              name="content"
+              onChange={(e) => {
+                setModuleData({
+                  ...moduleData,
+                  content: e.target.value,
+                });
+              }}
+              id="content"
+            ></textarea>
+          </div>
+          <div>
+            <label htmlFor="attachment">Attachment (Optional)</label>
+            <input
+              type="file"
+              onChange={(e) => {
+                setModuleData({
+                  ...moduleData,
+                  attachment: e.target.files[0],
+                });
+              }}
+              id="attachment"
+              name="attachment"
+            />
+          </div>
+          <div>
+            <label htmlFor="type">Type</label>
+            <select
+              onChange={(e) => {
+                setModuleData({
+                  ...moduleData,
+                  type: parseInt(e.target.value),
+                });
+              }}
+              name="type"
+              id="type"
+            >
+              <option value="0">Topic</option>
+              <option value="1">Assignment</option>
+            </select>
           </div>
         </PopUp>
       )}
