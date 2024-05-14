@@ -7,6 +7,8 @@ import Header from "../../../components/header";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchClasses } from "../../../core/data/remote";
 import { loadClasses } from "../../../redux/boarderSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlug, faPlus } from "@fortawesome/free-solid-svg-icons";
 const Materials = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -23,12 +25,40 @@ const Materials = () => {
   }, [dispatch]);
   const classItem = classes?.find((classItem) => classItem.id === parseInt(id));
   console.log(classItem);
+  const openPopup = () => {};
+  const handleCardClick = (id) => {};
   return (
     <div className="page d-flex">
       <SideBar />
       <div className="content w-full">
         <Header />
-        <h2>{classItem?.name}</h2>
+        <div className="d-flex spacebetween h-50">
+          <h1 className="p-relative">{classItem?.name}</h1>
+          <div className="actions d-flex gap-10">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                openPopup();
+              }}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+            <p>Add</p>
+          </div>
+        </div>
+        <div className="materials-page d-grid gap-20 m-20">
+          <div
+            onClick={(e) => {
+              e.preventDefault();
+              handleCardClick(classItem.id);
+            }}
+            className="material  bg-white rad-6 p-relative"
+          >
+            <div className="p-20">
+              <h4 className="m-0">{classItem?.materials[0]?.name}</h4>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
