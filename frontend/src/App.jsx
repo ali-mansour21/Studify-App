@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Materials from "./pages/class/components/Materials.jsx";
 import Unit from "./pages/class/components/Unit.jsx";
 function App() {
+  const token = localStorage.getItem("token");
   useEffect(() => {
     generateToken();
   }, []);
@@ -21,11 +22,15 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<SignUp />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/classes" element={<ClassHome />} />
-          <Route path="/materials/:id" element={<Materials />} />
-          <Route path="/materials/data/:id" element={<Unit />} />
         </Routes>
+        {token && (
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/classes" element={<ClassHome />} />
+            <Route path="/materials/:id" element={<Materials />} />
+            <Route path="/materials/data/:id" element={<Unit />} />
+          </Routes>
+        )}
       </Router>
     </>
   );
