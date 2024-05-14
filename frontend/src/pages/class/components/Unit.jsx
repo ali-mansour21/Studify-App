@@ -127,9 +127,11 @@ const Unit = () => {
               </div>
             </div>
             <div className="unit-wrapper">
-              {activeTab === "topic"
-                ? material?.map((topic, i) => <UnitCard key={i} data={topic} />)
-                : material?.map((assignment, i) => (
+              {activeTab === "topics"
+                ? material?.topics?.map((topic, i) => (
+                    <UnitCard key={i} data={topic} />
+                  ))
+                : material?.assignments?.map((assignment, i) => (
                     <UnitCard key={i} data={assignment} />
                   ))}
             </div>

@@ -4,10 +4,9 @@ import {
   faBook,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
 import { useState } from "react";
 
-const UnitCard = () => {
+const UnitCard = ({ data }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -19,7 +18,7 @@ const UnitCard = () => {
           <FontAwesomeIcon icon={faBook} />
         </div>
         <div className="unit-content">
-          <p>ali</p>
+          <p>{data?.title}</p>
         </div>
         <div className="unit-actions">
           <button className="expand-button">
@@ -31,7 +30,12 @@ const UnitCard = () => {
           </button>
         </div>
       </div>
-      {isExpanded && <div className="unit-body">ali</div>}
+      {isExpanded && (
+        <div className="unit-body">
+          <p>{data?.content}</p>
+          <p>{data?.attachment}</p>
+        </div>
+      )}
     </div>
   );
 };
