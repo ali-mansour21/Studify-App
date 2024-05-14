@@ -10,10 +10,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadClasses } from "../../../redux/boarderSlice";
 import { BeatLoader } from "react-spinners";
 import UnitCard from "./UnitCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import PopUp from "../../components/PopUp";
 
 const Unit = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const [showPopup, setShowPopup] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("topics");
   const classes = useSelector((state) => state.classes?.classes);
@@ -37,6 +41,13 @@ const Unit = () => {
     }
     return null;
   };
+  const openPopup = () => {
+    setShowPopup(true);
+  };
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+  const handleCreateModule = () => {};
   const material = findMaterialInClasses(classes, parseInt(id));
   return (
     <div className="page d-flex">
@@ -52,7 +63,20 @@ const Unit = () => {
           />
         ) : (
           <>
-            <h1 className="p-relative">{material?.name}</h1>
+            <div className="d-flex spacebetween h-50">
+              <h1 className="p-relative">{material?.name}</h1>
+              <div className="actions d-flex gap-10">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openPopup();
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
+                <p>Add</p>
+              </div>
+            </div>
             <div className="tabs">
               <div
                 className={`tab topic ${
@@ -79,6 +103,23 @@ const Unit = () => {
           </>
         )}
       </div>
+      {showPopup && (
+        <PopUp
+          formTitle={"Add New Module"}
+          buttonText={"Add"}
+          isOpen={showPopup}
+          closePopUp={closePopup}
+          handleSubmit={(e) => {
+            e.preventDefault();
+            handleCreateModule();
+          }}
+        >
+          <div>
+            <label htmlFor="name">Name</label>
+            <input type="text" id="name" name="name" />
+          </div>
+        </PopUp>
+      )}
     </div>
   );
 };
