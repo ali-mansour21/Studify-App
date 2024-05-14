@@ -24,7 +24,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/classes" element={<ClassHome />} />
           <Route path="/materials/:id" element={<Materials />} />
-          <Route path="/material/data/:id" element={<Unit />} />
+          <Route path="/materials/data/:id" element={<Unit />} />
         </Routes>
       </Router>
     </>

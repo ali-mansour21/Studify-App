@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Material = ({ material }) => {
   const navigate = useNavigate();
   const handleCardClick = (id) => {
-    navigate(`/material/data/${id}`);
+    navigate(`/materials/data/${id}`);
   };
   return (
     <div

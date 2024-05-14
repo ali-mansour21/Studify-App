@@ -5,12 +5,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { requestMethods } from "../core/requests/requestMethods.js";
 import sendAuthRequest from "../core/tools/authRequest.js";
-
 const SideBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = location.pathname;
+  const routeName = pathname.substring(1);
+  console.log(routeName);
   const handleLogout = () => {
     sendAuthRequest(requestMethods.POST, "instructor_logout").then(
       (response) => {
@@ -29,7 +32,9 @@ const SideBar = () => {
       <ul className="list-none p-0">
         <li>
           <a
-            className="active d-flex align-center fs-14 c-black rad-6 p-10"
+            className={`${
+              routeName === "home" ? "active" : ""
+            } d-flex align-center fs-14 c-black rad-6 p-10 `}
             onClick={() => {
               navigate("/home");
             }}
@@ -40,7 +45,11 @@ const SideBar = () => {
         </li>
         <li>
           <a
-            className=" d-flex align-center fs-14 c-black rad-6 p-10"
+            className={`${
+              pathname === "/classes" || pathname.startsWith("/materials/")
+                ? "active"
+                : ""
+            } d-flex align-center fs-14 c-black rad-6 p-10`}
             onClick={() => {
               navigate("/classes");
             }}
