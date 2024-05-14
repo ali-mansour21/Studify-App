@@ -44,7 +44,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::middleware('instructor')->group(function () {
         Route::get('home/state', [InstructorHomeController::class, 'index']);
         Route::get('home/data', [InstructorHomeController::class, 'chartData']);
-        Route::get('home/notification', [InstructorHomeController::class, 'getNotifications']);
+        Route::get('home/notifications', [InstructorHomeController::class, 'getNotifications']);
         Route::get('classes', [StudyClassController::class, 'index']);
         Route::post('classes', [StudyClassController::class, 'store']);
         Route::post('classes/material', [MaterialController::class, 'store']);

@@ -30,7 +30,6 @@ const Home = () => {
   });
   const getHomeData = async () => {
     sendAuthRequest(requestMethods.GET, "home/state").then((response) => {
-      console.log(response.data.data);
       if (response.status === 200) {
         setHomeData({
           nbOfClasses: response.data.data.nbOfClasses,
@@ -43,7 +42,6 @@ const Home = () => {
   const getChartData = async () => {
     sendAuthRequest(requestMethods.GET, "home/data").then((response) => {
       if (response.status === 200) {
-        console.log(response.data.data);
 
         const enrolledStudentChartData = {
           labels: Object.keys(response?.data.data.nbStudentPerMonth),
@@ -58,7 +56,6 @@ const Home = () => {
           ],
         };
 
-        // Prepare data for the Class Requests Chart
         const classRequestChartData = {
           labels: Object.keys(response?.data.data.classRequestsPerStatus),
           datasets: [
