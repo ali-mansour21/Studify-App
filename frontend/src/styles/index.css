@@ -272,3 +272,52 @@ a {
 .tab:not(.active):hover {
   background-color: #b0b0b0;
 }
+.unit-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  gap: 10px;
+  flex-direction: column;
+}
+.unit-card {
+  display: flex;
+  align-items: center;
+  width: 500px;
+  padding: 10px;
+  background-color: rgb(211, 211, 211, 0.5);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.unit-icon {
+  margin-right: 10px;
+}
+.unit-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.unit-content {
+  flex-grow: 1;
+}
+
+.unit-content p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.unit-actions {
+  margin-left: auto;
+}
+
+.expand-button {
+  background: none;
+  border: none;
+  color: black;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.expand-button:hover {
+  color: var(--blue-color);
+}

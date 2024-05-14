@@ -9,6 +9,7 @@ import { fetchClasses } from "../../../core/data/remote";
 import { useDispatch, useSelector } from "react-redux";
 import { loadClasses } from "../../../redux/boarderSlice";
 import { BeatLoader } from "react-spinners";
+import UnitCard from "./UnitCard";
 
 const Unit = () => {
   const { id } = useParams();
@@ -52,23 +53,28 @@ const Unit = () => {
         ) : (
           <>
             <h1 className="p-relative">{material?.name}</h1>
-            <div className="content w-full">
-              <div className="tabs">
-                <div
-                  className={`tab topic ${activeTab === "topics" ? "active" : ""}`}
-                  onClick={() => setActiveTab("topics")}
-                >
-                  Topics
-                </div>
-                <div
-                  className={`tab assignment ${
-                    activeTab === "assignments" ? "active" : ""
-                  }`}
-                  onClick={() => setActiveTab("assignments")}
-                >
-                  Assignments
-                </div>
+            <div className="tabs">
+              <div
+                className={`tab topic ${
+                  activeTab === "topics" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("topics")}
+              >
+                Topics
               </div>
+              <div
+                className={`tab assignment ${
+                  activeTab === "assignments" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("assignments")}
+              >
+                Assignments
+              </div>
+            </div>
+            <div className="unit-wrapper">
+              <UnitCard />
+              <UnitCard />
+              <UnitCard />
             </div>
           </>
         )}
