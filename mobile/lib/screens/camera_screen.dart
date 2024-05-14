@@ -99,7 +99,7 @@ class _CameraScreenState extends State<CameraScreen> {
         Fluttertoast.showToast(
             msg: "New material added successfully!",
             toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 5,
             backgroundColor: const Color(0xFF3786A8),
             textColor: Colors.white,
@@ -108,7 +108,7 @@ class _CameraScreenState extends State<CameraScreen> {
         Fluttertoast.showToast(
             msg: "Failed to add new material.",
             toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
+            gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 5,
             backgroundColor: Colors.red,
             textColor: Colors.white,
@@ -117,6 +117,51 @@ class _CameraScreenState extends State<CameraScreen> {
     } catch (e) {
       Fluttertoast.showToast(
           msg: "Error adding new material",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  Future<void> _addToExistingMaterial(
+      File imageFile, int materialId, String topicTitle) async {
+    String token = Provider.of<UserData>(context, listen: false).jwtToken;
+
+    try {
+      final uri = Uri.parse('$API_BASE_URL/resources');
+      final request = http.MultipartRequest('POST', uri)
+        ..headers['Authorization'] = 'Bearer $token'
+        ..fields['material_id'] = materialId.toString()
+        ..fields['topic_title'] = topicTitle
+        ..files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(
+            msg: "Material updated successfully!",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 5,
+            backgroundColor: const Color(0xFF3786A8),
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        Fluttertoast.showToast(
+            msg: "Failed to update material.",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+          msg: "Error updating material.",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 5,
