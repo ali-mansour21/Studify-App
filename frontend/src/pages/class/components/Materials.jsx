@@ -9,6 +9,8 @@ import { fetchClasses } from "../../../core/data/remote";
 import { loadClasses } from "../../../redux/boarderSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlug, faPlus } from "@fortawesome/free-solid-svg-icons";
+import Material from "./Material";
+import { BeatLoader } from "react-spinners";
 const Materials = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -32,33 +34,36 @@ const Materials = () => {
       <SideBar />
       <div className="content w-full">
         <Header />
-        <div className="d-flex spacebetween h-50">
-          <h1 className="p-relative">{classItem?.name}</h1>
-          <div className="actions d-flex gap-10">
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                openPopup();
-              }}
-            >
-              <FontAwesomeIcon icon={faPlus} />
-            </button>
-            <p>Add</p>
-          </div>
-        </div>
-        <div className="materials-page d-grid gap-20 m-20">
-          <div
-            onClick={(e) => {
-              e.preventDefault();
-              handleCardClick(classItem.id);
-            }}
-            className="material  bg-white rad-6 p-relative"
-          >
-            <div className="p-20">
-              <h4 className="m-0">{classItem?.materials[0]?.name}</h4>
+        {loading ? (
+          <BeatLoader
+            className="loader"
+            color={"#3786a8"}
+            loading={loading}
+            size={50}
+          />
+        ) : (
+          <>
+            <div className="d-flex spacebetween h-50">
+              <h1 className="p-relative">{classItem?.name}</h1>
+              <div className="actions d-flex gap-10">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openPopup();
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
+                <p>Add</p>
+              </div>
             </div>
-          </div>
-        </div>
+            <div className="materials-page d-grid gap-20 m-20">
+              {classItem?.materials?.map((material) => (
+                <Material key={material.id} material={material} />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
