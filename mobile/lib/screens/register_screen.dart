@@ -35,7 +35,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         String jwtToken = result['authorization']['token'];
         Provider.of<UserData>(context, listen: false)
             .setUserData(name, jwtToken);
-        Navigator.of(context).pushReplacementNamed('/category');
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/category', (Route<dynamic> route) => false);
       }
     } catch (error) {
       Fluttertoast.showToast(
