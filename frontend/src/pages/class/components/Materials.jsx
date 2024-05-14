@@ -24,14 +24,13 @@ const Materials = () => {
     class_id: parseInt(id),
     name: "",
   });
+  const fetchAndLoadClasses = async () => {
+    const classData = await fetchClasses();
+    dispatch(loadClasses(classData));
+    setLoading(false);
+  };
   const classes = useSelector((state) => state.classes?.classes);
   useEffect(() => {
-    const fetchAndLoadClasses = async () => {
-      const classData = await fetchClasses();
-      dispatch(loadClasses(classData));
-      setLoading(false);
-    };
-
     fetchAndLoadClasses();
   }, [dispatch]);
   const classItem = classes?.find((classItem) => classItem.id === parseInt(id));
@@ -41,16 +40,17 @@ const Materials = () => {
   const closePopup = () => {
     setShowPopup(false);
   };
-  const handleCreateMaterial = () => {
-    sendAuthRequest(requestMethods.POST, "classes/material", materialData).then(
-      (response) => {
-        if (response.status === 201) {
-          toast.success(response.data.message);
-          fetchClasses();
-          closePopup();
-        }
-      }
+  const handleCreateMaterial = async () => {
+    const response = await sendAuthRequest(
+      requestMethods.POST,
+      "classes/material",
+      materialData
     );
+    if (response.status === 201) {
+      toast.success(response.data.message);
+      closePopup();
+      await fetchAndLoadClasses();
+    }
   };
   return (
     <div className="page d-flex">
