@@ -25,4 +25,8 @@ class CategoryController extends Controller
         $user->categories()->sync($validated['categories']);
         return response()->json(['success' => 'success']);
     }
+    public function sendText()
+    {
+        return "Hello World";
+    }
 }

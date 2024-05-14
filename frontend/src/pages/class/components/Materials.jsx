@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../../../styles/utilities.css";
 import { useParams } from "react-router-dom";
 import "../../../styles/index.css";
@@ -8,15 +8,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchClasses } from "../../../core/data/remote";
 import { loadClasses } from "../../../redux/boarderSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlug, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Material from "./Material";
 import { BeatLoader } from "react-spinners";
 import PopUp from "../../components/PopUp";
+import sendAuthRequest from "../../../core/tools/authRequest";
+import { requestMethods } from "../../../core/requests/requestMethods";
+import { toast } from "react-toastify";
 const Materials = () => {
   const dispatch = useDispatch();
   const [showPopup, setShowPopup] = useState(false);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
+  const [materialData, setMaterialData] = useState({
+    class_id: parseInt(id),
+    name: "",
+  });
   const classes = useSelector((state) => state.classes?.classes);
   useEffect(() => {
     const fetchAndLoadClasses = async () => {
@@ -34,7 +41,17 @@ const Materials = () => {
   const closePopup = () => {
     setShowPopup(false);
   };
-  const handleCreateMaterial = () => {};
+  const handleCreateMaterial = () => {
+    sendAuthRequest(requestMethods.POST, "classes/material", materialData).then(
+      (response) => {
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          fetchClasses();
+          closePopup();
+        }
+      }
+    );
+  };
   return (
     <div className="page d-flex">
       <SideBar />
@@ -84,7 +101,17 @@ const Materials = () => {
         >
           <div>
             <label htmlFor="name">Name</label>
-            <input type="text" id="name" name="name" />
+            <input
+              type="text"
+              onChange={(e) => {
+                setMaterialData({
+                  ...materialData,
+                  name: e.target.value,
+                });
+              }}
+              id="name"
+              name="name"
+            />
           </div>
         </PopUp>
       )}
