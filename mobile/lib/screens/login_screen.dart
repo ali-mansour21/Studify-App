@@ -5,6 +5,7 @@ import 'package:mobile/widgets/auth_layout.dart';
 import 'package:mobile/widgets/customtextformfield.dart';
 import 'package:mobile/widgets/mainbutton.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -24,15 +25,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final result = await _apiService.login(email, password);
-
-      String jwtToken = result['authorization']['token'];
-      String name = result['user']['name'];
-      Provider.of<UserData>(context, listen: false).setUserData(name, jwtToken);
-      Navigator.of(context).pushReplacementNamed('/home');
+      if (result != null) {
+        String jwtToken = result['authorization']['token'];
+        String name = result['user']['name'];
+        Provider.of<UserData>(context, listen: false)
+            .setUserData(name, jwtToken);
+        Navigator.of(context).pushReplacementNamed('/home');
+      }
     } catch (error) {
-      print('The returned error is: $error');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Registration Error: $error')));
+         Fluttertoast.showToast(
+          msg: "Failed to login, please try again",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 
