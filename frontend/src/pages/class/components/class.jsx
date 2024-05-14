@@ -6,10 +6,15 @@ import { useNavigate } from "react-router-dom";
 const ClassData = ({ data, inviteStudent }) => {
   const navigate = useNavigate();
   const handleCardClick = (id) => {
-    navigate.push(`/materials/${id}`);
+    navigate(`/materials/${id}`);
   };
   return (
-    <div className="class  bg-white rad-6 p-relative">
+    <div
+      onClick={(e) => {
+        handleCardClick(data.id);
+      }}
+      className="class  bg-white rad-6 p-relative"
+    >
       <img
         className="cover"
         srcSet={`${IMAGE_URL}${data?.class_image}`}

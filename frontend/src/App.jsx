@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { generateToken } from "../src/firebase.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Materials from "./pages/class/components/Materials.jsx";
 function App() {
   useEffect(() => {
     generateToken();
@@ -21,6 +22,7 @@ function App() {
           <Route path="/register" element={<SignUp />} />
           <Route path="/home" element={<Home />} />
           <Route path="/classes" element={<ClassHome />} />
+          <Route path="/materials/:id" element={<Materials />} />
         </Routes>
       </Router>
     </>
