@@ -10,6 +10,7 @@ use App\Models\StudentNote;
 use App\Models\StudyClass;
 use App\Notifications\AccountActivated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 
 class HomeController extends Controller
@@ -62,14 +63,25 @@ class HomeController extends Controller
             'material_title' => ['required_without:material_id', 'string', 'min:3', 'max:255'],
             'category_id' => ['required_without:material_id', 'integer', 'exists:categories,id'],
             'topic_title' => ['required', 'string', 'min:3', 'max:255'],
-            'topic_description' => ['required', 'string', 'min:3']
+            'text_image' => ['required', 'image']
         ]);
+
+        // Send image to Flask server
+        $imagePath = $request->file('text_image')->path();
+        $flaskResponse = Http::attach('image', file_get_contents($imagePath), 'text_image.jpg')
+        ->post('http://127.0.0.1:5000/extract-text');
+
+        if ($flaskResponse->failed()) {
+            return response()->json(['status' => 'error', 'message' => 'Image processing failed'], 500);
+        }
+
+        $extractedText = $flaskResponse->json()['extracted_text'];
 
         if (isset($data['material_id'])) {
             $material = StudentNote::findOrFail($data['material_id']);
             $topic = new NoteDescription([
                 'title' => $data['topic_title'],
-                'content' => $data['topic_description']
+                'content' => $extractedText
             ]);
             $material->noteDescriptions()->save($topic);
             $message = 'Topic added to existing material successfully.';
@@ -83,7 +95,7 @@ class HomeController extends Controller
 
             $topic = new NoteDescription([
                 'title' => $data['topic_title'],
-                'content' => $data['topic_description']
+                'content' => $extractedText
             ]);
             $material->noteDescriptions()->save($topic);
             $message = 'New material and topic created successfully.';
