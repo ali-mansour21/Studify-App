@@ -278,23 +278,33 @@ a {
   margin-top: 30px;
   gap: 10px;
   flex-direction: column;
+  transition: all 0.2s ease-out;
 }
 .unit-card {
   display: flex;
-  align-items: center;
   width: 500px;
+  flex-direction: column;
   padding: 10px;
   background-color: rgb(211, 211, 211, 0.5);
   border-radius: 10px;
+  margin: 10px 0;
   cursor: pointer;
+  transition: height 0.3s ease;
+  overflow: hidden;
+}
+
+.unit-header {
+  display: flex;
+  align-items: center;
 }
 
 .unit-icon {
   margin-right: 10px;
 }
-.unit-icon svg {
-  width: 30px;
-  height: 30px;
+
+.unit-icon img {
+  width: 24px;
+  height: 24px;
 }
 
 .unit-content {
@@ -313,11 +323,17 @@ a {
 .expand-button {
   background: none;
   border: none;
-  color: black;
   font-size: 16px;
   cursor: pointer;
 }
 
 .expand-button:hover {
-  color: var(--blue-color);
+  color: #000;
+}
+
+.unit-body {
+  transition: all 0.5s ease-in;
+  padding: 10px;
+  height: 200px;
+  margin-top: 10px;
 }
