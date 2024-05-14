@@ -6,6 +6,7 @@ import 'package:mobile/widgets/customtextformfield.dart';
 import 'package:mobile/widgets/mainbutton.dart';
 import 'package:mobile/services/auth_api_service.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -30,13 +31,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
     try {
       final result =
           await _apiService.register(name, email, password, firebaseAccess);
-      String jwtToken = result['authorization']['token'];
-      Provider.of<UserData>(context, listen: false).setUserData(name, jwtToken);
-      Navigator.of(context).pushReplacementNamed('/category');
+      if (result != null) {
+        String jwtToken = result['authorization']['token'];
+        Provider.of<UserData>(context, listen: false)
+            .setUserData(name, jwtToken);
+        Navigator.of(context).pushReplacementNamed('/category');
+      }
     } catch (error) {
-      print('The returned error is: $error');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Registration Error: $error')));
+      Fluttertoast.showToast(
+          msg: "Failed to create new account",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 

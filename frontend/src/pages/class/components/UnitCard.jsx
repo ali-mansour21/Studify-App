@@ -33,7 +33,6 @@ const UnitCard = ({ data }) => {
       {isExpanded && (
         <div className="unit-body">
           <p>{data?.content}</p>
-          <p>{data?.attachment}</p>
         </div>
       )}
     </div>
