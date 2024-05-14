@@ -76,13 +76,13 @@ class _CameraScreenState extends State<CameraScreen> {
 
       await imgFile.writeAsBytes(img.encodeJpg(bwImage));
 
-      _showCaptureOptions();
+      _showCaptureOptions(imgFile);
     } catch (e) {
       print(e);
     }
   }
 
-Future<void> _addNewMaterial(io.File imgFile, String materialTitle,
+  Future<void> _addNewMaterial(io.File imgFile, String materialTitle,
       int categoryId, String topicTitle) async {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
 
@@ -131,7 +131,7 @@ Future<void> _addNewMaterial(io.File imgFile, String materialTitle,
     }
   }
 
-Future<void> _addToExistingMaterial(
+  Future<void> _addToExistingMaterial(
       io.File imgFile, int materialId, String topicTitle) async {
     String token = Provider.of<UserData>(context, listen: false).jwtToken;
 
@@ -178,7 +178,8 @@ Future<void> _addToExistingMaterial(
       );
     }
   }
-void _showCaptureOptions(io.File imgFile) {
+
+  void _showCaptureOptions(io.File imgFile) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -208,6 +209,8 @@ void _showCaptureOptions(io.File imgFile) {
   }
 
   void _showNewMaterialForm(io.File imgFile) {
+    TextEditingController materialController = TextEditingController();
+    TextEditingController topicController = TextEditingController();
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -219,10 +222,11 @@ void _showCaptureOptions(io.File imgFile) {
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  const SizedBox(
+                  SizedBox(
                     height: 40,
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: materialController,
+                      decoration: const InputDecoration(
                         labelText: 'Material Name',
                         border: OutlineInputBorder(),
                       ),
@@ -253,10 +257,11 @@ void _showCaptureOptions(io.File imgFile) {
                     ),
                   ),
                   const SizedBox(height: 15),
-                  const SizedBox(
+                  SizedBox(
                     height: 40,
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: topicController,
+                      decoration: const InputDecoration(
                         labelText: 'Topic Title',
                         border: OutlineInputBorder(),
                       ),
@@ -278,8 +283,17 @@ void _showCaptureOptions(io.File imgFile) {
               TextButton(
                 child: const Text('Save',
                     style: TextStyle(color: Color(0xFF3786A8))),
-                onPressed: () {
-                  // Implement the save functionality here
+                onPressed: () async {
+                  if (materialController.text.isNotEmpty &&
+                      _selectedCategoryId != null &&
+                      topicController.text.isNotEmpty) {
+                    await _addNewMaterial(
+                      imgFile,
+                      materialController.text,
+                      _selectedCategoryId!,
+                      topicController.text,
+                    );
+                  }
                   Navigator.of(context).pop();
                 },
               ),
@@ -288,7 +302,7 @@ void _showCaptureOptions(io.File imgFile) {
         });
   }
 
-  void _showExistingMaterialForm(File imageFile) {
+  void _showExistingMaterialForm(io.File imageFile) {
     var provider = Provider.of<MaterialsProvider>(context, listen: false);
     List<MaterialItem> materials = provider.studentMaterials;
     int? selectedMaterialId;
@@ -360,7 +374,7 @@ void _showCaptureOptions(io.File imgFile) {
                 'Save',
                 style: TextStyle(color: Color(0xFF3786A8)),
               ),
-           onPressed: () async {
+              onPressed: () async {
                 if (selectedMaterialId != null &&
                     topicController.text.isNotEmpty) {
                   await _addToExistingMaterial(
