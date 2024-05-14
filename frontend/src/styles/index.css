@@ -195,6 +195,12 @@ a {
 }
 .classes-page .class {
   overflow: hidden;
+  transition: all 0.1s ease-out;
+}
+.classes-page .class:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  scale: 1.01;
 }
 .classes-page .class .cover {
   max-width: 100%;

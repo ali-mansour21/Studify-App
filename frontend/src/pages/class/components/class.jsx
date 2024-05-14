@@ -2,8 +2,12 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { IMAGE_URL } from "../../../../utilities/config";
-
+import { useNavigate } from "react-router-dom";
 const ClassData = ({ data, inviteStudent }) => {
+  const navigate = useNavigate();
+  const handleCardClick = (id) => {
+    navigate.push(`/materials/${id}`);
+  };
   return (
     <div className="class  bg-white rad-6 p-relative">
       <img
