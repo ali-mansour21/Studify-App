@@ -11,7 +11,7 @@ import { loadClasses } from "../../../redux/boarderSlice";
 import { BeatLoader } from "react-spinners";
 import UnitCard from "./UnitCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faRobot } from "@fortawesome/free-solid-svg-icons";
 import PopUp from "../../components/PopUp";
 import sendAuthRequest from "../../../core/tools/authRequest";
 import { requestMethods } from "../../../core/requests/requestMethods";
@@ -21,6 +21,9 @@ const Unit = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [showPopup, setShowPopup] = useState(false);
+  const [showQAPopUp, setShowQAPopUp] = useState(false);
+  const [showAssignmentGradingPopUp, setAssignmentGradingPopUp] =
+    useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("topics");
   const [moduleData, setModuleData] = useState({
@@ -29,6 +32,9 @@ const Unit = () => {
     content: "",
     attachment: null,
     type: 0,
+  });
+  const [documentFile,setDocumentFile] = useState({
+    
   });
   const classes = useSelector((state) => state.classes?.classes);
   const fetchAndLoadClasses = async () => {
@@ -39,7 +45,20 @@ const Unit = () => {
   useEffect(() => {
     fetchAndLoadClasses();
   }, [dispatch]);
-
+  const openAiPopUp = () => {
+    if (activeTab === "topics") {
+      setShowQAPopUp(true);
+    } else {
+      setAssignmentGradingPopUp(true);
+    }
+  };
+  const closeAiPopUp = () => {
+    if (activeTab === "topics") {
+      setShowQAPopUp(false);
+    } else {
+      setAssignmentGradingPopUp(false);
+    }
+  };
   const findMaterialInClasses = (classes, materialId) => {
     for (const classItem of classes) {
       const foundMaterial = classItem.materials.find(
@@ -79,6 +98,7 @@ const Unit = () => {
         toast.error("Failed to create new module");
       });
   };
+  const handleUploadQAFile = () => {};
   const material = findMaterialInClasses(classes, parseInt(id));
   return (
     <div className="page p-relative d-flex">
@@ -138,8 +158,13 @@ const Unit = () => {
           </>
         )}
         <div className="assignment-correction">
-          <button>
-            <FontAwesomeIcon icon={faPlus} />
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              openAiPopUp();
+            }}
+          >
+            <FontAwesomeIcon icon={faRobot} />
           </button>
         </div>
       </div>
@@ -210,6 +235,23 @@ const Unit = () => {
               <option value="0">Topic</option>
               <option value="1">Assignment</option>
             </select>
+          </div>
+        </PopUp>
+      )}
+      {showQAPopUp && (
+        <PopUp
+          formTitle={"AI Q&A File Upload"}
+          buttonText={"Upload"}
+          isOpen={showQAPopUp}
+          closePopUp={closeAiPopUp}
+          handleSubmit={(e) => {
+            e.preventDefault();
+            handleUploadQAFile();
+          }}
+        >
+          <div>
+            <label htmlFor="document">Q&A Document</label>
+            <input type="file" id="document" name="document" />
           </div>
         </PopUp>
       )}
