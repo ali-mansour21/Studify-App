@@ -1,4 +1,3 @@
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/models/categories/category_model.dart';
@@ -92,7 +91,8 @@ class _CameraScreenState extends State<CameraScreen> {
         ..fields['material_title'] = materialTitle
         ..fields['category_id'] = categoryId.toString()
         ..fields['topic_title'] = topicTitle
-        ..files.add(await http.MultipartFile.fromPath('text_image', imgFile.path));
+        ..files
+            .add(await http.MultipartFile.fromPath('text_image', imgFile.path));
 
       final response = await request.send();
 
@@ -140,7 +140,8 @@ class _CameraScreenState extends State<CameraScreen> {
         ..headers['Authorization'] = 'Bearer $token'
         ..fields['material_id'] = materialId.toString()
         ..fields['topic_title'] = topicTitle
-        ..files.add(await http.MultipartFile.fromPath('text_image', imgFile.path));
+        ..files
+            .add(await http.MultipartFile.fromPath('text_image', imgFile.path));
 
       final response = await request.send();
 

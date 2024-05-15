@@ -20,105 +20,125 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
   final ClassOperations _apiService = ClassOperations();
   final TextEditingController classCodeController = TextEditingController();
   int _selectedIndex = 0;
+  bool _isLoading = false;
   void _showJoinClassDialog() {
     showDialog(
       context: context,
+      barrierDismissible: !_isLoading,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Join Class", style: TextStyle(fontSize: 18)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                child: const Text(
-                  "Enter Class Code",
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
-              ),
-              const SizedBox(height: 5),
-              SizedBox(
-                width: 300,
-                height: 45,
-                child: TextField(
-                  controller: classCodeController,
-                  decoration: InputDecoration(
-                    labelText: 'Class Code',
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 10,
+          content: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        "Enter Class Code",
+                        style: TextStyle(fontWeight: FontWeight.w600),
                       ),
-                      borderRadius: BorderRadius.circular(10),
                     ),
-                  ),
+                    const SizedBox(height: 5),
+                    SizedBox(
+                      width: 300,
+                      height: 45,
+                      child: TextField(
+                        controller: classCodeController,
+                        decoration: InputDecoration(
+                          labelText: 'Class Code',
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              width: 10,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 45,
+                      child: MainButton(
+                        buttonColor: const Color(0xFF3786A8),
+                        buttonText: "Submit",
+                        onPressed: () async {
+                          final classCode = classCodeController.text;
+                          if (classCode.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: "Please enter class code",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            setState(() {
+                              _isLoading = false;
+                            });
+                            return;
+                          }
+                          Map<String, String> result = await _apiService
+                              .enrollWithClassCode(context, classCode);
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          if (result['status'] == 'success') {
+                            setState(() {
+                              widget.isInClass = true;
+                            });
+                          }
+                          Navigator.pop(context);
+                          Fluttertoast.showToast(
+                              msg: result['message'] ?? 'Failed to join class',
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.TOP,
+                              timeInSecForIosWeb: 5,
+                              backgroundColor: const Color(0xFF3786A8),
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        },
+                      ),
+                    ),
+                    const Divider(height: 30, thickness: 2),
+                    Center(
+                      child: Column(children: [
+                        const Text("Don't have a code?",
+                            style: TextStyle(fontSize: 16)),
+                        TextButton(
+                          child: const Text('Request to join',
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline)),
+                          onPressed: () async {
+                            Navigator.pop(context);
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            Map<String, String> result =
+                                await _apiService.requestJoinClass(
+                                    context, widget.classDetail.id);
+                            Fluttertoast.showToast(
+                                msg:
+                                    result['message'] ?? 'Failed to join class',
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 5,
+                                backgroundColor: const Color(0xFF3786A8),
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            setState(() {
+                              _isLoading = false;
+                            });
+                            return;
+                          },
+                        )
+                      ]),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                height: 45,
-                child: MainButton(
-                  buttonColor: const Color(0xFF3786A8),
-                  buttonText: "Submit",
-                  onPressed: () async {
-                    final classCode = classCodeController.text;
-                    if (classCode.isEmpty) {
-                      Fluttertoast.showToast(
-                          msg: "Please enter class code",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 5,
-                          backgroundColor: const Color(0xFF3786A8),
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                      return;
-                    }
-                    Map<String, String> result = await _apiService
-                        .enrollWithClassCode(context, classCode);
-                    if (result['status'] == 'success') {
-                      setState(() {
-                        widget.isInClass = true;
-                      });
-                    }
-                    Navigator.pop(context);
-                    Fluttertoast.showToast(
-                        msg: result['message'] ?? 'Failed to join class',
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 5,
-                        backgroundColor: const Color(0xFF3786A8),
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                  },
-                ),
-              ),
-              const Divider(height: 30, thickness: 2),
-              Center(
-                child: Column(children: [
-                  const Text("Don't have a code?",
-                      style: TextStyle(fontSize: 16)),
-                  TextButton(
-                    child: const Text('Request to join',
-                        style: TextStyle(decoration: TextDecoration.underline)),
-                    onPressed: () async {
-                      Map<String, String> result = await _apiService
-                          .requestJoinClass(context, widget.classDetail.id);
-                      Navigator.pop(context);
-                      Fluttertoast.showToast(
-                          msg: result['message'] ?? 'Failed to join class',
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 5,
-                          backgroundColor: const Color(0xFF3786A8),
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    },
-                  )
-                ]),
-              ),
-            ],
-          ),
         );
       },
     );
@@ -132,49 +152,60 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
     ];
 
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, size: 24),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Text(widget.classDetail.title),
-          actions: [
-            if (!widget.isInClass)
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: TextButton(
-                  onPressed: _showJoinClassDialog,
-                  style: TextButton.styleFrom(
-                    backgroundColor: const Color(0xFF3786A8),
-                  ),
-                  child: const Text(
-                    'Join',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              )
-          ],
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, size: 24),
+          onPressed: () => Navigator.pop(context),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              const SizedBox(height: 30),
-              SegmentedControl(
-                labels: const ['Material', 'People'],
-                onSegmentChosen: (int index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
-                width: 105,
-                height: 35,
-                groupValue: _selectedIndex,
+        title: Text(widget.classDetail.title),
+        actions: [
+          if (!widget.isInClass)
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: TextButton(
+                onPressed: _showJoinClassDialog,
+                style: TextButton.styleFrom(
+                  backgroundColor: const Color(0xFF3786A8),
+                ),
+                child: const Text(
+                  'Join',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              Expanded(child: content[_selectedIndex]),
-            ],
+            )
+        ],
+      ),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+                SegmentedControl(
+                  labels: const ['Material', 'People'],
+                  onSegmentChosen: (int index) {
+                    setState(() {
+                      _selectedIndex = index;
+                    });
+                  },
+                  width: 105,
+                  height: 35,
+                  groupValue: _selectedIndex,
+                ),
+                Expanded(child: content[_selectedIndex]),
+              ],
+            ),
           ),
-        ));
+          if (_isLoading)
+            const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFF3786A8),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 
   Widget _buildMaterialList(List<model.Material> materials) {
