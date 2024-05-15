@@ -8,8 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Assignment;
 use App\Models\Material;
 use App\Models\Topic;
+use finfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -33,7 +35,7 @@ class MaterialController extends Controller
             'material_id' => ['required', 'integer', Rule::exists('materials', 'id')],
             'title' => ['required', 'string', 'min:3', 'max:30'],
             'content' => ['required', 'string', 'min:10'],
-            'attachment' => ['file', 'mimes:pdf,doc,docx'],
+            'attachment' => ['nullable', 'string'],
             'type' => ['required', 'integer']
         ]);
 
@@ -43,13 +45,30 @@ class MaterialController extends Controller
 
         $data = $validator->validated();
 
-        if ($request->hasFile('attachment')) {
-            $file = $request->file('attachment');
-            $filename = $this->generateFileName($file);
-            $path = $file->storeAs('class_attachments', $filename, 'public');
+        $path = null;
+        if (isset($data['attachment'])) {
+            $fileData = base64_decode($data['attachment']);
 
-        } else {
-            $path = null;
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($fileData);
+            $extension = '';
+            switch ($mimeType) {
+                case 'application/pdf':
+                    $extension = 'pdf';
+                    break;
+                case 'application/msword':
+                    $extension = 'doc';
+                    break;
+                case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                    $extension = 'docx';
+                    break;
+                default:
+                    return response()->json(['status' => 'error', 'message' => 'Invalid file type']);
+            }
+
+            $filename = 'attachment_' . uniqid() . '.' . $extension;
+
+            $path = Storage::disk('public')->put("class_attachments/{$filename}", $fileData);
         }
 
         if (intval($data['type']) == 0) {
@@ -60,7 +79,7 @@ class MaterialController extends Controller
             $topic->attachment = $path;
             $topic->save();
             event(new TopicCreated($topic));
-            return response()->json(['status' => 'sucess', 'message' => 'Topic created successfully'], 200);
+            return response()->json(['status' => 'success', 'message' => 'Topic created successfully'], 200);
         } elseif (intval($data['type']) == 1) {
             $assignment = new Assignment();
             $assignment->title = $data['title'];
