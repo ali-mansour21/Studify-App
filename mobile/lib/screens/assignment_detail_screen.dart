@@ -81,7 +81,6 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
           Provider.of<AssignmentsModel>(context, listen: false)
               .getAssignmentModel(widget.assignment.id)
               .submitAssignment(widget.assignment.id, feedback);
-
           setState(() {
             _response = '\n\nFeedback:\n$feedback';
           });
@@ -128,106 +127,113 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
-        return Container(
-          width: double.infinity,
-          height: 600,
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text("Upload Your Work",
-                  style: Theme.of(context).textTheme.titleLarge),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: assignmentModel.isSubmitted
-                          ? Colors.grey
-                          : const Color(0xFF3786A8),
-                    ),
-                    icon: const Icon(Icons.file_upload, color: Colors.white),
-                    label: Text(
-                      assignmentModel.isSubmitted
-                          ? "File Submitted"
-                          : (_fileName.isEmpty ? "Select File" : "Change File"),
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    onPressed: assignmentModel.isSubmitted
-                        ? null
-                        : () async {
-                            FilePickerResult? result =
-                                await FilePicker.platform.pickFiles();
-                            if (result != null) {
-                              PlatformFile file = result.files.first;
-                              setState(() {
-                                _fileName = file.name;
-                                _selectedFile = file;
-                              });
-                              print(_selectedFile);
-                            } else {
-                              print("No file selected");
-                            }
-                          },
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return Container(
+              width: double.infinity,
+              height: 600,
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("Upload Your Work",
+                      style: Theme.of(context).textTheme.titleLarge),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: assignmentModel.isSubmitted
+                              ? Colors.grey
+                              : const Color(0xFF3786A8),
+                        ),
+                        icon:
+                            const Icon(Icons.file_upload, color: Colors.white),
+                        label: Text(
+                          assignmentModel.isSubmitted
+                              ? "File Submitted"
+                              : (_fileName.isEmpty
+                                  ? "Select File"
+                                  : "Change File"),
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        onPressed: assignmentModel.isSubmitted
+                            ? null
+                            : () async {
+                                FilePickerResult? result =
+                                    await FilePicker.platform.pickFiles();
+                                if (result != null) {
+                                  PlatformFile file = result.files.first;
+                                  setState(() {
+                                    _fileName = file.name;
+                                    _selectedFile = file;
+                                  });
+                                  print(_selectedFile);
+                                } else {
+                                  print("No file selected");
+                                }
+                              },
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          _fileName,
+                          style: const TextStyle(
+                              color: Colors.black54, fontSize: 16),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      _fileName,
-                      style:
-                          const TextStyle(color: Colors.black54, fontSize: 16),
-                      overflow: TextOverflow.ellipsis,
+                  const SizedBox(height: 20),
+                  if (_isLoading)
+                    const Expanded(
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                  else
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Text(
+                          assignmentModel.feedback.isNotEmpty
+                              ? assignmentModel.feedback
+                              : "",
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.center,
+                    child: ElevatedButton(
+                      onPressed: assignmentModel.isSubmitted
+                          ? null
+                          : () async {
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              await _uploadFile(context);
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(50),
+                        backgroundColor: assignmentModel.isSubmitted
+                            ? Colors.grey
+                            : const Color(0xFF3786A8),
+                      ),
+                      child: const Text(
+                        "Submit",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              if (_isLoading)
-                const Expanded(
-                  child: Center(child: CircularProgressIndicator()),
-                )
-              else
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Text(
-                      assignmentModel.feedback.isNotEmpty
-                          ? assignmentModel.feedback
-                          : "",
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ),
-              const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  onPressed: assignmentModel.isSubmitted
-                      ? null
-                      : () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          await _uploadFile(context);
-                          setState(() {
-                            _isLoading = false;
-                          });
-                        },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                    backgroundColor: assignmentModel.isSubmitted
-                        ? Colors.grey
-                        : const Color(0xFF3786A8),
-                  ),
-                  child: const Text(
-                    "Submit",
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
