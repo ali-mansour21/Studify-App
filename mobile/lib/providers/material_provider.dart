@@ -15,7 +15,7 @@ class MaterialsProvider with ChangeNotifier {
   List<MaterialItem> get studentMaterials => _studentMaterials;
   bool get isLoading => _isLoading;
 
-  void fetchMaterials(BuildContext context) async {
+  Future<void> fetchMaterials(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
     try {
@@ -27,6 +27,7 @@ class MaterialsProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
   void loadMaterials(BuildContext context) async {
     notifyListeners();
     try {
