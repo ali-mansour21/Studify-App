@@ -81,7 +81,7 @@ const Unit = () => {
   };
   const material = findMaterialInClasses(classes, parseInt(id));
   return (
-    <div className="page d-flex">
+    <div className="page p-relative d-flex">
       <SideBar />
       <div className="content w-full">
         <Header />
@@ -137,6 +137,11 @@ const Unit = () => {
             </div>
           </>
         )}
+        <div className="assignment-correction">
+          <button>
+            <FontAwesomeIcon icon={faPlus} />
+          </button>
+        </div>
       </div>
       {showPopup && (
         <PopUp

@@ -329,8 +329,19 @@ a {
   align-items: center;
   margin-top: 30px;
   gap: 20px;
+  position: relative;
   flex-direction: column;
   transition: all 0.2s ease-out;
+}
+.assignment-correction {
+  position: absolute;
+  bottom: 20%;
+  right: 20%;
+}
+.assignment-correction button {
+  background-color: var(--blue-color);
+  padding: 15px 25px;
+  border-radius: 10px;
 }
 .unit-wrapper .actions {
   margin-bottom: 10px;
