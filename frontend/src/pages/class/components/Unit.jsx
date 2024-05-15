@@ -42,14 +42,17 @@ const Unit = () => {
     assignment_id: 0,
   });
   const classes = useSelector((state) => state.classes?.classes);
+
   const fetchAndLoadClasses = async () => {
     const classData = await fetchClasses();
     dispatch(loadClasses(classData));
     setLoading(false);
   };
+
   useEffect(() => {
     fetchAndLoadClasses();
   }, [dispatch]);
+
   const openAiPopUp = () => {
     if (activeTab === "topics") {
       setShowQAPopUp(true);
@@ -57,6 +60,7 @@ const Unit = () => {
       setAssignmentGradingPopUp(true);
     }
   };
+
   const closeAiPopUp = () => {
     if (activeTab === "topics") {
       setShowQAPopUp(false);
@@ -64,6 +68,7 @@ const Unit = () => {
       setAssignmentGradingPopUp(false);
     }
   };
+
   const findMaterialInClasses = (classes, materialId) => {
     for (const classItem of classes) {
       const foundMaterial = classItem.materials.find(
@@ -75,12 +80,15 @@ const Unit = () => {
     }
     return null;
   };
+
   const openPopup = () => {
     setShowPopup(true);
   };
+
   const closePopup = () => {
     setShowPopup(false);
   };
+
   const handleCreateModule = () => {
     const formData = new FormData();
     formData.append("material_id", moduleData.material_id);
@@ -90,6 +98,7 @@ const Unit = () => {
       formData.append("attachment", moduleData.attachment);
     }
     formData.append("type", moduleData.type);
+    console.log(formData);
     sendAuthRequest(requestMethods.POST, "classes/material/addUnit", formData)
       .then((response) => {
         if (response.status === 200) {
@@ -103,23 +112,54 @@ const Unit = () => {
         toast.error("Failed to create new module");
       });
   };
+
   const handleUploadQAFile = () => {
-    const formData = new FormData();
-    formData.append("faq_file", documentFile.faq_file);
-    formData.append("material_id", documentFile.material_id);
-    sendAuthRequest(requestMethods.POST, "faq_file", formData).then(
-      (response) => {
-        if (response.status === 200) {
-          toast.success(response.data.message);
-          closeAiPopUp();
-        } else {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const base64File = reader.result.split(",")[1]; // Remove the data URL part
+
+      const payload = {
+        faq_file: base64File,
+        material_id: documentFile.material_id,
+      };
+
+      // Log payload to verify its contents
+      console.log("Payload:", payload);
+
+      sendAuthRequest(requestMethods.POST, "faq_file", payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            toast.success(response.data.message);
+            closeAiPopUp();
+          } else {
+            toast.error("Failed to upload file");
+          }
+        })
+        .catch((error) => {
+          console.error("Error uploading file:", error);
           toast.error("Failed to upload file");
-        }
-      }
-    );
+        });
+    };
+
+    reader.onerror = (error) => {
+      console.error("Error reading file:", error);
+      toast.error("Failed to read file");
+    };
+
+    reader.readAsDataURL(documentFile.faq_file); // Start reading the file as Data URL
   };
-  const handleUploadCorrectionFile = () => {};
+
+  const handleUploadCorrectionFile = () => {
+    // Implement the file upload logic here
+  };
+
   const material = findMaterialInClasses(classes, parseInt(id));
+
   return (
     <div className="page p-relative d-flex">
       <SideBar />
