@@ -100,20 +100,40 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
-              if (_isLoading) // Overlay and spinner
+              if (_isLoading)
                 Positioned(
-                  top: 30, // Position adjustment to cover the fields
+                  top: -10,
                   left: 0,
                   right: 0,
-                  child: Column(
-                    children: <Widget>[
-                      const CircularProgressIndicator(
-                        color: Color(0xFF3786A8),
-                      ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height *
-                              0.05), // Space under spinner
-                    ],
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Color(0xFF3786A8)),
+                        ),
+                        SizedBox(
+                            height:
+                                20), // Adjust spacing based on design preference
+                      ],
+                    ),
                   ),
                 ),
             ],
