@@ -45,7 +45,8 @@ class ClassRequestController extends Controller
         ]);
         $class = StudyClass::findOrFail($data['class_id']);
         $class_code = $class->class_code;
-        Mail::to($data['student_email'])->send(new InviteStudentMail($class_code));
+        $class_name = $class->name;
+        Mail::to($data['student_email'])->send(new InviteStudentMail($class_code,$class_name));
         return response()->json(['status' => 'success', 'message' => 'Invitation sent successfully'], 201);
     }
     public function requestJoin(Request $request)

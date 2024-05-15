@@ -69,6 +69,7 @@ const SignUp = () => {
           <div>
             <input
               type="text"
+              className="textData"
               onChange={(e) => {
                 setUserData({ ...userData, name: e.target.value });
               }}
@@ -89,7 +90,7 @@ const SignUp = () => {
             <FontAwesomeIcon icon={faEnvelope} className="input-icon" />
           </div>
           <div>
-            <input type="file" onChange={(e) => uploadImage(e)} required />
+            <input className="fileData" type="file" onChange={(e) => uploadImage(e)} required />
             <FontAwesomeIcon icon={faImage} className="input-icon" />
           </div>
           <div>

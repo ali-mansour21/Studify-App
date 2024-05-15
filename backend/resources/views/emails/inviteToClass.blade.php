@@ -48,7 +48,7 @@
     <div class="container">
         <h1>You're Invited!</h1>
         <p>Hello!</p>
-        <p>You have been invited to join a class. Please use the following class code to join:</p>
+        <p>You have been invited to join {{ $className }} . Please use the following class code to join:</p>
         <strong>{{ $classCode }}</strong>
         <p>We look forward to having you with us!</p>
         <div class="app-links">

@@ -19,7 +19,9 @@ body {
 .signup-form div {
   position: relative;
 }
-.signup-form input {
+.signup-form input,
+.signup-form .fileData,
+.signup-form .textData {
   width: 250px;
   padding: 10px 10px 10px 40px;
   margin: 10px 0;

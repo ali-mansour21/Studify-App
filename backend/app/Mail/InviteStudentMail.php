@@ -12,6 +12,7 @@ class InviteStudentMail extends Mailable
     use Queueable, SerializesModels;
 
     public $classCode;
+    public $className;
 
     /**
      * Create a new message instance.
@@ -19,6 +20,7 @@ class InviteStudentMail extends Mailable
     public function __construct($classCode)
     {
         $this->classCode = $classCode;
+        $this->className = $classCode;
     }
 
     /**
@@ -31,6 +33,7 @@ class InviteStudentMail extends Mailable
             ->view('emails.inviteToClass')
             ->with([
                 'classCode' => $this->classCode,
+                'className' => $this->className,
             ]);
     }
 }
