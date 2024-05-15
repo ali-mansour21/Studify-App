@@ -110,7 +110,7 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                                     vertical: 8, horizontal: 16),
                                 margin: const EdgeInsets.symmetric(vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: Colors.green,
+                                  color: const Color(0xFF3786A8),
                                   borderRadius: BorderRadius.circular(12),
                                   boxShadow: [
                                     BoxShadow(

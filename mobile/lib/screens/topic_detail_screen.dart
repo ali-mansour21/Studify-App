@@ -169,7 +169,7 @@ class TopicDetailScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: ElevatedButton.icon(
                   icon: const Icon(Icons.file_download),
-                  label: const Text("Download and Optionally View Attachment"),
+                  label: const Text("Download  Attachment"),
                   onPressed: () async {
                     final String filePath = await downloadAndSaveFile(
                         context,

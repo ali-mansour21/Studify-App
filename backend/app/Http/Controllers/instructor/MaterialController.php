@@ -33,7 +33,7 @@ class MaterialController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'material_id' => ['required', 'integer', Rule::exists('materials', 'id')],
-            'title' => ['required', 'string', 'min:3', 'max:30'],
+            'title' => ['required', 'string', 'min:3', 'max:80'],
             'content' => ['required', 'string', 'min:10'],
             'attachment' => ['nullable', 'string'],
             'type' => ['required', 'integer']

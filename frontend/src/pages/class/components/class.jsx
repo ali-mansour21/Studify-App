@@ -9,18 +9,21 @@ const ClassData = ({ data, inviteStudent }) => {
     navigate(`/materials/${id}`);
   };
   return (
-    <div
-      onClick={(e) => {
-        handleCardClick(data.id);
-      }}
-      className="class  bg-white rad-6 p-relative"
-    >
+    <div className="class  bg-white rad-6 p-relative">
       <img
         className="cover"
         srcSet={`${IMAGE_URL}${data?.class_image}`}
         alt=""
+        onClick={(e) => {
+          handleCardClick(data.id);
+        }}
       />
-      <div className="p-20 description-box">
+      <div
+        onClick={(e) => {
+          handleCardClick(data.id);
+        }}
+        className="p-20 description-box"
+      >
         <h4 className="m-0">{data?.name}</h4>
         <p className="description c-gray mt-15 fs-14">{data?.description}</p>
       </div>
