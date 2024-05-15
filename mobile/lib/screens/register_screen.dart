@@ -21,13 +21,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final AuthApiService _apiService = AuthApiService();
   final FirebaseApi _getToken = FirebaseApi();
+  bool _isLoading = false;
 
   void _register() async {
     final name = _nameController.text;
     final email = _emailController.text;
     final password = _passwordController.text;
     String? firebaseAccess = await _getToken.getFcmToken();
-
+    setState(() {
+      _isLoading = true;
+    });
     try {
       final result =
           await _apiService.register(name, email, password, firebaseAccess);
@@ -56,6 +59,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -65,46 +72,83 @@ class _RegisterScreenState extends State<RegisterScreen> {
       imagePath: 'assets/Studify-logo.png',
       title: "Let's Get Started",
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            CustomTextFormField(
-              controller: _nameController,
-              labelText: "Name",
-              iconData: Icons.person,
-            ),
-            CustomTextFormField(
-              controller: _emailController,
-              labelText: "Email",
-              iconData: Icons.email,
-              keyboardType: TextInputType.emailAddress,
-            ),
-            CustomTextFormField(
-              controller: _passwordController,
-              labelText: "Password",
-              iconData: Icons.lock,
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
-            MainButton(
-              buttonColor: const Color(0xFF3786A8),
-              buttonText: "Sign Up",
-              onPressed: _register,
-            ),
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: () {
-                Navigator.pushReplacementNamed(context, '/');
-              },
-              child: const Text(
-                "Have an account? LogIn",
-                style: TextStyle(color: Colors.black),
+          padding: const EdgeInsets.all(16.0),
+          child: Stack(
+            children: <Widget>[
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  CustomTextFormField(
+                    controller: _nameController,
+                    labelText: "Name",
+                    iconData: Icons.person,
+                  ),
+                  CustomTextFormField(
+                    controller: _emailController,
+                    labelText: "Email",
+                    iconData: Icons.email,
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  CustomTextFormField(
+                    controller: _passwordController,
+                    labelText: "Password",
+                    iconData: Icons.lock,
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 20),
+                  MainButton(
+                    buttonColor: const Color(0xFF3786A8),
+                    buttonText: "Sign Up",
+                    onPressed: _register,
+                  ),
+                  const SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, '/');
+                    },
+                    child: const Text(
+                      "Have an account? LogIn",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-      ),
+              if (_isLoading)
+                Positioned(
+                  top: -10,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: const Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Color(0xFF3786A8)),
+                        ),
+                        SizedBox(height: 20),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          )),
     );
   }
 

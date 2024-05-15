@@ -117,11 +117,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Colors.black.withOpacity(0.1),
                           spreadRadius: 1,
                           blurRadius: 10,
-                          offset: Offset(0, 5),
+                          offset: const Offset(0, 5),
                         ),
                       ],
                     ),
-                    child: Column(
+                    child: const Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -129,9 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           valueColor:
                               AlwaysStoppedAnimation<Color>(Color(0xFF3786A8)),
                         ),
-                        SizedBox(
-                            height:
-                                20), // Adjust spacing based on design preference
+                        SizedBox(height: 20),
                       ],
                     ),
                   ),
