@@ -37,6 +37,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
             .setUserData(name, jwtToken);
         Navigator.of(context).pushNamedAndRemoveUntil(
             '/category', (Route<dynamic> route) => false);
+      } else {
+        Fluttertoast.showToast(
+            msg: "Failed to create new account",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
       }
     } catch (error) {
       Fluttertoast.showToast(
