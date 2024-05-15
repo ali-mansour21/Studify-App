@@ -33,8 +33,13 @@ const Unit = () => {
     attachment: null,
     type: 0,
   });
-  const [documentFile,setDocumentFile] = useState({
-    
+  const [documentFile, setDocumentFile] = useState({
+    faq_file: null,
+    material_id: parseInt(id),
+  });
+  const [assignmentParamFile, setAssignmentParamFile] = useState({
+    correction_file: null,
+    assignment_id: 0,
   });
   const classes = useSelector((state) => state.classes?.classes);
   const fetchAndLoadClasses = async () => {
@@ -251,7 +256,63 @@ const Unit = () => {
         >
           <div>
             <label htmlFor="document">Q&A Document</label>
-            <input type="file" id="document" name="document" />
+            <input
+              type="file"
+              onChange={(e) => {
+                setDocumentFile({
+                  ...documentFile,
+                  faq_file: e.target.files[0],
+                });
+              }}
+              id="document"
+              name="document"
+            />
+          </div>
+        </PopUp>
+      )}
+      {showAssignmentGradingPopUp && (
+        <PopUp
+          formTitle={"Assignment Criteria"}
+          buttonText={"Upload"}
+          isOpen={showAssignmentGradingPopUp}
+          closePopUp={closeAiPopUp}
+          handleSubmit={(e) => {
+            e.preventDefault();
+            handleUploadQAFile();
+          }}
+        >
+          <div>
+            <label htmlFor="document">Param Document</label>
+            <input
+              type="file"
+              onChange={(e) => {
+                setAssignmentParamFile({
+                  ...assignmentParamFile,
+                  correction_file: e.target.files[0],
+                });
+              }}
+              id="document"
+              name="document"
+            />
+          </div>
+          <div>
+            <label htmlFor="assignment_id">Select an Assignment</label>
+            <select
+              onChange={(e) => {
+                setAssignmentParamFile({
+                  ...assignmentParamFile,
+                  assignment_id: parseInt(e.target.value),
+                });
+              }}
+              name="assignment_id"
+              id="assignment_id"
+            >
+              {material?.assignments?.map((assignment) => (
+                <option key={assignment.id} value={assignment.id}>
+                  {assignment.title}
+                </option>
+              ))}
+            </select>
           </div>
         </PopUp>
       )}
