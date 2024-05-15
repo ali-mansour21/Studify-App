@@ -31,7 +31,7 @@ class AIResourceController extends Controller
             $materialFile->file_path = $path;
             $materialFile->file_text = $text;
             $materialFile->save();
-            return response()->json(['status' => 'success', 'message' => $text]);
+            return response()->json(['status' => 'success', 'message' => "File saved successfully"]);
         }
         return response()->json(['status' => 'error', 'message' => 'File upload failed']);
     }

@@ -103,7 +103,22 @@ const Unit = () => {
         toast.error("Failed to create new module");
       });
   };
-  const handleUploadQAFile = () => {};
+  const handleUploadQAFile = () => {
+    const formData = new FormData();
+    formData.append("faq_file", documentFile.faq_file);
+    formData.append("material_id", documentFile.material_id);
+    sendAuthRequest(requestMethods.POST, "faq_file", formData).then(
+      (response) => {
+        if (response.status === 200) {
+          toast.success(response.data.message);
+          closeAiPopUp();
+        } else {
+          toast.error("Failed to upload file");
+        }
+      }
+    );
+  };
+  const handleUploadCorrectionFile = () => {};
   const material = findMaterialInClasses(classes, parseInt(id));
   return (
     <div className="page p-relative d-flex">
@@ -278,7 +293,7 @@ const Unit = () => {
           closePopUp={closeAiPopUp}
           handleSubmit={(e) => {
             e.preventDefault();
-            handleUploadQAFile();
+            handleUploadCorrectionFile();
           }}
         >
           <div>
