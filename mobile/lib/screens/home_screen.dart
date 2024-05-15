@@ -27,27 +27,34 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _controller = TextEditingController();
   Timer? _debounce;
   int _selectedIndex = 0;
+  
+  late Future<void> _initialLoad;
 
+  @override
+  void initState() {
+    super.initState();
+    _initialLoad = _fetchInitialData();
+  }
+
+  Future<void> _fetchInitialData() async {
+    final materialsProvider =
+        Provider.of<MaterialsProvider>(context, listen: false);
+    final classProvider =
+        Provider.of<StudyClassProvider>(context, listen: false);
+    final notificationProvider =
+        Provider.of<NotificationProvider>(context, listen: false);
+
+    await Future.wait([
+      materialsProvider.fetchMaterials(context),
+      classProvider.loadClasses(context),
+      notificationProvider.getNotifications(context),
+    ]);
+  }
   @override
   void dispose() {
     _controller.dispose();
     _debounce?.cancel();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<MaterialsProvider>(context, listen: false);
-      provider.fetchMaterials(context);
-      final classProvider =
-          Provider.of<StudyClassProvider>(context, listen: false);
-      classProvider.loadClasses(context);
-      final notificationProvider =
-          Provider.of<NotificationProvider>(context, listen: false);
-      notificationProvider.getNotifications(context);
-    });
   }
 
   void _onSearchChanged(String query) async {
@@ -80,16 +87,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _fetchInitialData() {
-    final materialProvider =
-        Provider.of<MaterialsProvider>(context, listen: false);
-    final classProvider =
-        Provider.of<StudyClassProvider>(context, listen: false);
-
-    materialProvider.loadMaterials(context);
-    classProvider.loadClasses(context);
-  }
-
   void _updateProvidersWithSearchResults(Map<String, dynamic> responseData) {
     final materialProvider =
         Provider.of<MaterialsProvider>(context, listen: false);
@@ -115,6 +112,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _initialLoad,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        } else if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Text('Error: ${snapshot.error}'),
+            ),
+          );
+        }
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
