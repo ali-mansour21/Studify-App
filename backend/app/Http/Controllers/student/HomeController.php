@@ -68,7 +68,7 @@ class HomeController extends Controller
 
         $imagePath = $request->file('text_image')->path();
         $flaskResponse = Http::attach('image', file_get_contents($imagePath), 'text_image.jpg')
-        ->post('http://127.0.0.1:5000/extract-text');
+        ->post('http://127.0.0.1:5000/process_image');
 
         if ($flaskResponse->failed()) {
             return response()->json(['status' => 'error', 'message' => 'Image processing failed'], 500);
