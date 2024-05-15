@@ -90,42 +90,95 @@ const Unit = () => {
   };
 
   const handleCreateModule = () => {
-    const formData = new FormData();
-    formData.append("material_id", moduleData.material_id);
-    formData.append("title", moduleData.title);
-    formData.append("content", moduleData.content);
     if (moduleData.attachment) {
-      formData.append("attachment", moduleData.attachment);
-    }
-    formData.append("type", moduleData.type);
-    console.log(formData);
-    sendAuthRequest(requestMethods.POST, "classes/material/addUnit", formData)
-      .then((response) => {
-        if (response.status === 200) {
-          toast.success(response.data.message);
-          closePopup();
-          fetchAndLoadClasses();
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const base64File = reader.result.split(",")[1];
+
+        const payload = {
+          material_id: moduleData.material_id,
+          title: moduleData.title,
+          content: moduleData.content,
+          attachment: base64File,
+          type: moduleData.type,
+        };
+
+        sendAuthRequest(
+          requestMethods.POST,
+          "classes/material/addUnit",
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+          .then((response) => {
+            if (response.status === 200) {
+              toast.success(response.data.message);
+              closePopup();
+              fetchAndLoadClasses();
+            } else {
+              toast.error("Failed to create new module");
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+            toast.error("Failed to create new module");
+          });
+      };
+
+      reader.onerror = (error) => {
+        console.error("Error reading file:", error);
+        toast.error("Failed to read file");
+      };
+
+      reader.readAsDataURL(moduleData.attachment);
+    } else {
+      const payload = {
+        material_id: moduleData.material_id,
+        title: moduleData.title,
+        content: moduleData.content,
+        type: moduleData.type,
+      };
+
+      sendAuthRequest(
+        requestMethods.POST,
+        "classes/material/addUnit",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      })
-      .catch((e) => {
-        console.log(e);
-        toast.error("Failed to create new module");
-      });
+      )
+        .then((response) => {
+          if (response.status === 200) {
+            toast.success(response.data.message);
+            closePopup();
+            fetchAndLoadClasses();
+          } else {
+            toast.error("Failed to create new module");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          toast.error("Failed to create new module");
+        });
+    }
   };
 
   const handleUploadQAFile = () => {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      const base64File = reader.result.split(",")[1]; // Remove the data URL part
+      const base64File = reader.result.split(",")[1];
 
       const payload = {
         faq_file: base64File,
         material_id: documentFile.material_id,
       };
-
-      // Log payload to verify its contents
-      console.log("Payload:", payload);
 
       sendAuthRequest(requestMethods.POST, "faq_file", payload, {
         headers: {
@@ -140,14 +193,12 @@ const Unit = () => {
             toast.error("Failed to upload file");
           }
         })
-        .catch((error) => {
-          console.error("Error uploading file:", error);
+        .catch(() => {
           toast.error("Failed to upload file");
         });
     };
 
-    reader.onerror = (error) => {
-      console.error("Error reading file:", error);
+    reader.onerror = () => {
       toast.error("Failed to read file");
     };
 
@@ -186,14 +237,12 @@ const Unit = () => {
             toast.error("Failed to upload file");
           }
         })
-        .catch((error) => {
-          console.error("Error uploading file:", error);
+        .catch(() => {
           toast.error("Failed to upload file");
         });
     };
 
-    reader.onerror = (error) => {
-      console.error("Error reading file:", error);
+    reader.onerror = () => {
       toast.error("Failed to read file");
     };
 

@@ -13,7 +13,6 @@ const SideBar = () => {
   const location = useLocation();
   const pathname = location.pathname;
   const routeName = pathname.substring(1);
-  console.log(routeName);
   const handleLogout = () => {
     sendAuthRequest(requestMethods.POST, "instructor_logout").then(
       (response) => {
