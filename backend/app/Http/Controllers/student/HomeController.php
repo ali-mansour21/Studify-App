@@ -9,6 +9,7 @@ use App\Models\Notification;
 use App\Models\StudentNote;
 use App\Models\StudyClass;
 use App\Notifications\AccountActivated;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
@@ -57,6 +58,7 @@ class HomeController extends Controller
 
     public function store(Request $request)
     {
+        set_time_limit(0);
         $student_id = auth()->id();
         $data = $request->validate([
             'material_id' => ['sometimes', 'integer', 'exists:materials,id'],
@@ -65,17 +67,28 @@ class HomeController extends Controller
             'topic_title' => ['required', 'string', 'min:3', 'max:255'],
             'text_image' => ['required', 'image']
         ]);
-
-        $imagePath = $request->file('text_image')->path();
-        $flaskResponse = Http::attach('image', file_get_contents($imagePath), 'text_image.jpg')
-        ->post('http://127.0.0.1:5000/process_image');
-
-        if ($flaskResponse->failed()) {
-            return response()->json(['status' => 'error', 'message' => 'Image processing failed'], 500);
+        if ($request->hasFile('text_image')) {
+            $image = $request->file('text_image');
+            $path = $image->store('notes', 'public');
+            $data['text_image'] = $path;
         }
+        $imageUrl = url('storage/' . $data['text_image']);
+        try {
+            $flaskResponse = Http::withHeader([
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ])->post('http://192.168.0.104:5000/process_image', [
+                'image_url' => $imageUrl
+            ]);
 
-        $extractedText = $flaskResponse->json()['extracted_text'];
-
+            if ($flaskResponse->successful()) {
+                $extractedText = $flaskResponse->json()['text'];
+            } else {
+                return response()->json(['error' => 'Failed to process image on Flask server'], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred while processing the image: ' . $e->getMessage()], 500);
+        }
         if (isset($data['material_id'])) {
             $material = StudentNote::findOrFail($data['material_id']);
             $topic = new NoteDescription([

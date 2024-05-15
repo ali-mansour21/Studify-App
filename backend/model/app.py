@@ -1,10 +1,9 @@
-# Import necessary libraries
 from flask import Flask, request, jsonify
 from PIL import Image, ImageOps
 import io
 import requests
 import numpy as np
-from transformers import TrOCRProcessor, VisionEncoderDecoderModel 
+from transformers import TrOCRProcessor, VisionEncoderDecoderModel
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -15,7 +14,7 @@ model = VisionEncoderDecoderModel.from_pretrained("./local_model/trocr-model")
 
 # Function to predict text from image
 def predict(image):
-    pixel_values = processor(image, return_tensors="pt").pixel_values
+    pixel_values = processor(images=image, return_tensors="pt").pixel_values
     generated_ids = model.generate(pixel_values)
     generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
     return generated_text
@@ -54,15 +53,27 @@ def crop_image(img):
 def has_black_pixels(image):
     grayscale_image = image.convert("L")
     np_image = np.array(grayscale_image)
-    return np.any(np_image < 128)
+    has_black = np.any(np_image < 128)
+    return has_black
 
 # Flask endpoint to process the image
 @app.route('/process_image', methods=['POST'])
 def process_image():
+    data = request.json
+    image_url = data.get('image_url')
+
+    if not image_url:
+        return jsonify({'error': 'No image URL provided'}), 400
+
+    # Download the image from the URL
+    response = requests.get(image_url)
+    if response.status_code != 200:
+        return jsonify({'error': 'Failed to retrieve image'}), 400
+
+    # Load the image into PIL
+    img = Image.open(io.BytesIO(response.content))
+
     text = ""
-    file = request.files['image']
-    img = Image.open(io.BytesIO(file.read()))
-    
     first, second = "", img
     while True:
         first, second = crop_image(second)
@@ -71,8 +82,11 @@ def process_image():
         if has_black_pixels(first):
             text += predict(first)
         else:
-            pass
+            print("No black pixels found in cropped image.")
+            break
 
-    return jsonify({'text': text})
+    return jsonify({'text': text}), 200
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='192.168.0.104', port=5000)
