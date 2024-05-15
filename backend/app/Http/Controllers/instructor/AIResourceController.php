@@ -40,13 +40,11 @@ class AIResourceController extends Controller
                     return response()->json(['status' => 'error', 'message' => 'Invalid file type']);
             }
 
-            // Generate a unique filename
+
             $filename = 'material_' . uniqid() . '.' . $extension;
 
-            // Save the file to the storage
             $path = Storage::disk('public')->put("materialsData/{$filename}", $fileData);
 
-            // Parse the file if it's a PDF
             $text = '';
             if ($extension === 'pdf') {
                 $parser = new Parser();

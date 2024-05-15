@@ -151,11 +151,53 @@ const Unit = () => {
       toast.error("Failed to read file");
     };
 
-    reader.readAsDataURL(documentFile.faq_file); // Start reading the file as Data URL
+    reader.readAsDataURL(documentFile.faq_file);
   };
 
   const handleUploadCorrectionFile = () => {
-    // Implement the file upload logic here
+    if (
+      !assignmentParamFile.correction_file ||
+      !assignmentParamFile.assignment_id
+    ) {
+      toast.error("Please select a file and an assignment.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const base64File = reader.result.split(",")[1];
+
+      const payload = {
+        correction_file: base64File,
+        assignment_id: assignmentParamFile.assignment_id,
+      };
+
+      sendAuthRequest(requestMethods.POST, "correction_file", payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            toast.success(response.data.message);
+            closeAiPopUp();
+          } else {
+            toast.error("Failed to upload file");
+          }
+        })
+        .catch((error) => {
+          console.error("Error uploading file:", error);
+          toast.error("Failed to upload file");
+        });
+    };
+
+    reader.onerror = (error) => {
+      console.error("Error reading file:", error);
+      toast.error("Failed to read file");
+    };
+
+    reader.readAsDataURL(assignmentParamFile.correction_file);
   };
 
   const material = findMaterialInClasses(classes, parseInt(id));
