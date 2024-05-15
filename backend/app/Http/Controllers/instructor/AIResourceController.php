@@ -68,29 +68,56 @@ class AIResourceController extends Controller
     {
         $data = $request->validate([
             'assignment_id' => ['required', 'integer', Rule::exists('assignments', 'id')],
-            'correction_file' => ['required', 'file', 'mimes:pdf,doc,docx'],
+            'correction_file' => ['required', 'string'], // Expect a Base64 encoded string
         ]);
+
         if ($request->has('correction_file')) {
-            $file = $request->file('correction_file');
-            $filename = $this->generateFileName($file);
-            $path = $file->storeAs('assignmentData', $filename, 'public');
-            $parser = new Parser();
-            $pdf = $parser->parseFile($request->correction_file);
-            $text = $pdf->getText();
+            // Decode the Base64 string
+            $fileData = base64_decode($request->input('correction_file'));
+
+            // Determine the file's mime type and extension
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($fileData);
+            $extension = '';
+            switch ($mimeType) {
+                case 'application/pdf':
+                    $extension = 'pdf';
+                    break;
+                case 'application/msword':
+                    $extension = 'doc';
+                    break;
+                case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                    $extension = 'docx';
+                    break;
+                default:
+                    return response()->json(['status' => 'error', 'message' => 'Invalid file type']);
+            }
+
+            // Generate a unique filename
+            $filename = 'assignment_' . uniqid() . '.' . $extension;
+
+            // Save the file to the storage
+            $path = Storage::disk('public')->put("assignmentData/{$filename}", $fileData);
+
+            // Parse the file if it's a PDF
+            $text = '';
+            if ($extension === 'pdf') {
+                $parser = new Parser();
+                $pdf = $parser->parseContent($fileData);
+                $text = $pdf->getText();
+            }
+
+            // Save file information to the database
             $assignmentFile = new AssignmentCorrection();
             $assignmentFile->assignment_id = $data['assignment_id'];
             $assignmentFile->file_name = $filename;
             $assignmentFile->file_path = $path;
             $assignmentFile->file_text = $text;
             $assignmentFile->save();
+
             return response()->json(['status' => 'success', 'message' => 'Correction file was successfully created']);
         }
+
         return response()->json(['status' => 'error', 'message' => 'File upload failed']);
-    }
-    private function generateFileName($file)
-    {
-        $timestamp = time();
-        $randomStr = bin2hex(random_bytes(5));
-        return $timestamp . '_' . $randomStr . '.' . $file->getClientOriginalExtension();
     }
 }
