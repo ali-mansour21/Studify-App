@@ -15,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../utilities/configure.dart';
+
 class AssignmentDetailScreen extends StatefulWidget {
   final Assignment assignment;
   const AssignmentDetailScreen({Key? key, required this.assignment})
@@ -26,7 +27,7 @@ class AssignmentDetailScreen extends StatefulWidget {
 
 class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
   final String baseUrl = API_BASE_URL;
-
+  bool _isLoading = false;
   String _fileName = "";
   PlatformFile? _selectedFile;
   bool _isUploading = false;
@@ -122,6 +123,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
   void _showBottomSheet(BuildContext context) {
     var assignmentModel = Provider.of<AssignmentsModel>(context, listen: false)
         .getAssignmentModel(widget.assignment.id);
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -181,38 +183,35 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  constraints: const BoxConstraints(
-                    minHeight: 370,
-                    maxHeight: 370,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Text(
-                            assignmentModel.feedback.isNotEmpty
-                                ? assignmentModel.feedback
-                                : "",
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                    ],
+              if (_isLoading)
+                const Expanded(
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Text(
+                      assignmentModel.feedback.isNotEmpty
+                          ? assignmentModel.feedback
+                          : "",
+                      textAlign: TextAlign.left,
+                    ),
                   ),
                 ),
-              ),
               const SizedBox(height: 20),
               Align(
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: assignmentModel.isSubmitted
                       ? null
-                      : () {
-                          _uploadFile(context);
+                      : () async {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          await _uploadFile(context);
+                          setState(() {
+                            _isLoading = false;
+                          });
                         },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(50),
