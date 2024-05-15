@@ -16,3 +16,9 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+model/local_model/
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+.ipynb_checkpoints
