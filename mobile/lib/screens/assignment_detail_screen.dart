@@ -30,6 +30,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
   final String baseUrl = API_BASE_URL;
   bool _isLoading = false;
   String _fileName = "";
+  bool _isExpanded = false;
   double dialogWidth = 600;
   PlatformFile? _selectedFile;
   bool _isUploading = false;
@@ -307,122 +308,162 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
               ),
             ),
           ),
-          Positioned(
-            top: 50,
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            top: _isExpanded ? 100 : 600,
             bottom: 0,
             left: 0,
             right: 0,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(35),
-                  topRight: Radius.circular(35),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10.0,
-                    spreadRadius: 5.0,
-                    offset: Offset(0, 4),
+            child: GestureDetector(
+              onVerticalDragEnd: (details) {
+                if (details.primaryVelocity! < 0) {
+                  setState(() {
+                    _isExpanded = true;
+                  });
+                } else if (details.primaryVelocity! > 0) {
+                  setState(() {
+                    _isExpanded = false;
+                  });
+                }
+              },
+              onTap: () {
+                setState(() {
+                  _isExpanded = !_isExpanded;
+                });
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(35),
+                    topRight: Radius.circular(35),
                   ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          flex:
-                              2, // Adjust this value to allocate more or less space to the button
-                          child: ElevatedButton.icon(
-                            icon: Icon(
-                              Icons.attach_file,
-                              color: assignmentModel.isSubmitted
-                                  ? Colors.black.withOpacity(0.4)
-                                  : Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10.0,
+                      spreadRadius: 5.0,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(
+                        _isExpanded
+                            ? Icons.keyboard_arrow_down
+                            : Icons.keyboard_arrow_up,
+                        size: 24,
+                        color: const Color(0xFF3786A8),
+                      ),
+                      if (!_isExpanded)
+                        const Text(
+                          'Add your work',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF3786A8),
+                          ),
+                        ),
+                      if (_isExpanded) ...[
+                        Row(
+                          children: [
+                            Flexible(
+                              flex: 2,
+                              child: ElevatedButton.icon(
+                                icon: Icon(
+                                  Icons.attach_file,
+                                  color: assignmentModel.isSubmitted
+                                      ? Colors.black.withOpacity(0.4)
+                                      : Colors.white,
+                                ),
+                                label: Text(
+                                  assignmentModel.isSubmitted
+                                      ? "File Submitted"
+                                      : (_fileName.isEmpty
+                                          ? "Select File"
+                                          : "Change File"),
+                                  style: TextStyle(
+                                    color: assignmentModel.isSubmitted
+                                        ? Colors.black.withOpacity(0.4)
+                                        : Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                onPressed: assignmentModel.isSubmitted
+                                    ? null
+                                    : _pickFile,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: assignmentModel.isSubmitted
+                                      ? Colors.grey
+                                      : const Color(0xFF3786A8),
+                                ),
+                              ),
                             ),
-                            label: Text(
-                              assignmentModel.isSubmitted
-                                  ? "File Submitted"
-                                  : (_fileName.isEmpty
-                                      ? "Select File"
-                                      : "Change File"),
+                            const SizedBox(width: 16),
+                            Flexible(
+                              flex: 1,
+                              child: Text(
+                                _fileName.isNotEmpty ? _fileName : "",
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Center(
+                            child: _isLoading
+                                ? const CircularProgressIndicator()
+                                : SingleChildScrollView(
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        assignmentModel.feedback,
+                                        style: const TextStyle(
+                                            fontSize: 16, color: Colors.black),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: _isUploading
+                                  ? Colors.grey
+                                  : const Color(0xFF3786A8),
+                            ),
+                            onPressed: assignmentModel.isSubmitted
+                                ? null
+                                : () {
+                                    _uploadFile(context);
+                                  },
+                            child: Text(
+                              "Submit",
                               style: TextStyle(
                                   color: assignmentModel.isSubmitted
                                       ? Colors.black.withOpacity(0.4)
                                       : Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 13),
+                                  fontWeight: FontWeight.w600),
                             ),
-                            onPressed:
-                                assignmentModel.isSubmitted ? null : _pickFile,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: assignmentModel.isSubmitted
-                                  ? Colors.grey
-                                  : const Color(0xFF3786A8),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Flexible(
-                          flex:
-                              1, // Adjust this value to allocate more or less space to the text
-                          child: Text(
-                            _fileName.isNotEmpty ? _fileName : "",
-                            style: const TextStyle(
-                                color: Colors.black, fontSize: 12),
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
                           ),
                         ),
                       ],
-                    ),
-                    const SizedBox(height: 10),
-                    Expanded(
-                      child: Center(
-                        child: _isLoading
-                            ? const CircularProgressIndicator()
-                            : SingleChildScrollView(
-                                child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    assignmentModel.feedback,
-                                    style: const TextStyle(
-                                        fontSize: 16, color: Colors.black),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                              ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: assignmentModel.isSubmitted
-                              ? Colors.grey
-                              : const Color(0xFF3786A8),
-                        ),
-                        onPressed: assignmentModel.isSubmitted
-                            ? null
-                            : () {
-                                _uploadFile(context);
-                              },
-                        child: Text(
-                          "Submit",
-                          style: TextStyle(
-                              color: assignmentModel.isSubmitted
-                                  ? Colors.black.withOpacity(0.4)
-                                  : Colors.white,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
