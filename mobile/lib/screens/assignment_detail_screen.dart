@@ -58,7 +58,10 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
       ))
       ..headers.addAll({'Authorization': 'Bearer $token'});
 
-    setState(() => _isUploading = true);
+    setState(() {
+      _isUploading = true;
+      _isLoading = true;
+    });
 
     try {
       var response = await request.send();
@@ -75,19 +78,46 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
               backgroundColor: const Color(0xFF3786A8),
               textColor: Colors.white,
               fontSize: 16.0);
-          String feedback = decodedResponse['date']['feedback'];
+          String feedback = decodedResponse['data']['feedback'];
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('feedback_${widget.assignment.id}', feedback);
 
           Provider.of<AssignmentsModel>(context, listen: false)
               .getAssignmentModel(widget.assignment.id)
               .submitAssignment(widget.assignment.id, feedback);
-        } else {}
-      } else {}
+        } else {
+          Fluttertoast.showToast(
+              msg: 'Failed to submit assignment',
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 5,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+        }
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Failed to submit assignment',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
     } catch (e) {
+      Fluttertoast.showToast(
+          msg: 'Error submitting assignment: $e',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     } finally {
       setState(() {
         _isUploading = false;
+        _isLoading = false;
       });
     }
   }
@@ -346,12 +376,16 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                       child: Center(
                         child: _isLoading
                             ? const CircularProgressIndicator()
-                            : Text(
-                                assignmentModel.feedback,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.grey.withOpacity(0.5)),
-                                textAlign: TextAlign.center,
+                            : SingleChildScrollView(
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    assignmentModel.feedback,
+                                    style: const TextStyle(
+                                        fontSize: 16, color: Colors.black),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
                               ),
                       ),
                     ),
