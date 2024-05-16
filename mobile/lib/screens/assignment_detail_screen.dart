@@ -311,7 +311,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
           AnimatedPositioned(
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
-            top: _isExpanded ? 100 : 600,
+            top: _isExpanded ? 60 : 600,
             bottom: 0,
             left: 0,
             right: 0,
@@ -369,99 +369,110 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                             color: Color(0xFF3786A8),
                           ),
                         ),
-                      if (_isExpanded) ...[
-                        Row(
-                          children: [
-                            Flexible(
-                              flex: 2,
-                              child: ElevatedButton.icon(
-                                icon: Icon(
-                                  Icons.attach_file,
-                                  color: assignmentModel.isSubmitted
-                                      ? Colors.black.withOpacity(0.4)
-                                      : Colors.white,
+                      if (_isExpanded)
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      flex: 5,
+                                      child: ElevatedButton.icon(
+                                        icon: Icon(
+                                          Icons.attach_file,
+                                          color: assignmentModel.isSubmitted
+                                              ? Colors.black.withOpacity(0.4)
+                                              : Colors.white,
+                                        ),
+                                        label: Text(
+                                          assignmentModel.isSubmitted
+                                              ? "File Submitted"
+                                              : (_fileName.isEmpty
+                                                  ? "Select File"
+                                                  : "Change File"),
+                                          style: TextStyle(
+                                            color: assignmentModel.isSubmitted
+                                                ? Colors.black.withOpacity(0.4)
+                                                : Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        onPressed: assignmentModel.isSubmitted
+                                            ? null
+                                            : _pickFile,
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              assignmentModel.isSubmitted
+                                                  ? Colors.grey
+                                                  : const Color(0xFF3786A8),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Flexible(
+                                      flex: 3,
+                                      child: Text(
+                                        _fileName.isNotEmpty ? _fileName : "",
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        softWrap: false,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                label: Text(
-                                  assignmentModel.isSubmitted
-                                      ? "File Submitted"
-                                      : (_fileName.isEmpty
-                                          ? "Select File"
-                                          : "Change File"),
-                                  style: TextStyle(
+                                const SizedBox(height: 20),
+                                Center(
+                                  child: _isLoading
+                                      ? const CircularProgressIndicator()
+                                      : SingleChildScrollView(
+                                          child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              assignmentModel.feedback,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black),
+                                              textAlign: TextAlign.left,
+                                            ),
+                                          ),
+                                        ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      if (_isExpanded)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: _isUploading
+                                    ? Colors.grey
+                                    : const Color(0xFF3786A8),
+                              ),
+                              onPressed: assignmentModel.isSubmitted
+                                  ? null
+                                  : () {
+                                      _uploadFile(context);
+                                    },
+                              child: Text(
+                                "Submit",
+                                style: TextStyle(
                                     color: assignmentModel.isSubmitted
                                         ? Colors.black.withOpacity(0.4)
                                         : Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                                onPressed: assignmentModel.isSubmitted
-                                    ? null
-                                    : _pickFile,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: assignmentModel.isSubmitted
-                                      ? Colors.grey
-                                      : const Color(0xFF3786A8),
-                                ),
+                                    fontWeight: FontWeight.w600),
                               ),
-                            ),
-                            const SizedBox(width: 16),
-                            Flexible(
-                              flex: 1,
-                              child: Text(
-                                _fileName.isNotEmpty ? _fileName : "",
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: false,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Center(
-                            child: _isLoading
-                                ? const CircularProgressIndicator()
-                                : SingleChildScrollView(
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(
-                                        assignmentModel.feedback,
-                                        style: const TextStyle(
-                                            fontSize: 16, color: Colors.black),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                    ),
-                                  ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: _isUploading
-                                  ? Colors.grey
-                                  : const Color(0xFF3786A8),
-                            ),
-                            onPressed: assignmentModel.isSubmitted
-                                ? null
-                                : () {
-                                    _uploadFile(context);
-                                  },
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                  color: assignmentModel.isSubmitted
-                                      ? Colors.black.withOpacity(0.4)
-                                      : Colors.white,
-                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                         ),
-                      ],
                     ],
                   ),
                 ),
