@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'package:mobile/models/classes/class_data.dart';
@@ -416,12 +417,35 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.attach_file),
-                      label: const Text("Select File"),
-                      onPressed: () {
-                        _pickFile();
-                      },
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 40,
+                          child: ElevatedButton.icon(
+                            icon: const Icon(Icons.attach_file),
+                            label: const Text(
+                              "Select File",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            onPressed: () {
+                              _pickFile(); // Implement your file selection functionality here
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue, // Background color
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        const SizedBox(
+                          width: 30,
+                          child: Text(
+                            "Selected File: example.txt", // Replace with actual file name
+                            style: TextStyle(color: Colors.black, fontSize: 12),
+                          ),
+                        ),
+                      ],
                     ),
                     Expanded(
                       child: Center(
@@ -434,12 +458,21 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Implement your submit functionality here
-                      },
-                      child: const Text("Submit"),
-                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF3786A8)),
+                        onPressed: () {
+                          // Implement your submit functionality here
+                        },
+                        child: const Text(
+                          "Submit",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
