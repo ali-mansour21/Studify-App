@@ -322,11 +322,11 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            onPressed: () {
-                              _pickFile();
-                            },
+                            onPressed: _isUploading ? null : _pickFile,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF3786A8),
+                              backgroundColor: _isUploading
+                                  ? Colors.grey
+                                  : const Color(0xFF3786A8),
                             ),
                           ),
                         ),
@@ -344,23 +344,30 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                     ),
                     Expanded(
                       child: Center(
-                        child: Text(
-                          "Assignment feedback will be displayed here.",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey.withOpacity(0.5)),
-                          textAlign: TextAlign.center,
-                        ),
+                        child: _isLoading
+                            ? const CircularProgressIndicator()
+                            : Text(
+                                assignmentModel.feedback,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey.withOpacity(0.5)),
+                                textAlign: TextAlign.center,
+                              ),
                       ),
                     ),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF3786A8)),
-                        onPressed: () {
-                          // Implement your submit functionality here
-                        },
+                          backgroundColor: _isUploading
+                              ? Colors.grey
+                              : const Color(0xFF3786A8),
+                        ),
+                        onPressed: _isUploading
+                            ? null
+                            : () {
+                                _uploadFile(context);
+                              },
                         child: const Text(
                           "Submit",
                           style: TextStyle(
