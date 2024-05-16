@@ -54,7 +54,7 @@ class AssignmentSubmissionController extends Controller
             $submission_feedback->feedback = $feedback;
             $submission_feedback->assignment_id = $request->assignment_id;
             $submission_feedback->save();
-            return response()->json(['status' => 'success', 'message' => 'Assignment submitted successfully!', 'date' => $submission_feedback]);
+            return response()->json(['status' => 'success', 'message' => 'Assignment submitted successfully!', 'data' => $submission_feedback]);
         }
         return response()->json(['status' => 'failed', 'message' => 'No feedback was created'], 402);
     }

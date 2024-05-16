@@ -335,11 +335,15 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                   children: [
                     Row(
                       children: [
-                        Expanded(
+                        Flexible(
+                          flex:
+                              2, // Adjust this value to allocate more or less space to the button
                           child: ElevatedButton.icon(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.attach_file,
-                              color: Colors.white,
+                              color: assignmentModel.isSubmitted
+                                  ? Colors.black.withOpacity(0.4)
+                                  : Colors.white,
                             ),
                             label: Text(
                               assignmentModel.isSubmitted
@@ -347,21 +351,26 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                                   : (_fileName.isEmpty
                                       ? "Select File"
                                       : "Change File"),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: TextStyle(
+                                  color: assignmentModel.isSubmitted
+                                      ? Colors.black.withOpacity(0.4)
+                                      : Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 13),
                             ),
-                            onPressed: _isUploading ? null : _pickFile,
+                            onPressed:
+                                assignmentModel.isSubmitted ? null : _pickFile,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: _isUploading
+                              backgroundColor: assignmentModel.isSubmitted
                                   ? Colors.grey
                                   : const Color(0xFF3786A8),
                             ),
                           ),
                         ),
                         const SizedBox(width: 16),
-                        Expanded(
+                        Flexible(
+                          flex:
+                              1, // Adjust this value to allocate more or less space to the text
                           child: Text(
                             _fileName.isNotEmpty ? _fileName : "",
                             style: const TextStyle(
@@ -372,6 +381,7 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 10),
                     Expanded(
                       child: Center(
                         child: _isLoading
@@ -393,19 +403,22 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: _isUploading
+                          backgroundColor: assignmentModel.isSubmitted
                               ? Colors.grey
                               : const Color(0xFF3786A8),
                         ),
-                        onPressed: _isUploading
+                        onPressed: assignmentModel.isSubmitted
                             ? null
                             : () {
                                 _uploadFile(context);
                               },
-                        child: const Text(
+                        child: Text(
                           "Submit",
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w600),
+                              color: assignmentModel.isSubmitted
+                                  ? Colors.black.withOpacity(0.4)
+                                  : Colors.white,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
                     )
