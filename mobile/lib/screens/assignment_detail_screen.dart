@@ -33,7 +33,6 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
   double dialogWidth = 600;
   PlatformFile? _selectedFile;
   bool _isUploading = false;
-  String _response = "";
 
   Future<void> _uploadFile(BuildContext context) async {
     if (_selectedFile == null) {
@@ -83,25 +82,9 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
           Provider.of<AssignmentsModel>(context, listen: false)
               .getAssignmentModel(widget.assignment.id)
               .submitAssignment(widget.assignment.id, feedback);
-
-          setState(() {
-            _response = '\n\nFeedback:\n$feedback';
-          });
-        } else {
-          setState(() {
-            _response = 'File upload failed: ${decodedResponse['message']}';
-          });
-        }
-      } else {
-        setState(() {
-          _response =
-              'Failed to upload file: Server responded with status code ${response.statusCode}';
-        });
-      }
+        } else {}
+      } else {}
     } catch (e) {
-      setState(() {
-        _response = 'Error during file upload: $e';
-      });
     } finally {
       setState(() {
         _isUploading = false;
@@ -120,119 +103,6 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
     } else {
       print("No file selected");
     }
-  }
-
-  void _showBottomSheet(BuildContext context) {
-    var assignmentModel = Provider.of<AssignmentsModel>(context, listen: false)
-        .getAssignmentModel(widget.assignment.id);
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return Container(
-          width: double.infinity,
-          height: 600,
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text("Upload Your Work",
-                  style: Theme.of(context).textTheme.titleLarge),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: assignmentModel.isSubmitted
-                          ? Colors.grey
-                          : const Color(0xFF3786A8),
-                    ),
-                    icon: const Icon(Icons.file_upload, color: Colors.white),
-                    label: Text(
-                      assignmentModel.isSubmitted
-                          ? "File Submitted"
-                          : (_fileName.isEmpty ? "Select File" : "Change File"),
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    onPressed: assignmentModel.isSubmitted
-                        ? null
-                        : () async {
-                            FilePickerResult? result =
-                                await FilePicker.platform.pickFiles();
-                            if (result != null) {
-                              PlatformFile file = result.files.first;
-                              setState(() {
-                                _fileName = file.name;
-                                _selectedFile = file;
-                              });
-                              print(_selectedFile);
-                            } else {
-                              print("No file selected");
-                            }
-                          },
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      _fileName,
-                      style:
-                          const TextStyle(color: Colors.black54, fontSize: 16),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              if (_isLoading)
-                const Expanded(
-                  child: Center(child: CircularProgressIndicator()),
-                )
-              else
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Text(
-                      assignmentModel.feedback.isNotEmpty
-                          ? assignmentModel.feedback
-                          : "",
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ),
-              const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  onPressed: assignmentModel.isSubmitted
-                      ? null
-                      : () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          await _uploadFile(context);
-                          setState(() {
-                            _isLoading = false;
-                          });
-                        },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                    backgroundColor: assignmentModel.isSubmitted
-                        ? Colors.grey
-                        : const Color(0xFF3786A8),
-                  ),
-                  child: const Text(
-                    "Submit",
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   void _launchURL(Uri uri) async {
@@ -329,6 +199,8 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var assignmentModel = Provider.of<AssignmentsModel>(context, listen: false)
+        .getAssignmentModel(widget.assignment.id);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -406,43 +278,66 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
             ),
           ),
           Positioned(
-            top: 0,
+            top: 50,
             bottom: 0,
             left: 0,
             right: 0,
             child: Container(
-              color: Colors.white,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(35),
+                  topRight: Radius.circular(35),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10.0,
+                    spreadRadius: 5.0,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        SizedBox(
-                          width: 40,
+                        Expanded(
                           child: ElevatedButton.icon(
-                            icon: const Icon(Icons.attach_file),
-                            label: const Text(
-                              "Select File",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600),
+                            icon: const Icon(
+                              Icons.attach_file,
+                              color: Colors.white,
+                            ),
+                            label: Text(
+                              assignmentModel.isSubmitted
+                                  ? "File Submitted"
+                                  : (_fileName.isEmpty
+                                      ? "Select File"
+                                      : "Change File"),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             onPressed: () {
-                              _pickFile(); // Implement your file selection functionality here
+                              _pickFile();
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue, // Background color
+                              backgroundColor: const Color(0xFF3786A8),
                             ),
                           ),
                         ),
                         const SizedBox(width: 16),
-                        const SizedBox(
-                          width: 30,
+                        Expanded(
                           child: Text(
-                            "Selected File: example.txt", // Replace with actual file name
-                            style: TextStyle(color: Colors.black, fontSize: 12),
+                            _fileName.isNotEmpty ? _fileName : "",
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 12),
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: false,
                           ),
                         ),
                       ],
@@ -480,27 +375,6 @@ class _AssignmentDetailScreenState extends State<AssignmentDetailScreen> {
           ),
         ],
       ),
-      // bottomSheet: GestureDetector(
-      //   onVerticalDragEnd: (details) {
-      //     if (details.primaryVelocity != null && details.primaryVelocity! < 0) {
-      //       _showBottomSheet(context);
-      //     }
-      //   },
-      //   onTap: () => _showBottomSheet(context),
-      //   child: Container(
-      //     width: double.infinity,
-      //     color: Colors.grey[200],
-      //     height: 70,
-      //     child: const Column(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: <Widget>[
-      //         Icon(Icons.keyboard_arrow_up, color: Color(0xFF3786A8), size: 24),
-      //         Text('Add your work',
-      //             style: TextStyle(color: Color(0xFF3786A8), fontSize: 16)),
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
