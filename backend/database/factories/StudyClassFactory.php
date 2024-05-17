@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\StudyClass;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class StudyClassFactory extends Factory
 {
+    protected $model = StudyClass::class;
     /**
      * Define the model's default state.
      *
@@ -20,11 +22,11 @@ class StudyClassFactory extends Factory
     {
         return [
             'name' => $this->faker->words(3, true),
-            'class_image' => $this->faker->paragraph,
+            'class_image' => $this->faker->sentence,
             'description' => $this->faker->sentence,
             'instructor_id' => User::factory(),
-            'category_id' => Category::factory(),
-            'class_code' => $this->faker->unique()->randomKey
+            'category_id' => 1,
+            'class_code' => strtoupper($this->faker->unique()->bothify('??###'))
         ];
     }
 }

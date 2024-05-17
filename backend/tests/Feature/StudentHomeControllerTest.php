@@ -13,7 +13,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class StudentHomeControllerTest extends TestCase
 {
-    use RefreshDatabase;
     /**
      * A basic feature test example.
      */
@@ -50,7 +49,7 @@ class StudentHomeControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->postJson(route('home.searchData'), ['keyWord' => $keyword]);
+        ])->postJson(route('resources.search'), ['keyWord' => $keyword]);
 
         $response->assertStatus(200)
             ->assertJsonStructure([

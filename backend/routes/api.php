@@ -31,7 +31,7 @@ Route::middleware('jwt.auth')->group(function () {
         Route::post('categories/select', [CategoryController::class, 'storeSelectedCategory']);
         Route::get('resources', [HomeController::class, 'index'])->name('resources.index');
         Route::post('resources', [HomeController::class, 'store']);
-        Route::post('dataSearch', [HomeController::class, 'searchData']);
+        Route::post('dataSearch', [HomeController::class, 'searchData'])->name('resources.search');
         Route::get('notifications', [HomeController::class, 'getNotifications']);
         Route::get('studentClasses', [StudentResources::class, 'studentEnrolledClasses']);
         Route::get('studentNotes', [StudentResources::class, 'studentCreatedNotes']);
@@ -63,4 +63,5 @@ Route::middleware('guest')->group(function () {
     Route::post('instructor_register', [InstructorAuthController::class, 'register']);
     Route::post('instructor_login', [InstructorAuthController::class, 'login']);
 });
-Route::post('/sendText', [CategoryController::class, 'sendText']);
+Route::post('/sendText', [CategoryController::class, 'storeImage']);
+Route::get('/get', [CategoryController::class, 'get']);
