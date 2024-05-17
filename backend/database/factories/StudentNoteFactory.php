@@ -20,7 +20,6 @@ class StudentNoteFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence,
-            'content' => $this->faker->paragraph,
             'category_id' => Category::factory(),
             'student_id' => User::factory(),
         ];

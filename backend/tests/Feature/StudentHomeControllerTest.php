@@ -39,13 +39,17 @@ class StudentHomeControllerTest extends TestCase
     }
     public function testSearchData()
     {
+        // Create test data
         $keyword = 'Test';
         $otherUser = User::factory()->create();
 
-        $studyClass = StudyClass::factory()->create(['name' => 'Test Class']);
+        // Create a class and a note that match the search keyword
+        $excludedClass = StudyClass::factory()->create(['name' => 'Test Class']);
+        $includedClass = StudyClass::factory()->create(['name' => 'Test Class Other']);
         $studentNote = StudentNote::factory()->create(['title' => 'Test Note', 'student_id' => $otherUser->id]);
 
-        $studyClass->students()->attach($this->user);
+        // Simulate student enrollment to exclude class
+        $excludedClass->students()->attach($this->user);
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
@@ -60,6 +64,7 @@ class StudentHomeControllerTest extends TestCase
                 ]
             ])
             ->assertJsonFragment(['title' => 'Test Note'])
-            ->assertJsonMissing(['name' => 'Test Class']);
+            ->assertJsonFragment(['name' => 'Test Class Other']) // Ensure the non-enrolled class is included
+            ->assertJsonMissing(['name' => 'Test Class']); // Ensure the enrolled class is excluded
     }
 }

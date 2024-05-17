@@ -25,7 +25,7 @@ class StudyClassFactory extends Factory
             'class_image' => $this->faker->sentence,
             'description' => $this->faker->sentence,
             'instructor_id' => User::factory(),
-            'category_id' => 1,
+            'category_id' => Category::factory(),
             'class_code' => strtoupper($this->faker->unique()->bothify('??###'))
         ];
     }
