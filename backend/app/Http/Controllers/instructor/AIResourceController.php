@@ -15,6 +15,7 @@ class AIResourceController extends Controller
 {
     public function submitFaqFile(Request $request)
     {
+        \Log::info('Request data: ', $request->all());
         $data = $request->validate([
             'material_id' => ['required', 'integer', Rule::exists('materials', 'id')],
             'faq_file' => ['required', 'string'],
@@ -59,7 +60,7 @@ class AIResourceController extends Controller
             $materialFile->file_text = $text;
             $materialFile->save();
 
-            return response()->json(['status' => 'success', 'message' => 'File saved successfully']);
+            return response()->json(['status' => 'success', 'message' => 'File saved successfully', 'filename' => $filename]);
         }
 
         return response()->json(['status' => 'error', 'message' => 'File upload failed']);
