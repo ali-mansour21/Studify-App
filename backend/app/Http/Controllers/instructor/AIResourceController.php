@@ -67,11 +67,11 @@ class AIResourceController extends Controller
     {
         $data = $request->validate([
             'assignment_id' => ['required', 'integer', Rule::exists('assignments', 'id')],
-            'correction_file' => ['required', 'string'], // Expect a Base64 encoded string
+            'correction_file' => ['required', 'string'], 
         ]);
 
         if ($request->has('correction_file')) {
-            // Decode the Base64 string
+            
             $fileData = base64_decode($request->input('correction_file'));
 
             // Determine the file's mime type and extension
@@ -92,13 +92,13 @@ class AIResourceController extends Controller
                     return response()->json(['status' => 'error', 'message' => 'Invalid file type']);
             }
 
-            // Generate a unique filename
+            
             $filename = 'assignment_' . uniqid() . '.' . $extension;
 
-            // Save the file to the storage
-            $path = Storage::disk('public')->put("assignmentData/{$filename}", $fileData);
+            
+            $path = "assignmentData/{$filename}"; 
+            Storage::disk('public')->put($path, $fileData);
 
-            // Parse the file if it's a PDF
             $text = '';
             if ($extension === 'pdf') {
                 $parser = new Parser();
@@ -106,17 +106,15 @@ class AIResourceController extends Controller
                 $text = $pdf->getText();
             }
 
-            // Save file information to the database
             $assignmentFile = new AssignmentCorrection();
             $assignmentFile->assignment_id = $data['assignment_id'];
             $assignmentFile->file_name = $filename;
-            $assignmentFile->file_path = $path;
+            $assignmentFile->file_path = $path; 
             $assignmentFile->file_text = $text;
             $assignmentFile->save();
 
             return response()->json(['status' => 'success', 'message' => 'Correction file was successfully created', 'filename' => $filename]);
         }
-
         return response()->json(['status' => 'error', 'message' => 'File upload failed']);
     }
 }
