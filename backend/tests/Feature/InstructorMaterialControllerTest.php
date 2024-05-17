@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Events\AssignmentCreated;
 use App\Events\TopicCreated;
 use App\Models\Material;
 use App\Models\StudyClass;
@@ -70,11 +71,11 @@ class InstructorMaterialControllerTest extends TestCase
         $token = JWTAuth::fromUser($this->instructor);
 
 
-        // Correct the file path and ensure the file exists
+
         $filePath = base_path('tests/files/questions.pdf');
         $this->assertFileExists($filePath, "The test file does not exist at path: $filePath");
 
-        // Encode the file in base64
+
         $file = base64_encode(file_get_contents($filePath));
         $data = [
             'material_id' => $material->id,
@@ -84,17 +85,17 @@ class InstructorMaterialControllerTest extends TestCase
             'type' => 0,
         ];
 
-        // Send the request with the proper Authorization header
+
         $response = $this->json('POST', route('storeData'), $data, ['Authorization' => "Bearer $token"]);
 
-        // Check the response
+
         $response->assertStatus(200)
             ->assertJson(['status' => 'success', 'message' => 'Topic created successfully']);
         $responseData = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('filename', $responseData, 'Filename key is missing in the response');
         $filename = $responseData['filename'];
 
-        // Verify the database entry
+
         $this->assertDatabaseHas('topics', [
             'material_id' => $material->id,
             'title' => 'Test Topic',
@@ -102,10 +103,56 @@ class InstructorMaterialControllerTest extends TestCase
             'attachment' =>  'class_attachments/' . $filename,
         ]);
 
+
+        Storage::disk('public')->assertExists('class_attachments/' . $filename);
+
+
+        Event::assertDispatched(TopicCreated::class);
+    }
+    public function testStoreDataCreateAssignment()
+    {
+        Storage::fake('public');
+        Event::fake();
+        $material = Material::factory()->create();
+        $token = JWTAuth::fromUser($this->instructor);
+
+        // Correct the file path and ensure the file exists
+        $filePath = base_path('tests/files/questions.pdf');
+        $this->assertFileExists($filePath, "The test file does not exist at path: $filePath");
+
+        $file = base64_encode(file_get_contents($filePath));
+        $data = [
+            'material_id' => $material->id,
+            'title' => 'Test Assignment',
+            'content' => 'This is the content of the test assignment',
+            'attachment' => $file,
+            'type' => 1,
+        ];
+
+        
+        $response = $this->json('POST', route('storeData'), $data, ['Authorization' => "Bearer $token"]);
+
+        
+        $response->assertStatus(200)
+            ->assertJson(['status' => 'success', 'message' => 'Assignment created successfully']);
+
+        
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('filename', $responseData, 'Filename key is missing in the response');
+        $filename = $responseData['filename'];
+
+        // Verify the database entry
+        $this->assertDatabaseHas('assignments', [
+            'material_id' => $material->id,
+            'title' => 'Test Assignment',
+            'content' => 'This is the content of the test assignment',
+            'attachment' => 'class_attachments/' . $filename,
+        ]);
+
         // Verify the file exists in storage
         Storage::disk('public')->assertExists('class_attachments/' . $filename);
 
         // Check that the event was dispatched
-        Event::assertDispatched(TopicCreated::class);
+        Event::assertDispatched(AssignmentCreated::class);
     }
 }
