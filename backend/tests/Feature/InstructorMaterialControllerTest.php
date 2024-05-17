@@ -30,10 +30,10 @@ class InstructorMaterialControllerTest extends TestCase
 
         $this->instructor = User::factory()->create(['user_type' => 'instructor']);
 
-        
+
         $this->student = User::factory()->create(['user_type' => 'student']);
 
-        
+
         $this->studyClass = StudyClass::factory()->create();
     }
     public function test_instructor_can_store_material()
@@ -48,10 +48,10 @@ class InstructorMaterialControllerTest extends TestCase
             'name' => 'New Material'
         ];
 
-        
+
         $response = $this->json('POST', route('materials.store'), $data);
 
-        
+
         $response->assertStatus(201);
         $response->assertJson([
             'message' => 'Material created successfully'
@@ -90,17 +90,20 @@ class InstructorMaterialControllerTest extends TestCase
         // Check the response
         $response->assertStatus(200)
             ->assertJson(['status' => 'success', 'message' => 'Topic created successfully']);
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('filename', $responseData, 'Filename key is missing in the response');
+        $filename = $responseData['filename'];
 
         // Verify the database entry
         $this->assertDatabaseHas('topics', [
             'material_id' => $material->id,
             'title' => 'Test Topic',
             'content' => 'This is the content of the test topic',
-            'attachment' => 'class_attachments/attachment_' . uniqid() . '.pdf',
+            'attachment' =>  'class_attachments/' . $filename,
         ]);
 
         // Verify the file exists in storage
-        Storage::disk('public')->assertExists('class_attachments/attachment_' . uniqid() . '.pdf');
+        Storage::disk('public')->assertExists('class_attachments/' . $filename);
 
         // Check that the event was dispatched
         Event::assertDispatched(TopicCreated::class);

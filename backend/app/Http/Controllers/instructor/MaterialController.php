@@ -49,7 +49,7 @@ class MaterialController extends Controller
         if (isset($data['attachment'])) {
             $fileData = base64_decode($data['attachment']);
 
-            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
             $mimeType = $finfo->buffer($fileData);
             $extension = '';
             switch ($mimeType) {
@@ -65,11 +65,10 @@ class MaterialController extends Controller
                 default:
                     return response()->json(['status' => 'error', 'message' => 'Invalid file type']);
             }
-
-            $filename = 'attachment_' . uniqid() . '.' . $extension;
-
-            $path = Storage::disk('public')->put("class_attachments/{$filename}", $fileData);
         }
+        $filename = 'attachment_' . uniqid() . '.' . $extension;
+        $path = "class_attachments/{$filename}"; // Use the correct path format
+        Storage::disk('public')->put($path, $fileData);
 
         if (intval($data['type']) == 0) {
             $topic = new Topic();
@@ -79,7 +78,7 @@ class MaterialController extends Controller
             $topic->attachment = $path;
             $topic->save();
             event(new TopicCreated($topic));
-            return response()->json(['status' => 'success', 'message' => 'Topic created successfully'], 200);
+            return response()->json(['status' => 'success', 'message' => 'Topic created successfully', 'filename' => $filename], 200);
         } elseif (intval($data['type']) == 1) {
             $assignment = new Assignment();
             $assignment->title = $data['title'];
@@ -88,7 +87,7 @@ class MaterialController extends Controller
             $assignment->attachment = $path;
             $assignment->save();
             event(new AssignmentCreated($assignment));
-            return response()->json(['status' => 'success', 'message' => 'Assignment created successfully'], 200);
+            return response()->json(['status' => 'success', 'message' => 'Assignment created successfully', 'filename' => $f], 200);
         } else {
             return response()->json(['status' => 'error', 'message' => 'Invalid type provided'], 400);
         }
