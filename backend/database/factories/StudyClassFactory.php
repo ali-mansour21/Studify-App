@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,8 +20,10 @@ class StudyClassFactory extends Factory
     {
         return [
             'name' => $this->faker->words(3, true),
-            'description' => $this->faker->paragraph,
+            'class_image' => $this->faker->paragraph,
+            'description' => $this->faker->sentence,
             'instructor_id' => User::factory(),
+            'category_id' => Category::factory(),
             'class_code' => $this->faker->unique()->randomKey
         ];
     }
