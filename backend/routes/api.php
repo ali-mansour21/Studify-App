@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('jwt.auth')->group(function () {
     Route::middleware('student')->group(function () {
         Route::post('categories/select', [CategoryController::class, 'storeSelectedCategory']);
-        Route::get('resources', [HomeController::class, 'index']);
+        Route::get('resources', [HomeController::class, 'index'])->name('resources.index');
         Route::post('resources', [HomeController::class, 'store']);
         Route::post('dataSearch', [HomeController::class, 'searchData']);
         Route::get('notifications', [HomeController::class, 'getNotifications']);
