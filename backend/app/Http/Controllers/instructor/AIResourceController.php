@@ -54,7 +54,7 @@ class AIResourceController extends Controller
             $materialFile = new Faq();
             $materialFile->material_id = $data['material_id'];
             $materialFile->file_name = $filename;
-            $materialFile->file_path = $path; // Save the correct file path
+            $materialFile->file_path = $path;
             $materialFile->file_text = $text;
             $materialFile->save();
 
@@ -114,7 +114,7 @@ class AIResourceController extends Controller
             $assignmentFile->file_text = $text;
             $assignmentFile->save();
 
-            return response()->json(['status' => 'success', 'message' => 'Correction file was successfully created']);
+            return response()->json(['status' => 'success', 'message' => 'Correction file was successfully created', 'filename' => $filename]);
         }
 
         return response()->json(['status' => 'error', 'message' => 'File upload failed']);

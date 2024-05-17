@@ -53,7 +53,7 @@ Route::middleware('jwt.auth')->group(function () {
         Route::post('classes/invite', [ClassRequestController::class, 'inviteStudent']);
         Route::post('instructor_logout', [InstructorAuthController::class, 'logout']);
         Route::post('faq_file', [AIResourceController::class, 'submitFaqFile'])->name('submitFaqFile');
-        Route::post('correction_file', [AIResourceController::class, 'submitCorrectionFile']);
+        Route::post('correction_file', [AIResourceController::class, 'submitCorrectionFile'])->name('submitCorrectionFile');
     });
 });
 Route::middleware('guest')->group(function () {
