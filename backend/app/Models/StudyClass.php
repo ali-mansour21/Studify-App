@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class StudyClass extends Model
 {
@@ -18,10 +19,10 @@ class StudyClass extends Model
     {
         return $this->hasMany(Material::class, 'class_id');
     }
-    public function students()
+    public function students(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'class_enrollments', 'study_class_id', 'student_id')
-            ->using(ClassEnrollment::class)
+        ->using(ClassEnrollment::class)
             ->withTimestamps();
     }
     public function category()

@@ -36,14 +36,24 @@ class HomeController extends Controller
             'keyWord' => ['required', 'string']
         ]);
         $keyword = $data['keyWord'];
+
+        // Debugging: Log the query being executed
+        \DB::enableQueryLog();
+
         $classes = StudyClass::where('name', 'LIKE', "%{$keyword}%")
-            ->whereDoesntHave('students', function ($query) use ($student_id) {
-                $query->where('users.id', $student_id);
-            })
+        ->whereDoesntHave('students', function ($query) use ($student_id) {
+            $query->where('users.id', $student_id);
+        })
             ->get();
+
+        // Debugging: Log the executed query and results
+        \Log::info(\DB::getQueryLog());
+        \Log::info($classes);
+
         $studyNotes = StudentNote::where('title', 'LIKE', "%{$keyword}%")
-            ->where('student_id', '!=', $student_id)
+        ->where('student_id', '!=', $student_id)
             ->get();
+
         return response()->json(['status' => 'success', 'data' => [
             'studyNotes' => $studyNotes,
             'classes' => $classes

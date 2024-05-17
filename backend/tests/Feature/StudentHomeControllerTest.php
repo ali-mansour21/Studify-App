@@ -13,6 +13,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class StudentHomeControllerTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic feature test example.
      */
@@ -43,9 +44,9 @@ class StudentHomeControllerTest extends TestCase
         $keyword = 'Test';
         $otherUser = User::factory()->create();
 
-        // Create a class and a note that match the search keyword
+        // Create classes and a note that match the search keyword
         $excludedClass = StudyClass::factory()->create(['name' => 'Test Class']);
-        $includedClass = StudyClass::factory()->create(['name' => 'Test Class Other']);
+        $includedClass = StudyClass::factory()->create(['name' => 'Another Test Class']);
         $studentNote = StudentNote::factory()->create(['title' => 'Test Note', 'student_id' => $otherUser->id]);
 
         // Simulate student enrollment to exclude class
@@ -64,7 +65,7 @@ class StudentHomeControllerTest extends TestCase
                 ]
             ])
             ->assertJsonFragment(['title' => 'Test Note'])
-            ->assertJsonFragment(['name' => 'Test Class Other']) // Ensure the non-enrolled class is included
+            ->assertJsonFragment(['name' => 'Another Test Class']) // Ensure the non-enrolled class is included
             ->assertJsonMissing(['name' => 'Test Class']); // Ensure the enrolled class is excluded
     }
 }
