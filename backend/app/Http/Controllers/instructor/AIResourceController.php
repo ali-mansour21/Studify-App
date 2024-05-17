@@ -15,7 +15,6 @@ class AIResourceController extends Controller
 {
     public function submitFaqFile(Request $request)
     {
-        \Log::info('Request data: ', $request->all());
         $data = $request->validate([
             'material_id' => ['required', 'integer', Rule::exists('materials', 'id')],
             'faq_file' => ['required', 'string'],
@@ -24,7 +23,7 @@ class AIResourceController extends Controller
         if ($request->has('faq_file')) {
             $fileData = base64_decode($request->input('faq_file'));
 
-            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
             $mimeType = $finfo->buffer($fileData);
             $extension = '';
             switch ($mimeType) {
@@ -41,14 +40,13 @@ class AIResourceController extends Controller
                     return response()->json(['status' => 'error', 'message' => 'Invalid file type']);
             }
 
-
             $filename = 'material_' . uniqid() . '.' . $extension;
-
-            $path = Storage::disk('public')->put("materialsData/{$filename}", $fileData);
+            $path = "materialsData/{$filename}"; // Use the correct path format
+            Storage::disk('public')->put($path, $fileData);
 
             $text = '';
             if ($extension === 'pdf') {
-                $parser = new Parser();
+                $parser = new \Smalot\PdfParser\Parser();
                 $pdf = $parser->parseContent($fileData);
                 $text = $pdf->getText();
             }
@@ -56,7 +54,7 @@ class AIResourceController extends Controller
             $materialFile = new Faq();
             $materialFile->material_id = $data['material_id'];
             $materialFile->file_name = $filename;
-            $materialFile->file_path = $path;
+            $materialFile->file_path = $path; // Save the correct file path
             $materialFile->file_text = $text;
             $materialFile->save();
 
