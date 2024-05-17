@@ -48,7 +48,7 @@ Route::middleware('jwt.auth')->group(function () {
         Route::get('classes', [StudyClassController::class, 'index']);
         Route::post('classes', [StudyClassController::class, 'store']);
         Route::post('classes/material', [MaterialController::class, 'store'])->name('materials.store');
-        Route::post('classes/material/addUnit', [MaterialController::class, 'storeData']);
+        Route::post('classes/material/addUnit', [MaterialController::class, 'storeData'])->name('storeData');
         Route::post('class/request', [ClassRequestController::class, 'approveRequest']);
         Route::post('classes/invite', [ClassRequestController::class, 'inviteStudent']);
         Route::post('instructor_logout', [InstructorAuthController::class, 'logout']);
