@@ -8,15 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Material extends Model
 {
     use HasFactory;
+    protected $fillable = ['name'];
     public function class()
     {
         return $this->belongsTo(StudyClass::class);
     }
-    public function topics(){
+    public function topics()
+    {
         return $this->hasMany(Topic::class);
     }
-    public function assignments(){
+    public function assignments()
+    {
         return $this->hasMany(Assignment::class);
     }
-
 }

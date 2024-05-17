@@ -33,7 +33,7 @@ Route::middleware('jwt.auth')->group(function () {
         Route::post('resources', [HomeController::class, 'store']);
         Route::post('dataSearch', [HomeController::class, 'searchData'])->name('resources.search');
         Route::get('notifications', [HomeController::class, 'getNotifications']);
-        Route::get('studentClasses', [StudentResources::class, 'studentEnrolledClasses']);
+        Route::get('studentClasses', [StudentResources::class, 'studentEnrolledClasses'])->name('student.enrolled.classes');
         Route::get('studentNotes', [StudentResources::class, 'studentCreatedNotes']);
         Route::post('join_class', [ClassRequestController::class, 'enrollWithCode']);
         Route::post('request_join_class', [ClassRequestController::class, 'requestJoin']);
