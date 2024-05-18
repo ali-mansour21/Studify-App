@@ -67,7 +67,7 @@
 | Home screen                               | Menu Screen                             | Order Screen                            | Checkout Screen                         |
 | ![Landing](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) |
 
-### Admin Screens (Web)
+### Instructor Screens (Web)
 
 | Login screen                            | Register screen                       | Landing screen                        |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
@@ -102,6 +102,7 @@
 
 - This project employs rigorous unit testing methodologies to ensure the reliability and accuracy of code components. By systematically evaluating individual units of the software, we guarantee a robust foundation, identifying and addressing potential issues early in the development process.
 
+| ![Unit Testing Diagram](./readme/demo/Tests.png) |
 <br><br>
 
 <!-- How to run -->
