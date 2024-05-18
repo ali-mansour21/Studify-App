@@ -114,9 +114,8 @@ const Home = () => {
                 openPopup();
               }}
             >
-              <FontAwesomeIcon icon={faPlus} />
+              Add
             </button>
-            <p>Add</p>
           </div>
         </div>
         {loading ? (

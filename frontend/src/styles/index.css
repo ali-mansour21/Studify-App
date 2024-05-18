@@ -180,21 +180,14 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 40px;
   cursor: pointer;
-  border-radius: 50%;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 10px;
   border: none;
   background-color: var(--blue-color);
-}
-.content .actions button svg {
-  width: 30px;
-  height: 30px;
-  color: #ffffff;
-}
-.content .actions p {
-  margin-top: 13px;
-  font-size: 30px;
 }
 .content-flex-container {
   display: flex; /* Using flexbox to align children */
