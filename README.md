@@ -52,7 +52,7 @@
 
 ### Architecting Data Excellence: Innovative Database Design Strategies:
 
-- Insert ER Diagram here
+ ![ER Diagram](./readme/demo/studify-erd.png)
 
 <br><br>
 
@@ -102,7 +102,7 @@
 
 - This project employs rigorous unit testing methodologies to ensure the reliability and accuracy of code components. By systematically evaluating individual units of the software, we guarantee a robust foundation, identifying and addressing potential issues early in the development process.
 
-| ![Unit Testing Diagram](./readme/demo/Tests.png) |
+ ![Unit Testing Diagram](./readme/demo/Tests.png) 
 <br><br>
 
 <!-- How to run -->
