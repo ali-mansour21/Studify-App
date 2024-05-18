@@ -87,7 +87,7 @@ class MaterialController extends Controller
             $assignment->attachment = $path;
             $assignment->save();
             event(new AssignmentCreated($assignment));
-            return response()->json(['status' => 'success', 'message' => 'Assignment created successfully', 'filename' => $f], 200);
+            return response()->json(['status' => 'success', 'message' => 'Assignment created successfully', 'filename' => $filename], 200);
         } else {
             return response()->json(['status' => 'error', 'message' => 'Invalid type provided'], 400);
         }
