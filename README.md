@@ -37,7 +37,7 @@
 
 > We designed Studify using wireframes and mockups, iterating on the design until we reached the ideal layout for easy navigation and a seamless user experience.
 
-- Project Figma design [figma](https://www.figma.com/file/gY2RkjNNiUb3fWZdRxAb3B/Final-Project?type=design&node-id=0%3A1&mode=design&t=H9cFcGzmbFVlpID6-1)
+- Project Figma design [Figma](https://www.figma.com/file/gY2RkjNNiUb3fWZdRxAb3B/Final-Project?type=design&node-id=0%3A1&mode=design&t=H9cFcGzmbFVlpID6-1)
 
 ### Mockups
 
@@ -63,7 +63,7 @@
 
 | Login screen                              | Register screen                         | Landing screen                          | Loading screen                          |
 | ----------------------------------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
-| ![Landing](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) |
+| ![Login](./readme/demo/login-mobile.jpg) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) |
 | Home screen                               | Menu Screen                             | Order Screen                            | Checkout Screen                         |
 | ![Landing](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) |
 
