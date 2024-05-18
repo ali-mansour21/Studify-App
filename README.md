@@ -41,9 +41,9 @@
 
 ### Mockups
 
-| Home screen                             | Menu Screen                           | Order Screen                          |
+| Register screen                             | Category Screen                           | Home Screen                          |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
+| ![Register](./readme/demo/Sign%20Up.svg) | ![Category](./readme/demo/Category.svg) | ![Home](./readme/demo/home%20screen.svg) |
 
 <br><br>
 
