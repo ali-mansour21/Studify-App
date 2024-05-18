@@ -189,7 +189,6 @@ const Home = () => {
           <div>
             <label htmlFor="category">Category</label>
             <select
-              defaultValue={1}
               onChange={(e) => {
                 setClassData({
                   ...classData,
@@ -199,6 +198,7 @@ const Home = () => {
               name="category"
               id="category"
             >
+              <option value="">Select a category</option>
               <option value="1">Math</option>
               <option value="2">Arabic</option>
               <option value="3">English</option>

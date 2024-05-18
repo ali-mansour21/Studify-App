@@ -63,4 +63,3 @@ Route::middleware('guest')->group(function () {
     Route::post('instructor_register', [InstructorAuthController::class, 'register']);
     Route::post('instructor_login', [InstructorAuthController::class, 'login']);
 });
-Route::post('/sendText', [CategoryController::class, 'storeImage']);

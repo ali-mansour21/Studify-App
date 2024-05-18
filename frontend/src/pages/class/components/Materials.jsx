@@ -75,9 +75,8 @@ const Materials = () => {
                     openPopup();
                   }}
                 >
-                  <FontAwesomeIcon icon={faPlus} />
+                  Add
                 </button>
-                <p>Add</p>
               </div>
             </div>
             <div className="materials-page d-grid gap-20 m-20">
