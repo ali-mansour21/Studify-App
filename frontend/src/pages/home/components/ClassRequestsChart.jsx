@@ -1,5 +1,7 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS } from "chart.js/auto";
+
 const ClassRequestsChart = ({ data }) => {
   return (
     <Doughnut
@@ -8,9 +10,15 @@ const ClassRequestsChart = ({ data }) => {
         responsive: true,
         maintainAspectRatio: false,
         cutoutPercentage: 50,
-        title: {
-          display: true,
-          text: "Materials Shared by Month",
+        plugins: {
+          title: {
+            display: true,
+            text: "Total Materials Shared by Month",
+          },
+          legend: {
+            display: false,
+            position: "right",
+          },
         },
       }}
     />

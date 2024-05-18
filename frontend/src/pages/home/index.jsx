@@ -111,15 +111,15 @@ const Home = () => {
           <>
             <div className="dashboard-page d-grid gap-20 m-20">
               <div className="box bg-white rad-6 p-relative">
-                <h2>Number of classes</h2>
+                <h2>Total Number of classes</h2>
                 <p>{homeData?.nbOfClasses}</p>
               </div>
               <div className="box bg-white rad-6 p-relative">
-                <h2>Number of students</h2>
+                <h2>Total Number of students</h2>
                 <p>{homeData?.nbOfStudents}</p>
               </div>
               <div className="box bg-white rad-6 p-relative">
-                <h2>Assignment submission rate</h2>
+                <h2>Total Assignment submission rate</h2>
                 <p>{homeData?.submissionRate}</p>
               </div>
             </div>
