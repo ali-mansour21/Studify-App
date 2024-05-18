@@ -41,8 +41,8 @@
 
 ### Mockups
 
-| Register screen                             | Category Screen                           | Home Screen                          |
-| --------------------------------------- | ------------------------------------- | ------------------------------------- |
+| Register screen                          | Category Screen                         | Home Screen                              |
+| ---------------------------------------- | --------------------------------------- | ---------------------------------------- |
 | ![Register](./readme/demo/Sign%20Up.svg) | ![Category](./readme/demo/Category.svg) | ![Home](./readme/demo/home%20screen.svg) |
 
 <br><br>
@@ -52,7 +52,7 @@
 
 ### Architecting Data Excellence: Innovative Database Design Strategies:
 
- ![ER Diagram](./readme/demo/studify-erd.png)
+![ER Diagram](./readme/demo/studify-erd.png)
 
 <br><br>
 
@@ -69,11 +69,9 @@
 
 ### Instructor Screens (Web)
 
-| Login screen                            | Register screen                       | Landing screen                        |
-| --------------------------------------- | ------------------------------------- | ------------------------------------- |
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
-| Home screen                             | Menu Screen                           | Order Screen                          |
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
+| Register screen                           | Home screen                         | Classes screen                            |
+| ----------------------------------------- | ----------------------------------- | ----------------------------------------- |
+| ![Register](./readme/demo/signup-web.png) | ![Home](./readme/demo/home-web.png) | ![Classes](./readme/demo/classes-web.png) |
 
 <br><br>
 
@@ -102,7 +100,7 @@
 
 - This project employs rigorous unit testing methodologies to ensure the reliability and accuracy of code components. By systematically evaluating individual units of the software, we guarantee a robust foundation, identifying and addressing potential issues early in the development process.
 
- ![Unit Testing Diagram](./readme/demo/Tests.png) 
+![Unit Testing Diagram](./readme/demo/Tests.png)
 <br><br>
 
 <!-- How to run -->
