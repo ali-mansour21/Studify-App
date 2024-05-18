@@ -9,6 +9,7 @@ import EnrolledStudentsChart from "./components/EnrolledStudentsChart";
 import ClassRequestsChart from "./components/ClassRequestsChart";
 import MaterialSharedChart from "./components/MaterialSharedChart";
 import { BeatLoader } from "react-spinners";
+
 const Home = () => {
   const [homeData, setHomeData] = useState({
     nbOfClasses: 0,
@@ -28,6 +29,7 @@ const Home = () => {
     labels: [],
     datasets: [],
   });
+
   const getHomeData = async () => {
     sendAuthRequest(requestMethods.GET, "home/state").then((response) => {
       if (response.status === 200) {
@@ -39,15 +41,15 @@ const Home = () => {
       }
     });
   };
+
   const getChartData = async () => {
     sendAuthRequest(requestMethods.GET, "home/data").then((response) => {
       if (response.status === 200) {
-
         const enrolledStudentChartData = {
           labels: Object.keys(response?.data.data.nbStudentPerMonth),
           datasets: [
             {
-              label: "Number of Enrolled Students",
+              label: "Total Enrolled Students",
               data: Object.values(response?.data.data.nbStudentPerMonth),
               backgroundColor: "rgba(54, 162, 235, 0.2)",
               borderColor: "rgba(54, 162, 235, 1)",
@@ -56,14 +58,31 @@ const Home = () => {
           ],
         };
 
+        const statusColors = {
+          pending: "rgba(255, 206, 86, 0.2)", // Yellow
+          approved: "rgba(75, 192, 192, 0.2)", // Green
+          rejected: "rgba(255, 99, 132, 0.2)", // Red
+        };
+
+        const borderColors = {
+          pending: "rgba(255, 206, 86, 1)", // Yellow
+          approved: "rgba(75, 192, 192, 1)", // Green
+          rejected: "rgba(255, 99, 132, 1)", // Red
+        };
+
+        // Prepare the chart data
         const classRequestChartData = {
           labels: Object.keys(response?.data.data.classRequestsPerStatus),
           datasets: [
             {
               label: "Class Requests by Status",
               data: Object.values(response?.data.data.classRequestsPerStatus),
-              backgroundColor: "rgba(255, 206, 86, 0.2)",
-              borderColor: "rgba(255, 206, 86, 1)",
+              backgroundColor: Object.keys(
+                response?.data.data.classRequestsPerStatus
+              )?.map((status) => statusColors[status] || "rgba(0, 0, 0, 0.1)"),
+              borderColor: Object.keys(
+                response?.data.data.classRequestsPerStatus
+              )?.map((status) => borderColors[status] || "rgba(0, 0, 0, 1)"),
               borderWidth: 1,
             },
           ],
@@ -82,6 +101,7 @@ const Home = () => {
           ],
         };
 
+        console.log(response?.data.data.classRequestsPerStatus);
         setEnrolledStudentData(enrolledStudentChartData);
         setClassRequestData(classRequestChartData);
         setSharedMaterialData(materialSharedChartData);
@@ -94,6 +114,7 @@ const Home = () => {
     getHomeData();
     getChartData();
   }, []);
+
   return (
     <div className="page d-flex">
       <SideBar />
