@@ -3,6 +3,7 @@ import 'package:mobile/models/classes/class_data.dart' as model;
 import 'package:mobile/providers/chat_message_provider.dart';
 import 'package:mobile/screens/assignment_detail_screen.dart';
 import 'package:mobile/screens/topic_detail_screen.dart';
+import 'package:mobile/widgets/navigation_bar.dart';
 import 'package:mobile/widgets/segmented_control.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,7 @@ class ClassMaterialDetailScreen extends StatefulWidget {
 
 class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
   int _selectedIndex = 0;
-
+  int _currentIndex = 0;
   void showChatDialog(BuildContext context) {
     TextEditingController _controller = TextEditingController();
     ScrollController _scrollController = ScrollController();
@@ -183,6 +184,26 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
     );
   }
 
+  void _onItemSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    // Handle the navigation based on the selected index
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        // This is handled inside CustomNavigationBar
+        break;
+      case 2:
+        Navigator.pushNamed(context, '/profile');
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> content = [
@@ -226,6 +247,8 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
           ],
         ),
       ),
+      bottomNavigationBar: CustomNavigationBar(
+          currentIndex: _currentIndex, onItemSelected: _onItemSelected),
     );
   }
 }
