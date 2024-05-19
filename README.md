@@ -65,7 +65,7 @@
 | ----------------------------------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
 | ![Login](./readme/demo/login-mobile.jpg) | ![Register](./readme/demo/register.gif) | ![Home](./readme/demo/home.gif) | ![Camera](./readme/demo/ocr.gif) |
 | Class screen                               | Chat Screen                             | Assignment Screen                            | Profile Screen                         |
-| ![Class](./readme/demo/class.gif) | ![Chat](./readme/demo/chat.gif) | ![Assignment](./readme/demo/auto-grading.gif) | ![Profile](https://placehold.co/900x1600) |
+| ![Class](./readme/demo/class.gif) | ![Chat](./readme/demo/chat.gif) | ![Assignment](./readme/demo/auto-grading.gif) | ![Profile](./readme/demo/profile.gif) |
 
 ### Instructor Screens (Web)
 
