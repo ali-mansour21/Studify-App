@@ -8,6 +8,10 @@ class SegmentedControl extends StatefulWidget {
   final double borderRadius;
   final double? width;
   final double? height;
+  final Color selectedColor;
+  final Color unselectedColor;
+  final Color borderColor;
+
   const SegmentedControl({
     super.key,
     required this.labels,
@@ -16,6 +20,9 @@ class SegmentedControl extends StatefulWidget {
     this.borderRadius = 10.0,
     this.width,
     this.height,
+    this.selectedColor = const Color(0xFF3786A8),
+    this.unselectedColor = CupertinoColors.white,
+    this.borderColor = CupertinoColors.systemGrey,
   });
 
   @override
@@ -31,13 +38,27 @@ class _SegmentedControlState extends State<SegmentedControl> {
         width: widget.width,
         height: widget.height,
         alignment: Alignment.center,
-        child: Text(widget.labels[i]),
+        decoration: BoxDecoration(
+          color: widget.groupValue == i
+              ? widget.selectedColor
+              : widget.unselectedColor,
+          border: Border.all(
+            color: widget.borderColor,
+          ),
+        ),
+        child: Text(
+          widget.labels[i],
+          style: TextStyle(
+            color: widget.groupValue == i
+                ? widget.unselectedColor
+                : widget.selectedColor,
+          ),
+        ),
       );
     }
 
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(widget.borderRadius),
+      decoration: const BoxDecoration(
         color: Colors.transparent,
       ),
       child: ClipRRect(
@@ -47,6 +68,7 @@ class _SegmentedControlState extends State<SegmentedControl> {
           onValueChanged: widget.onSegmentChosen,
           groupValue: widget.groupValue,
           padding: const EdgeInsets.all(4.0),
+          borderColor: widget.borderColor,
         ),
       ),
     );
