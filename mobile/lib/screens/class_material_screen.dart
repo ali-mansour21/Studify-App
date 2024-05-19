@@ -142,7 +142,7 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 70,
+                  height: 75,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
@@ -207,7 +207,7 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
             Center(
               child: SegmentedControl(
                 labels: const ['Topics', 'Assignments'],
@@ -221,7 +221,7 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
                 groupValue: _selectedIndex,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             Expanded(child: content[_selectedIndex]),
           ],
         ),

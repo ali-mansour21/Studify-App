@@ -22,7 +22,7 @@ class SegmentedControl extends StatefulWidget {
     this.height,
     this.selectedColor = const Color(0xFF3786A8),
     this.unselectedColor = CupertinoColors.white,
-    this.borderColor = CupertinoColors.systemGrey,
+    this.borderColor = const Color(0xFF3786A8),
   });
 
   @override

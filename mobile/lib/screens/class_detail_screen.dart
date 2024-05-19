@@ -178,10 +178,10 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(6),
             child: Column(
               children: [
-                const SizedBox(height: 30),
+                const SizedBox(height: 10),
                 SegmentedControl(
                   labels: const ['Material', 'People'],
                   onSegmentChosen: (int index) {
@@ -192,9 +192,12 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                   width: 105,
                   height: 35,
                   groupValue: _selectedIndex,
-                  selectedColor: Color(0xFF3786A8),
+                  selectedColor: const Color(0xFF3786A8),
                   unselectedColor: Colors.white,
-                  borderColor: Color(0xFF3786A8),
+                  borderColor: const Color(0xFF3786A8),
+                ),
+                const SizedBox(
+                  height: 30,
                 ),
                 Expanded(child: content[_selectedIndex]),
               ],
