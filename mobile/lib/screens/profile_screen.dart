@@ -78,14 +78,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: ProfileLayout(
         children: [
-          const Positioned(
+          Positioned(
             top: -65,
             left: 0,
             right: 0,
             child: CircleAvatar(
               radius: 60,
-              child: Text('AM',
-                  style: TextStyle(fontSize: 24, color: Colors.white)),
+              backgroundColor: Colors.transparent,
+              child: ClipOval(
+                child: SizedBox(
+                  width: 120,
+                  height: 120,
+                  child: Image.asset(
+                    'assets/my-profile.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
           ),
           Positioned(
