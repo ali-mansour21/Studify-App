@@ -134,7 +134,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ListTile(
                 leading: const Icon(Icons.edit),
                 title: const Text('Edit Profile'),
-                trailing: const Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 18,
+                ),
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => const EditScreen()),
@@ -147,12 +150,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   size: 27,
                 ),
                 title: const Text('Notes'),
-                trailing: const Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 18,
+                ),
                 onTap: () {
                   var materials =
                       Provider.of<MaterialsProvider>(context, listen: false)
                           .studentMaterials;
-                  print(materials);
                   Navigator.of(context).push(
                     MaterialPageRoute(
                         builder: (context) => StudentMaterialScreen(
@@ -164,7 +169,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ListTile(
                 leading: const Icon(Icons.class_),
                 title: const Text('Classes'),
-                trailing: const Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 18,
+                ),
                 onTap: () {
                   var studentClasses =
                       Provider.of<StudyClassProvider>(context, listen: false)
