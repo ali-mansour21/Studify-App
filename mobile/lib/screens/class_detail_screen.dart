@@ -3,6 +3,7 @@ import 'package:mobile/models/classes/class_data.dart' as model;
 import 'package:mobile/screens/class_material_screen.dart';
 import 'package:mobile/services/class_methods.dart';
 import 'package:mobile/widgets/mainbutton.dart';
+import 'package:mobile/widgets/navigation_bar.dart';
 import 'package:mobile/widgets/segmented_control.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -20,6 +21,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
   final ClassOperations _apiService = ClassOperations();
   final TextEditingController classCodeController = TextEditingController();
   int _selectedIndex = 0;
+  int _currentIndex = 0;
   bool _isLoading = false;
   void _showJoinClassDialog() {
     showDialog(
@@ -144,6 +146,26 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
     );
   }
 
+  void _onItemSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    // Handle the navigation based on the selected index
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        // This is handled inside CustomNavigationBar
+        break;
+      case 2:
+        Navigator.pushNamed(context, '/profile');
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> content = [
@@ -211,6 +233,8 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
             ),
         ],
       ),
+      bottomNavigationBar: CustomNavigationBar(
+          currentIndex: _currentIndex, onItemSelected: _onItemSelected),
     );
   }
 
