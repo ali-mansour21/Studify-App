@@ -8,6 +8,7 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { requestMethods } from "../core/requests/requestMethods.js";
 import sendAuthRequest from "../core/tools/authRequest.js";
+import logo from "../assets/Studify-logo.png";
 const SideBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,7 +28,10 @@ const SideBar = () => {
   };
   return (
     <div className="sidebar bg-white p-20 p-relative">
-      <h3 className="p-relative txt-c mt-0">Studify</h3>
+      <div className="sidebar-logo">
+        <img src={logo} alt="Studify" />
+        <h3 className="p-relative txt-c ">Studify</h3>
+      </div>
       <ul className="list-none p-0">
         <li>
           <a
@@ -57,9 +61,9 @@ const SideBar = () => {
             <span className="hide-mobile">Classes</span>
           </a>
         </li>
-        <li>
+        <li className="logout">
           <a
-            className="d-flex align-center fs-14 c-black rad-6 p-10"
+            className="d-flex  align-center fs-14 c-black rad-6 p-10"
             onClick={(e) => {
               e.preventDefault();
               handleLogout();

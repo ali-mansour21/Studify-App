@@ -17,8 +17,16 @@ a {
   background-color: #f1f5f9;
 }
 .sidebar {
-  width: 250px;
+  width: 320px;
   box-shadow: 0 0 10px #ddd;
+}
+.sidebar-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.sidebar-logo img {
+  width: 100px;
 }
 .sidebar > h3 {
   margin-bottom: 50px;
@@ -28,14 +36,19 @@ a {
   margin-bottom: 5px;
   transition: 0.3;
   cursor: pointer;
+  transition: all 0.3s ease-in;
   -webkit-transition: 0.3;
   -moz-transition: 0.3;
   -ms-transition: 0.3;
   -o-transition: 0.3;
 }
+.sidebar ul .logout {
+  padding-top: 235% !important;
+}
 .sidebar ul li a:hover,
 .sidebar ul li a.active {
-  background-color: #f6f6f6;
+  color: black;
+  background-color: rgb(55, 134, 168, 0.1);
 }
 .sidebar ul li a span {
   font-size: 14px;
@@ -57,6 +70,10 @@ a {
 }
 .content {
   overflow: hidden;
+}
+.head {
+  display: flex;
+  justify-content: flex-end;
 }
 .head .welcome-widget {
   font-size: 20px;
@@ -279,6 +296,7 @@ a {
   }
 }
 .materials-page .material {
+  text-align: center;
   overflow: hidden;
   height: 60px;
   background-color: #f1f5f9;

@@ -13,7 +13,7 @@ const ClassRequestsChart = ({ data }) => {
         plugins: {
           title: {
             display: true,
-            text: "Total Materials Shared by Month",
+            text: "Total Class Requests",
           },
           legend: {
             display: false,

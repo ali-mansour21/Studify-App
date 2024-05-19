@@ -7,7 +7,6 @@ import { requestMethods } from "../core/requests/requestMethods";
 
 const Header = () => {
   const [notifications, setNotifications] = useState([]);
-  const name = localStorage.getItem("name");
   const [isOpen, setIsOpen] = useState(false);
   const profile = localStorage.getItem("profile_image");
   const toggleMenu = () => {
@@ -27,8 +26,7 @@ const Header = () => {
     getInstructerNotifications();
   }, []);
   return (
-    <div className="head bg-white p-15 between-flex">
-      <div className="welcome-widget">Hello {name}</div>
+    <div className="head bg-white p-15">
       <div className="icons d-flex align-center">
         <span
           onClick={(e) => {
