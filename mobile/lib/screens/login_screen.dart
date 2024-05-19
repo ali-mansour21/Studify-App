@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     keyboardType: TextInputType.emailAddress,
                   ),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 7),
                 SizedBox(
                   height: 70,
                   child: CustomTextFormField(

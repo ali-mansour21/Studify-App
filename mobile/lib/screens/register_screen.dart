@@ -78,22 +78,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  CustomTextFormField(
-                    controller: _nameController,
-                    labelText: "Name",
-                    iconData: Icons.person,
+                  SizedBox(
+                    height: 70,
+                    child: CustomTextFormField(
+                      controller: _nameController,
+                      labelText: "Name",
+                      iconData: Icons.person,
+                    ),
                   ),
-                  CustomTextFormField(
-                    controller: _emailController,
-                    labelText: "Email",
-                    iconData: Icons.email,
-                    keyboardType: TextInputType.emailAddress,
+                  SizedBox(
+                    height: 70,
+                    child: CustomTextFormField(
+                      controller: _emailController,
+                      labelText: "Email",
+                      iconData: Icons.email,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
                   ),
-                  CustomTextFormField(
-                    controller: _passwordController,
-                    labelText: "Password",
-                    iconData: Icons.lock,
-                    obscureText: true,
+                  SizedBox(
+                    height: 70,
+                    child: CustomTextFormField(
+                      controller: _passwordController,
+                      labelText: "Password",
+                      iconData: Icons.lock,
+                      obscureText: true,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   MainButton(
