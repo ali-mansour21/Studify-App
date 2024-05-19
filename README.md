@@ -64,8 +64,8 @@
 | Login screen                              | Register screen                         | Home screen                          | Camera screen                          |
 | ----------------------------------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
 | ![Login](./readme/demo/login-mobile.jpg) | ![Register](./readme/demo/register.gif) | ![Home](./readme/demo/home.gif) | ![Camera](./readme/demo/ocr.gif) |
-| Home screen                               | Menu Screen                             | Order Screen                            | Checkout Screen                         |
-| ![Landing](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) |
+| Class screen                               | Menu Screen                             | Order Screen                            | Chat Screen                         |
+| ![Class](./readme/demo/class.gif) | ![Chat](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) |
 
 ### Instructor Screens (Web)
 

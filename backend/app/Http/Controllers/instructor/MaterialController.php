@@ -65,10 +65,10 @@ class MaterialController extends Controller
                 default:
                     return response()->json(['status' => 'error', 'message' => 'Invalid file type']);
             }
+            $filename = 'attachment_' . uniqid() . '.' . $extension;
+            $path = "class_attachments/{$filename}"; // Use the correct path format
+            Storage::disk('public')->put($path, $fileData);
         }
-        $filename = 'attachment_' . uniqid() . '.' . $extension;
-        $path = "class_attachments/{$filename}"; // Use the correct path format
-        Storage::disk('public')->put($path, $fileData);
 
         if (intval($data['type']) == 0) {
             $topic = new Topic();
