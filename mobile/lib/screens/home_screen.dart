@@ -130,7 +130,9 @@ class _HomeScreenState extends State<HomeScreen> {
         return GestureDetector(
           onTap: () {
             FocusScopeNode currentFocus = FocusScope.of(context);
-            currentFocus.unfocus();
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
           },
           child: Scaffold(
             body: SafeArea(
@@ -193,33 +195,86 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   )
                                 : ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: const ClampingScrollPhysics(),
                                     itemCount:
                                         classProvider.studyClasses.length,
                                     itemBuilder: (context, index) {
                                       final classData =
                                           classProvider.studyClasses[index];
-                                      return Card(
-                                        child: ListTile(
-                                          leading: const Icon(
-                                            Icons.class_,
-                                            color: Colors.blue,
-                                            size: 50,
-                                          ),
-                                          title: Text(classData.title),
-                                          subtitle: Text(classData.description),
-                                          trailing:
-                                              const Icon(Icons.chevron_right),
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ClassDetailScreen(
-                                                  classDetail: classData,
-                                                ),
+                                      return InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ClassDetailScreen(
+                                                classDetail: classData,
                                               ),
-                                            );
-                                          },
+                                            ),
+                                          );
+                                        },
+                                        child: Card(
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 4,
+                                              horizontal:
+                                                  16), // Adjusted margin for reduced height
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(
+                                                8.0), // Reduced padding for decreased height
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Row(
+                                                  children: <Widget>[
+                                                    const Icon(
+                                                      Icons.class_,
+                                                      color: Colors.blue,
+                                                      size:
+                                                          40, // Reduced icon size for a more compact card
+                                                    ),
+                                                    const SizedBox(
+                                                        width:
+                                                            12), // Adjusted spacing between icon and text
+                                                    Expanded(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            classData.title,
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize:
+                                                                  16, // Adjusted font size for title
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height:
+                                                                  4), // Reduced spacing between title and description
+                                                          Text(
+                                                            classData
+                                                                .description,
+                                                            style: TextStyle(
+                                                              fontSize:
+                                                                  14, // Adjusted font size for description
+                                                              color: Colors
+                                                                  .grey[600],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ),
                                       );
                                     },
@@ -309,7 +364,7 @@ class _HomeScreenState extends State<HomeScreen> {
             value: notification.content,
             child: Text(
               notification.content,
-              style: TextStyle(fontSize: 13),
+              style: const TextStyle(fontSize: 13),
             ),
           );
         }).toList();
@@ -422,7 +477,9 @@ Widget buildClassList(StudyClassProvider classProvider) {
         child: ListTile(
           leading: const Icon(Icons.class_, color: Colors.blue, size: 50),
           title: Text(classData.title),
-          subtitle: Text(classData.description),
+          subtitle: Text(
+            classData.description,
+          ),
           trailing: const Icon(Icons.chevron_right),
           onTap: () {
             Navigator.push(
