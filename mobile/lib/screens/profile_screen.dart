@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/users/user_data.dart';
 import 'package:mobile/providers/class_provider.dart';
 import 'package:mobile/providers/material_provider.dart';
 import 'package:mobile/screens/edit_screen.dart';
@@ -38,6 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String name = Provider.of<UserData>(context, listen: false).userName;
     return Scaffold(
       backgroundColor: const Color(0xFF3786A8),
       appBar: AppBar(
@@ -86,13 +88,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 24, color: Colors.white)),
             ),
           ),
-          const Positioned(
+          Positioned(
             top: 70,
             left: 0,
             right: 0,
             child: Text(
-              'Ali Mansour',
-              style: TextStyle(
+              name,
+              style: const TextStyle(
                 fontSize: 21,
                 fontWeight: FontWeight.w600,
                 color: Colors.black,
@@ -140,8 +142,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.book),
-                title: const Text('Material'),
+                leading: const Icon(
+                  Icons.medication,
+                  size: 27,
+                ),
+                title: const Text('Notes'),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   var materials =

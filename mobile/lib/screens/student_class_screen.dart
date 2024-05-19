@@ -26,7 +26,7 @@ class StudentClassScreen extends StatelessWidget {
         body: studentClasses.isEmpty
             ? const Center(
                 child: Text(
-                  'No materials available.',
+                  'No classes available.',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey,

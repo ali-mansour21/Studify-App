@@ -20,14 +20,14 @@ class StudentMaterialScreen extends StatelessWidget {
           },
         ),
         title: const Text(
-          'Materials',
+          'Notes',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
       body: materials.isEmpty
           ? const Center(
               child: Text(
-                'No materials available.',
+                'No notes available.',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey,
