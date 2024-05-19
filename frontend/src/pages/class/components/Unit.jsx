@@ -274,9 +274,8 @@ const Unit = () => {
                     openPopup();
                   }}
                 >
-                  <FontAwesomeIcon icon={faPlus} />
+                  Add
                 </button>
-                <p>Add</p>
               </div>
             </div>
             <div className="tabs">
