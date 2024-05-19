@@ -64,7 +64,7 @@ class HomeController extends Controller
         set_time_limit(0);
         $student_id = auth()->id();
         $data = $request->validate([
-            'material_id' => ['sometimes', 'integer', 'exists:materials,id'],
+            'material_id' => ['sometimes', 'integer', Rule::exists('student_notes', 'id')],
             'material_title' => ['required_without:material_id', 'string', 'min:3', 'max:255'],
             'category_id' => ['required_without:material_id', 'integer', 'exists:categories,id'],
             'topic_title' => ['required', 'string', 'min:3', 'max:255'],
@@ -96,7 +96,7 @@ class HomeController extends Controller
             $material = StudentNote::findOrFail($data['material_id']);
             $topic = new NoteDescription([
                 'title' => $data['topic_title'],
-                'content' => $extractedText
+                'content' => $extractedText,
             ]);
             $material->noteDescriptions()->save($topic);
             $message = 'Topic added to existing material successfully.';
@@ -110,7 +110,7 @@ class HomeController extends Controller
 
             $topic = new NoteDescription([
                 'title' => $data['topic_title'],
-                'content' => $extractedText
+                'content' => $extractedText,
             ]);
             $material->noteDescriptions()->save($topic);
             $message = 'New material and topic created successfully.';

@@ -150,9 +150,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           buildHeader(context),
                           buildSearchBar(),
                           const Padding(
-                            padding: EdgeInsets.all(16.0),
+                            padding: EdgeInsets.all(13.0),
                             child: Text(
-                              'Materials',
+                              'Student Notes',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -216,12 +216,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         },
                                         child: Card(
                                           margin: const EdgeInsets.symmetric(
-                                              vertical: 4,
-                                              horizontal:
-                                                  16), // Adjusted margin for reduced height
+                                              vertical: 4, horizontal: 16),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(
-                                                8.0), // Reduced padding for decreased height
+                                            padding: const EdgeInsets.all(8.0),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -231,12 +228,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     const Icon(
                                                       Icons.class_,
                                                       color: Colors.blue,
-                                                      size:
-                                                          40, // Reduced icon size for a more compact card
+                                                      size: 40,
                                                     ),
-                                                    const SizedBox(
-                                                        width:
-                                                            12), // Adjusted spacing between icon and text
+                                                    const SizedBox(width: 12),
                                                     Expanded(
                                                       child: Column(
                                                         crossAxisAlignment:
@@ -247,22 +241,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             classData.title,
                                                             style:
                                                                 const TextStyle(
-                                                              fontSize:
-                                                                  16, // Adjusted font size for title
+                                                              fontSize: 16, //
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
                                                             ),
                                                           ),
                                                           const SizedBox(
-                                                              height:
-                                                                  4), // Reduced spacing between title and description
+                                                              height: 4),
                                                           Text(
                                                             classData
                                                                 .description,
                                                             style: TextStyle(
-                                                              fontSize:
-                                                                  14, // Adjusted font size for description
+                                                              fontSize: 14,
                                                               color: Colors
                                                                   .grey[600],
                                                             ),

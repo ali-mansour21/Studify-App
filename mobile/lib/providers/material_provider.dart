@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/material_model.dart';
 import 'package:mobile/services/home_api_service.dart';
 import 'package:mobile/services/profile_api.dart';
+import 'package:flutter/scheduler.dart';
 
 class MaterialsProvider with ChangeNotifier {
   final HomeApiService _apiService = HomeApiService();
@@ -17,14 +18,14 @@ class MaterialsProvider with ChangeNotifier {
 
   Future<void> fetchMaterials(BuildContext context) async {
     _isLoading = true;
-    notifyListeners();
+    _notifyListenersSafely();
     try {
       _materials = await _apiService.getNotesData(context);
     } catch (e) {
       print("Failed to fetch materials: $e");
     } finally {
       _isLoading = false;
-      notifyListeners();
+      _notifyListenersSafely();
     }
   }
 
@@ -35,25 +36,33 @@ class MaterialsProvider with ChangeNotifier {
     } catch (e) {
       print("Failed to fetch materials: $e");
     } finally {
-      notifyListeners();
+      _notifyListenersSafely();
     }
   }
 
   void updateMaterials(List<MaterialItem> newMaterials) {
     _materials = newMaterials;
-    notifyListeners();
+    _notifyListenersSafely();
   }
 
   void fetchStudnetMaterials(BuildContext context) async {
     _isLoading = true;
-    notifyListeners();
+    _notifyListenersSafely();
     try {
       _studentMaterials = await _studentApiService.getStudentNotesData(context);
     } catch (e) {
       print("Failed to fetch materials: $e");
     } finally {
       _isLoading = false;
+      _notifyListenersSafely();
+    }
+  }
+
+  void _notifyListenersSafely() {
+    if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.idle) {
       notifyListeners();
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
     }
   }
 }
