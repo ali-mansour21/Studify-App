@@ -31,11 +31,26 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           content: SizedBox(
-            width: double.maxFinite,
-            height: 400,
+            width: 700,
+            height: 600,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Ask me anything",
+                      style: TextStyle(fontSize: 18), // Decreased font size
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
                 Expanded(
                   child: Consumer<ChatProvider>(
                     builder: (context, provider, child) {
@@ -217,38 +232,50 @@ class _ClassMaterialDetailScreenState extends State<ClassMaterialDetailScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(widget.material.title),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.question_answer),
-            onPressed: () => showChatDialog(context),
+      ),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                Center(
+                  child: SegmentedControl(
+                    labels: const ['Topics', 'Assignments'],
+                    onSegmentChosen: (int index) {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                    },
+                    width: 105,
+                    height: 35,
+                    groupValue: _selectedIndex,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Expanded(child: content[_selectedIndex]),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: FloatingActionButton(
+              backgroundColor: const Color(0xFF3786A8),
+              onPressed: () => showChatDialog(context),
+              child: const Icon(
+                Icons.chat,
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            Center(
-              child: SegmentedControl(
-                labels: const ['Topics', 'Assignments'],
-                onSegmentChosen: (int index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
-                width: 105,
-                height: 35,
-                groupValue: _selectedIndex,
-              ),
-            ),
-            const SizedBox(height: 30),
-            Expanded(child: content[_selectedIndex]),
-          ],
-        ),
-      ),
       bottomNavigationBar: CustomNavigationBar(
-          currentIndex: _currentIndex, onItemSelected: _onItemSelected),
+        currentIndex: _currentIndex,
+        onItemSelected: _onItemSelected,
+      ),
     );
   }
 }
