@@ -3,18 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile/models/topic_material.dart'; // Make sure this path is correct
+import 'package:mobile/widgets/navigation_bar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mobile/screens/pdf_view_screen.dart';
 
-class TopicDetailScreen extends StatelessWidget {
+class TopicDetailScreen extends StatefulWidget {
   final Topic topic;
   final bool isStudent;
 
   const TopicDetailScreen(
       {super.key, required this.topic, this.isStudent = false});
 
+  @override
+  _TopicDetailScreenState createState() => _TopicDetailScreenState();
+}
+
+class _TopicDetailScreenState extends State<TopicDetailScreen> {
+  int _selectedIndex = 0;
   Future<String> downloadAndSaveFile(
       BuildContext context, String url, String filename) async {
     String filePath = '';
@@ -108,6 +115,26 @@ class TopicDetailScreen extends StatelessWidget {
         false;
   }
 
+  void _onItemSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    // Handle the navigation based on the selected index
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        // This is handled inside CustomNavigationBar
+        break;
+      case 2:
+        Navigator.pushNamed(context, '/profile');
+        break;
+      default:
+        break;
+    }
+  }
+
   Future<void> downloadContent(
       BuildContext context, String content, String fileName) async {
     final status = await Permission.storage.request();
@@ -144,17 +171,18 @@ class TopicDetailScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(topic.title, style: const TextStyle(color: Colors.black)),
+        title: Text(widget.topic.title,
+            style: const TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         elevation: 0,
         actions: <Widget>[
-          if (isStudent)
+          if (widget.isStudent)
             IconButton(
               icon: const Icon(Icons.file_download, color: Colors.black),
               onPressed: () => downloadContent(
                   context,
-                  'data:text/plain;charset=utf-8,${Uri.encodeComponent(topic.content)}',
-                  "${topic.title.replaceAll(' ', '_')}.txt"),
+                  'data:text/plain;charset=utf-8,${Uri.encodeComponent(widget.topic.content)}',
+                  "${widget.topic.title.replaceAll(' ', '_')}.txt"),
             ),
         ],
       ),
@@ -163,8 +191,8 @@ class TopicDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(topic.content, style: const TextStyle(fontSize: 16)),
-            if (!isStudent && topic.attachmentUrl != null)
+            Text(widget.topic.content, style: const TextStyle(fontSize: 16)),
+            if (!widget.isStudent && widget.topic.attachmentUrl != null)
               Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -174,8 +202,8 @@ class TopicDetailScreen extends StatelessWidget {
                   onPressed: () async {
                     final String filePath = await downloadAndSaveFile(
                         context,
-                        topic.attachmentUrl!,
-                        "Attachment_${topic.title.replaceAll(' ', '_')}.pdf");
+                        widget.topic.attachmentUrl!,
+                        "Attachment_${widget.topic.title.replaceAll(' ', '_')}.pdf");
 
                     bool shouldPreview = await _showConfirmationDialog(context);
                     if (shouldPreview) {
@@ -186,6 +214,10 @@ class TopicDetailScreen extends StatelessWidget {
               ),
           ],
         ),
+      ),
+      bottomNavigationBar: CustomNavigationBar(
+        currentIndex: _selectedIndex,
+        onItemSelected: _onItemSelected,
       ),
     );
   }

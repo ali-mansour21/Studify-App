@@ -64,8 +64,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           icon: IconButton(
               color: Colors.white,
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    const Color(0xFF3786A8)), 
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(const Color(0xFF3786A8)),
               ),
               onPressed: () => _openCamera(context),
               icon: const Icon(
