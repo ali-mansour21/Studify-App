@@ -15,6 +15,7 @@
 - As a student, I want to be able to search for and access materials related to my courses so that I can study and prepare for exams more effectively.
 - As a student, I want to receive notifications about new materials and assignments so that I can keep up-to-date with my course requirements.
 - As a student, I want to ask questions related to the PDF materials and receive instant answers so that I can clarify doubts without waiting.
+
 - As an instructor, I want to view statistics on material usage and student engagement so that I can adjust my teaching strategies accordingly.
 - As an instructor, I want to be able to create topics within a material so that I can organize course content in a structured manner.
 
@@ -27,6 +28,7 @@
 
 - This project uses the [Flutter app development framework](https://flutter.dev/). Flutter is a cross-platform hybrid app development platform which allows us to use a single codebase for apps on mobile, desktop, and the web.
 - The backend database uses [PostgreSQL](https://www.postgresql.org/), a powerful, open-source object-relational database system known for its robustness, performance, and standards compliance.
+- The backend is built using [Laravel](https://laravel.com/), a robust PHP framework known for its elegant syntax and extensive features.
 - Notifications within the app are managed through [Firebase](https://firebase.google.com/), specifically Firebase Cloud Messaging. This service allows for reliable and scalable delivery of notifications to devices across platforms.
 - 🚨 Currently, notifications aren't working on macOS.
 
@@ -61,11 +63,11 @@
 
 ### User Screens (Mobile)
 
-| Login screen                              | Register screen                         | Home screen                          | Camera screen                          |
-| ----------------------------------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
-| ![Login](./readme/demo/login-mobile.jpg) | ![Register](./readme/demo/register.gif) | ![Home](./readme/demo/home.gif) | ![Camera](./readme/demo/ocr.gif) |
-| Class screen                               | Chat Screen                             | Assignment Screen                            | Profile Screen                         |
-| ![Class](./readme/demo/class.gif) | ![Chat](./readme/demo/chat.gif) | ![Assignment](./readme/demo/auto-grading.gif) | ![Profile](./readme/demo/profile.gif) |
+| Login screen                             | Register screen                         | Home screen                                   | Camera screen                         |
+| ---------------------------------------- | --------------------------------------- | --------------------------------------------- | ------------------------------------- |
+| ![Login](./readme/demo/login-mobile.jpg) | ![Register](./readme/demo/register.gif) | ![Home](./readme/demo/home.gif)               | ![Camera](./readme/demo/ocr.gif)      |
+| Class screen                             | Chat Screen                             | Assignment Screen                             | Profile Screen                        |
+| ![Class](./readme/demo/class.gif)        | ![Chat](./readme/demo/chat.gif)         | ![Assignment](./readme/demo/auto-grading.gif) | ![Profile](./readme/demo/profile.gif) |
 
 ### Instructor Screens (Web)
 
@@ -80,14 +82,16 @@
 
 ### Enhancing Learning with Advanced AI: Mastering Prompt Engineering
 
-- This project uses  advanced AI and prompt engineering to optimize interactions with NLP models, ensuring accurate answers and concise study materials. By integrating OpenAI's GPT with Laravel and Flask servers, the platform efficiently processes and manages educational content, providing a seamless learning experience for students.
+- This project uses advanced AI and prompt engineering to optimize interactions with NLP models, ensuring accurate answers and concise study materials. By integrating OpenAI's GPT with Laravel and Flask servers, the platform efficiently processes and manages educational content, providing a seamless learning experience for students.
+  In Studify, OpenAI's GPT is employed to enhance the learning experience for students. Advanced AI and prompt engineering techniques ensure accurate responses and concise study materials by optimizing interactions with natural language processing (NLP) models. This system processes educational content, handles student queries, and extracts text from images, providing real-time, accurate, and contextually relevant answers to support seamless and effective learning.
+  ![AI](./readme/demo/AI.png)
 
 <br><br>
 
 <!-- AWS Deployment -->
 <img src="./readme/title8.svg"/>
 
-###  Maximizing AI Potential: Efficient AWS Integration and Deployment
+### Maximizing AI Potential: Efficient AWS Integration and Deployment
 
 - This project leverages AWS deployment strategies to seamlessly integrate and deploy natural language processing models. With a focus on scalability, reliability, and performance, we ensure that AI applications powered by these models deliver robust and responsive solutions for diverse use cases.
 
