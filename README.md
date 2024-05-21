@@ -91,6 +91,7 @@ In Studify, OpenAI's GPT is employed to enhance the learning experience for stud
 
 <!-- AWS Deployment -->
 <img src="./readme/title8.svg"/>
+
   ![AWS](./readme/demo/AWS.png)
 
 ### Maximizing AI Potential: Efficient AWS Integration and Deployment
