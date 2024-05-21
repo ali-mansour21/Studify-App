@@ -83,13 +83,15 @@
 ### Enhancing Learning with Advanced AI: Mastering Prompt Engineering
 
 - This project uses advanced AI and prompt engineering to optimize interactions with NLP models, ensuring accurate answers and concise study materials. By integrating OpenAI's GPT with Laravel and Flask servers, the platform efficiently processes and manages educational content, providing a seamless learning experience for students.
-  In Studify, OpenAI's GPT is employed to enhance the learning experience for students. Advanced AI and prompt engineering techniques ensure accurate responses and concise study materials by optimizing interactions with natural language processing (NLP) models. This system processes educational content, handles student queries, and extracts text from images, providing real-time, accurate, and contextually relevant answers to support seamless and effective learning.
+
+In Studify, OpenAI's GPT is employed to enhance the learning experience for students. Advanced AI and prompt engineering techniques ensure accurate responses and concise study materials by optimizing interactions with natural language processing (NLP) models. This system processes educational content, handles student queries, and extracts text from images, providing real-time, accurate, and contextually relevant answers to support seamless and effective learning.
   ![AI](./readme/demo/AI.png)
 
 <br><br>
 
 <!-- AWS Deployment -->
 <img src="./readme/title8.svg"/>
+  ![AWS](./readme/demo/AWS.png)
 
 ### Maximizing AI Potential: Efficient AWS Integration and Deployment
 
