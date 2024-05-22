@@ -10,12 +10,13 @@
 > Studify helps students learn more by providing a simple way for teachers to upload study materials, including PDFs with questions and answers. Students can find and use these materials, ask questions, and get answers based on the content. The app encourages students to share materials. Using technology like OpenAI and Firebase, Studify makes communication fast and learning more effective for everyone.
 
 ### User Stories
-
+Student:
 - As a student, I want to share my study materials and summaries , so other students can benefit.
 - As a student, I want to be able to search for and access materials related to my courses so that I can study and prepare for exams more effectively.
 - As a student, I want to receive notifications about new materials and assignments so that I can keep up-to-date with my course requirements.
 - As a student, I want to ask questions related to the PDF materials and receive instant answers so that I can clarify doubts without waiting.
 
+Instructor:
 - As an instructor, I want to view statistics on material usage and student engagement so that I can adjust my teaching strategies accordingly.
 - As an instructor, I want to be able to create topics within a material so that I can organize course content in a structured manner.
 
@@ -71,9 +72,10 @@
 
 ### Instructor Screens (Web)
 
-| Register screen                           | Home screen                         | Classes screen                            |
-| ----------------------------------------- | ----------------------------------- | ----------------------------------------- |
-| ![Register](./readme/demo/signup-web.png) | ![Home](./readme/demo/home-web.png) | ![Classes](./readme/demo/classes-web.png) |
+| Home screen                         | Classes screen                            |
+| ----------------------------------- | ----------------------------------------- |
+| ![Home](./readme/demo/home-web.png) | ![Classes](./readme/demo/classes-web.png) |
+
 
 <br><br>
 
